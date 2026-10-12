@@ -11,10 +11,11 @@
       "lang": "en",
       "baseUrl": "https://qimanga.com",
       "engine": "api",
-      "adapter": "ezmanhwa",
-      "apiUrl": "https://api.qimanga.com/api/v1",
       "rateLimit": 2,
-      "nsfw": 0
+      "nsfw": 0,
+      "contentRating": "SAFE",
+      "adapter": "ezmanhwa",
+      "apiUrl": "https://api.qimanga.com/api/v1"
     }
   ]
 }
