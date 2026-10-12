@@ -47,7 +47,7 @@
         "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"},
         "contentRating": {"enum": ["SAFE", "MIXED", "NSFW"]},
         "engine": {"enum": ["asuraScans", "api", "mangaBox", "natsuId", "madara", "mangaThemesia"]},
-        "adapter": {"type": ["string", "null"], "enum": ["ezmanhwa", "heancms", "mangabox", null]},
+        "adapter": {"type": ["string", "null"], "enum": ["ezmanhwa", "heancms", "mangadex", "mangabox", null]},
         "baseUrl": {"$ref": "#/$defs/httpsUrl"},
         "apiUrl": {
           "anyOf": [
@@ -88,7 +88,7 @@
         {
           "if": {"properties": {"engine": {"const": "api"}}, "required": ["engine"]},
           "then": {
-            "properties": {"adapter": {"enum": ["ezmanhwa", "heancms"]}},
+            "properties": {"adapter": {"enum": ["ezmanhwa", "heancms", "mangadex"]}},
             "required": ["apiUrl"]
           }
         },
