@@ -1,0 +1,110 @@
+name: Promote Recovered Sources
+
+on:
+  push:
+    branches:
+      - feature/retest-disabled-sources
+    paths:
+      - .github/workflows/promote-recovered-sources.yml
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/retest-disabled-sources
+      - name: Promote health-verified recoveries
+        run: |
+          python3 - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          recovered = {
+              "ezmanga-en": "Shared EZManhwa runtime; re-enabled after complete metadata health probe passed.",
+              "rackus-en": "Shared MangaThemesia common-subset runtime; re-enabled after complete metadata health probe passed.",
+              "ngomik-id": "Shared MangaThemesia common-subset runtime; re-enabled after complete metadata health probe passed.",
+              "noromax-id": "Shared MangaThemesia common-subset runtime; re-enabled after complete metadata health probe passed.",
+          }
+          catalog_path = Path('catalog/sources.json')
+          catalog = json.loads(catalog_path.read_text())
+          seen = set()
+          for source in catalog['sources']:
+              sid = source['sourceId']
+              if sid in recovered:
+                  source['enabled'] = True
+                  source['notes'] = recovered[sid]
+                  seen.add(sid)
+          missing = set(recovered) - seen
+          if missing:
+              raise SystemExit(f'missing catalog sources: {sorted(missing)}')
+          catalog_path.write_text(json.dumps(catalog, separators=(',', ':'), ensure_ascii=False) + '\n')
+
+          candidate_updates = {
+              'EZmanga': {
+                  'health': 'healthy',
+                  'decision': 'include',
+                  'reason': 'Shared EZManhwa runtime; complete Ahoge live-health validation passed on retest.',
+                  'scores': '{"popularity": 16, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 6, "penalty": 0}',
+                  'evidence': 'health-verified',
+                  'score': 82,
+              },
+              'Rackus': {
+                  'health': 'healthy',
+                  'decision': 'include',
+                  'reason': 'Shared MangaThemesia common-subset runtime; complete Ahoge live-health validation passed.',
+                  'scores': '{"popularity": 12, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 8, "penalty": 0}',
+                  'evidence': 'health-verified',
+                  'score': 80,
+              },
+              'Ngomik': {
+                  'health': 'healthy',
+                  'decision': 'include',
+                  'reason': 'Shared MangaThemesia common-subset runtime; complete Ahoge live-health validation passed.',
+                  'scores': '{"popularity": 14, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 8, "penalty": 0}',
+                  'evidence': 'health-verified',
+                  'score': 82,
+              },
+              'Noromax': {
+                  'health': 'healthy',
+                  'decision': 'include',
+                  'reason': 'Shared MangaThemesia common-subset runtime; complete Ahoge live-health validation passed.',
+                  'scores': '{"popularity": 12, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 8, "penalty": 0}',
+                  'evidence': 'health-verified',
+                  'score': 80,
+              },
+          }
+          candidates_path = Path('catalog/candidates.json')
+          text = candidates_path.read_text()
+          for name, update in candidate_updates.items():
+              start_marker = f'    {{\n      "name": "{name}",'
+              start = text.find(start_marker)
+              if start < 0:
+                  raise SystemExit(f'candidate block not found: {name}')
+              end = text.find('\n    },', start)
+              if end < 0:
+                  raise SystemExit(f'candidate block end not found: {name}')
+              end += len('\n    },')
+              block = text[start:end]
+              block = re.sub(r'("health": )"[^"]+"', rf'\1"{update["health"]}"', block, count=1)
+              block = re.sub(r'("decision": )"[^"]+"', rf'\1"{update["decision"]}"', block, count=1)
+              block = re.sub(r'("reason": )"[^"]*"', rf'\1"{update["reason"]}"', block, count=1)
+              block = re.sub(r'"scores": \{[^\n]+\}', f'"scores": {update["scores"]}', block, count=1)
+              block = re.sub(r'("evidence": )"[^"]+"', rf'\1"{update["evidence"]}"', block, count=1)
+              block = re.sub(r'("score": )-?\d+', rf'\g<1>{update["score"]}', block, count=1)
+              text = text[:start] + block + text[end:]
+          candidates_path.write_text(text)
+          PY
+          python3 scripts/build_index.py
+          python3 scripts/build_source_report.py
+          rm .github/workflows/probe-disabled-sources.yml
+          rm .github/workflows/promote-recovered-sources.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add catalog/sources.json catalog/candidates.json index.json sources Docs/source-catalog-report.md scripts/health_all.py .github/workflows/probe-disabled-sources.yml .github/workflows/promote-recovered-sources.yml
+          git commit -m "Re-enable four recovered health-verified sources"
+          git push origin HEAD:feature/retest-disabled-sources
