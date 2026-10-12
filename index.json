@@ -85,6 +85,127 @@
       ]
     },
     {
+      "name": "Bun Manga",
+      "pkg": "ahoge.extension.bunmanga",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "bunmanga-en",
+          "name": "Bun Manga",
+          "lang": "en",
+          "baseUrl": "https://bunmanga.com",
+          "engine": "madara",
+          "rateLimit": 2,
+          "nsfw": 0,
+          "contentRating": "SAFE"
+        }
+      ]
+    },
+    {
+      "name": "Spmanhwa",
+      "pkg": "ahoge.extension.spmanhwa",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "spmanhwa-en",
+          "name": "Spmanhwa",
+          "lang": "en",
+          "baseUrl": "https://spmanhwa.online",
+          "engine": "madara",
+          "rateLimit": 2,
+          "nsfw": 0,
+          "contentRating": "SAFE"
+        }
+      ]
+    },
+    {
+      "name": "MangaKa",
+      "pkg": "ahoge.extension.mangaka",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "mangaka-en",
+          "name": "MangaKa",
+          "lang": "en",
+          "baseUrl": "https://mangaka.cc",
+          "engine": "madara",
+          "rateLimit": 2,
+          "nsfw": 0,
+          "contentRating": "SAFE",
+          "overrides": {
+            "chapterMode": "adminAjax"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ManhuaUS",
+      "pkg": "ahoge.extension.manhuaus",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "manhuaus-en",
+          "name": "ManhuaUS",
+          "lang": "en",
+          "baseUrl": "https://manhuaus.com",
+          "engine": "madara",
+          "rateLimit": 2,
+          "nsfw": 0,
+          "contentRating": "SAFE",
+          "overrides": {
+            "chapterMode": "mangaAjax",
+            "filterNonMangaItems": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "S2Manga",
+      "pkg": "ahoge.extension.s2manga",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "s2manga-en",
+          "name": "S2Manga",
+          "lang": "en",
+          "baseUrl": "https://s2read.com",
+          "engine": "madara",
+          "rateLimit": 2,
+          "nsfw": 1,
+          "contentRating": "MIXED"
+        }
+      ]
+    },
+    {
+      "name": "Toonizy",
+      "pkg": "ahoge.extension.toonizy",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "toonizy-en",
+          "name": "Toonizy",
+          "lang": "en",
+          "baseUrl": "https://toonizy.com",
+          "engine": "madara",
+          "rateLimit": 2,
+          "nsfw": 1,
+          "contentRating": "MIXED"
+        }
+      ]
+    },
+    {
       "name": "Rawkuma",
       "pkg": "ahoge.extension.rawkuma",
       "lang": "ja",
