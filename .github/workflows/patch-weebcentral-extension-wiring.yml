@@ -1,0 +1,28 @@
+name: Patch WeebCentral Extension Wiring
+
+on:
+  push:
+    branches:
+      - feature/weebcentral-source
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/weebcentral-source
+          fetch-depth: 0
+      - name: Wire validator and health dispatcher
+        run: |
+          python3 -c 'from pathlib import Path; p=Path("scripts/validate.py"); t=p.read_text(); old="SUPPORTED_API_ADAPTERS = {\"ezmanhwa\", \"heancms\", \"mangadex\"}"; new="SUPPORTED_API_ADAPTERS = {\"ezmanhwa\", \"heancms\", \"mangadex\", \"weebcentral\"}"; assert old in t or new in t, "validator adapter anchor changed"; p.write_text(t.replace(old,new,1))'
+          python3 -c 'from pathlib import Path; p=Path("scripts/health_all.py"); t=p.read_text(); a="import health_mangadex as mangadex\n"; b="import health_mangadex as mangadex\nimport health_weebcentral as weebcentral\n"; t=t.replace(a,b,1) if "import health_weebcentral as weebcentral" not in t else t; old="    if engine == \"api\" and adapter == \"mangadex\":\n        checker = mangadex.check\n    elif engine == \"madara\":\n"; new="    if engine == \"api\" and adapter == \"mangadex\":\n        checker = mangadex.check\n    elif engine == \"api\" and adapter == \"weebcentral\":\n        checker = weebcentral.check\n    elif engine == \"madara\":\n"; assert old in t or "adapter == \"weebcentral\"" in t, "health dispatch anchor changed"; p.write_text(t.replace(old,new,1) if "adapter == \"weebcentral\"" not in t else t)'
+          git rm .github/workflows/patch-weebcentral-extension-wiring.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/validate.py scripts/health_all.py
+          git commit -m "Wire fixed WeebCentral adapter into extension validation"
+          git push origin HEAD:feature/weebcentral-source
