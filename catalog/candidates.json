@@ -27,19 +27,8 @@
       "health": "healthy",
       "decision": "include",
       "reason": "Current Ahoge runtime; end-to-end CI health passed.",
-      "scores": {
-        "popularity": 30,
-        "engineFit": 25,
-        "upstreamActivity": 20,
-        "liveHealth": 15,
-        "coverage": 9,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/asurascans",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 30, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 9, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/asurascans", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "health-verified",
       "score": 99
     },
@@ -50,19 +39,8 @@
       "health": "healthy",
       "decision": "include",
       "reason": "Shared EZManhwa runtime; end-to-end CI health passed.",
-      "scores": {
-        "popularity": 22,
-        "engineFit": 25,
-        "upstreamActivity": 20,
-        "liveHealth": 15,
-        "coverage": 8,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/qiscans",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 22, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/qiscans", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "health-verified",
       "score": 90
     },
@@ -73,19 +51,8 @@
       "health": "healthy",
       "decision": "include",
       "reason": "Shared HeanCMS runtime; end-to-end CI health passed.",
-      "scores": {
-        "popularity": 24,
-        "engineFit": 25,
-        "upstreamActivity": 20,
-        "liveHealth": 15,
-        "coverage": 8,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/omegascans",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 24, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/omegascans", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "health-verified",
       "score": 92
     },
@@ -96,19 +63,8 @@
       "health": "healthy",
       "decision": "include",
       "reason": "Shared NatsuId runtime with declarative chapter-page override; health passed.",
-      "scores": {
-        "popularity": 20,
-        "engineFit": 25,
-        "upstreamActivity": 20,
-        "liveHealth": 15,
-        "coverage": 9,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/id/kiryuu",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 20, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 9, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/id/kiryuu", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "health-verified",
       "score": 89
     },
@@ -119,19 +75,8 @@
       "health": "healthy",
       "decision": "include",
       "reason": "Shared NatsuId runtime; health passed after removing Kiryuu-specific hardcode.",
-      "scores": {
-        "popularity": 14,
-        "engineFit": 25,
-        "upstreamActivity": 20,
-        "liveHealth": 15,
-        "coverage": 8,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/id/natsu",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 14, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/id/natsu", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "health-verified",
       "score": 82
     },
@@ -142,19 +87,8 @@
       "health": "healthy",
       "decision": "include",
       "reason": "Shared NatsuId runtime adds Japanese/raw coverage; health passed.",
-      "scores": {
-        "popularity": 18,
-        "engineFit": 25,
-        "upstreamActivity": 20,
-        "liveHealth": 15,
-        "coverage": 10,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/ja/rawkuma",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 18, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 10, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/ja/rawkuma", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "health-verified",
       "score": 88
     },
@@ -165,19 +99,8 @@
       "health": "blocked",
       "decision": "disable",
       "reason": "Existing stable Ahoge identity retained, but GitHub CI receives HTTP 403.",
-      "scores": {
-        "popularity": 29,
-        "engineFit": 25,
-        "upstreamActivity": 20,
-        "liveHealth": 0,
-        "coverage": 8,
-        "penalty": -20
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/manganelo",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 29, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 0, "coverage": 8, "penalty": -20},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/manganelo", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "health-verified",
       "score": 62
     },
@@ -188,19 +111,8 @@
       "health": "blocked",
       "decision": "disable",
       "reason": "Shared MangaBox runtime fits, but CI search validation receives HTTP 403.",
-      "scores": {
-        "popularity": 20,
-        "engineFit": 25,
-        "upstreamActivity": 20,
-        "liveHealth": 0,
-        "coverage": 6,
-        "penalty": -20
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/mangabat",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 20, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 0, "coverage": 6, "penalty": -20},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/mangabat", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "health-verified",
       "score": 51
     },
@@ -211,19 +123,8 @@
       "health": "blocked",
       "decision": "disable",
       "reason": "Shared MangaBox runtime fits, but current primary domain blocks CI with HTTP 403.",
-      "scores": {
-        "popularity": 29,
-        "engineFit": 25,
-        "upstreamActivity": 20,
-        "liveHealth": 0,
-        "coverage": 8,
-        "penalty": -20
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/mangakakalot",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 29, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 0, "coverage": 8, "penalty": -20},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/mangakakalot", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "health-verified",
       "score": 62
     },
@@ -234,19 +135,8 @@
       "health": "degraded",
       "decision": "disable",
       "reason": "API parses, but live sample exposed no free chapter page metadata; fail closed.",
-      "scores": {
-        "popularity": 16,
-        "engineFit": 25,
-        "upstreamActivity": 20,
-        "liveHealth": 0,
-        "coverage": 6,
-        "penalty": -10
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/ezmanga",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 16, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 0, "coverage": 6, "penalty": -10},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/ezmanga", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "health-verified",
       "score": 57
     },
@@ -257,19 +147,8 @@
       "health": "broken",
       "decision": "disable",
       "reason": "Tracked WordPress manga endpoint returned HTTP 404 in live health validation.",
-      "scores": {
-        "popularity": 12,
-        "engineFit": 25,
-        "upstreamActivity": 20,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": -20
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/id/ikiru",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 12, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 0, "coverage": 7, "penalty": -20},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/id/ikiru", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "health-verified",
       "score": 44
     },
@@ -280,19 +159,8 @@
       "health": "blocked",
       "decision": "disable",
       "reason": "Runtime override is supported, but the site returns HTTP 403 to CI.",
-      "scores": {
-        "popularity": 16,
-        "engineFit": 25,
-        "upstreamActivity": 20,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": -20
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/luascans",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 16, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 0, "coverage": 7, "penalty": -20},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/luascans", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "health-verified",
       "score": 48
     },
@@ -303,19 +171,8 @@
       "health": "not-tested",
       "decision": "defer",
       "reason": "High-value custom KeiSource. Good candidate for a stable bespoke Swift adapter; no current Ahoge runtime.",
-      "scores": {
-        "popularity": 30,
-        "engineFit": 12,
-        "upstreamActivity": 20,
-        "liveHealth": 0,
-        "coverage": 10,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/weebcentral",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 30, "engineFit": 12, "upstreamActivity": 20, "liveHealth": 0, "coverage": 10, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/weebcentral", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "upstream-reviewed",
       "score": 72
     },
@@ -326,19 +183,8 @@
       "health": "healthy",
       "decision": "include",
       "reason": "Dedicated native public MangaDex v5 API/MangaDex@Home adapter; complete Ahoge live-health validation passed.",
-      "scores": {
-        "popularity": 30,
-        "engineFit": 25,
-        "upstreamActivity": 20,
-        "liveHealth": 15,
-        "coverage": 10,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/all/mangadex",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 30, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 10, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/all/mangadex", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "health-verified",
       "score": 100
     },
@@ -349,19 +195,8 @@
       "health": "not-tested",
       "decision": "defer",
       "reason": "Current custom KeiSource; attractive bespoke API candidate once shared families are covered.",
-      "scores": {
-        "popularity": 26,
-        "engineFit": 12,
-        "upstreamActivity": 20,
-        "liveHealth": 0,
-        "coverage": 9,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/all/kagane",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 26, "engineFit": 12, "upstreamActivity": 20, "liveHealth": 0, "coverage": 9, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/all/kagane", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "upstream-reviewed",
       "score": 67
     },
@@ -372,19 +207,8 @@
       "health": "not-tested",
       "decision": "defer",
       "reason": "Current custom KeiSource; mixed-content catalog and source-specific API logic need a native adapter.",
-      "scores": {
-        "popularity": 25,
-        "engineFit": 12,
-        "upstreamActivity": 20,
-        "liveHealth": 0,
-        "coverage": 9,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/atsumaru",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 25, "engineFit": 12, "upstreamActivity": 20, "liveHealth": 0, "coverage": 9, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/atsumaru", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "upstream-reviewed",
       "score": 66
     },
@@ -395,19 +219,8 @@
       "health": "unsupported",
       "decision": "reject-now",
       "reason": "Current upstream contains image descrambling logic. High-maintenance native image pipeline, not a first-50 runtime target.",
-      "scores": {
-        "popularity": 28,
-        "engineFit": 0,
-        "upstreamActivity": 20,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": -25
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/comix",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 28, "engineFit": 0, "upstreamActivity": 20, "liveHealth": 0, "coverage": 7, "penalty": -25},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/comix", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "upstream-reviewed",
       "score": 30
     },
@@ -418,19 +231,8 @@
       "health": "unsupported",
       "decision": "reject-now",
       "reason": "Current upstream uses VRF signing plus WebView/OpenCV challenge solving. Explicit Tier 4.",
-      "scores": {
-        "popularity": 30,
-        "engineFit": 0,
-        "upstreamActivity": 20,
-        "liveHealth": 0,
-        "coverage": 8,
-        "penalty": -30
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/all/mangafire",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 30, "engineFit": 0, "upstreamActivity": 20, "liveHealth": 0, "coverage": 8, "penalty": -30},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/all/mangafire", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "upstream-reviewed",
       "score": 28
     },
@@ -441,14 +243,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase.",
-      "scores": {
-        "popularity": 24,
-        "engineFit": 10,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 24, "engineFit": 10, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "seed-triage",
       "score": 49
@@ -460,14 +255,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Seed is ambiguous against current upstream naming; do not bind an Ahoge identity until the intended site/module is verified.",
-      "scores": {
-        "popularity": 24,
-        "engineFit": 10,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 24, "engineFit": 10, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "seed-triage",
       "score": 49
@@ -479,14 +267,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase.",
-      "scores": {
-        "popularity": 24,
-        "engineFit": 5,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 24, "engineFit": 5, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "seed-triage",
       "score": 44
@@ -498,14 +279,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase.",
-      "scores": {
-        "popularity": 24,
-        "engineFit": 5,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 24, "engineFit": 5, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "seed-triage",
       "score": 44
@@ -517,14 +291,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase.",
-      "scores": {
-        "popularity": 24,
-        "engineFit": 5,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 24, "engineFit": 5, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "seed-triage",
       "score": 44
@@ -536,14 +303,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase.",
-      "scores": {
-        "popularity": 20,
-        "engineFit": 5,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 20, "engineFit": 5, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "seed-triage",
       "score": 40
@@ -555,14 +315,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase.",
-      "scores": {
-        "popularity": 20,
-        "engineFit": 5,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 20, "engineFit": 5, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "seed-triage",
       "score": 40
@@ -574,14 +327,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase.",
-      "scores": {
-        "popularity": 20,
-        "engineFit": 5,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 20, "engineFit": 5, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "seed-triage",
       "score": 40
@@ -593,14 +339,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase.",
-      "scores": {
-        "popularity": 20,
-        "engineFit": 5,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 20, "engineFit": 5, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "seed-triage",
       "score": 40
@@ -612,14 +351,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase.",
-      "scores": {
-        "popularity": 20,
-        "engineFit": 5,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 20, "engineFit": 5, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "seed-triage",
       "score": 40
@@ -631,14 +363,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase.",
-      "scores": {
-        "popularity": 20,
-        "engineFit": 10,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 20, "engineFit": 10, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "seed-triage",
       "score": 45
@@ -650,19 +375,8 @@
       "health": "unsupported",
       "decision": "defer-engine",
       "reason": "Current Keiyoushi madara source. High leverage once Ahoge implements the shared madara runtime.",
-      "scores": {
-        "popularity": 15,
-        "engineFit": 18,
-        "upstreamActivity": 16,
-        "liveHealth": 0,
-        "coverage": 8,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/madaradex",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 15, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/madaradex", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "family-reviewed",
       "score": 57
     },
@@ -673,19 +387,8 @@
       "health": "unsupported",
       "decision": "defer-engine",
       "reason": "Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime.",
-      "scores": {
-        "popularity": 18,
-        "engineFit": 18,
-        "upstreamActivity": 16,
-        "liveHealth": 0,
-        "coverage": 8,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/madarascans",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 18, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/madarascans", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "family-reviewed",
       "score": 60
     },
@@ -696,19 +399,8 @@
       "health": "unsupported",
       "decision": "defer-engine",
       "reason": "Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime.",
-      "scores": {
-        "popularity": 12,
-        "engineFit": 18,
-        "upstreamActivity": 16,
-        "liveHealth": 0,
-        "coverage": 8,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/rackus",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 12, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/rackus", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "family-reviewed",
       "score": 54
     },
@@ -719,19 +411,8 @@
       "health": "unsupported",
       "decision": "defer-engine",
       "reason": "Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime.",
-      "scores": {
-        "popularity": 10,
-        "engineFit": 18,
-        "upstreamActivity": 16,
-        "liveHealth": 0,
-        "coverage": 8,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/razure",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 10, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/razure", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "family-reviewed",
       "score": 52
     },
@@ -742,19 +423,8 @@
       "health": "unsupported",
       "decision": "defer-engine",
       "reason": "Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime.",
-      "scores": {
-        "popularity": 20,
-        "engineFit": 18,
-        "upstreamActivity": 16,
-        "liveHealth": 0,
-        "coverage": 8,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/mangatx",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 20, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/mangatx", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "family-reviewed",
       "score": 62
     },
@@ -765,19 +435,8 @@
       "health": "unsupported",
       "decision": "defer-engine",
       "reason": "Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime.",
-      "scores": {
-        "popularity": 14,
-        "engineFit": 18,
-        "upstreamActivity": 16,
-        "liveHealth": 0,
-        "coverage": 8,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/id/ngomik",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 14, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/id/ngomik", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "family-reviewed",
       "score": 56
     },
@@ -788,19 +447,8 @@
       "health": "unsupported",
       "decision": "defer-engine",
       "reason": "Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime.",
-      "scores": {
-        "popularity": 12,
-        "engineFit": 18,
-        "upstreamActivity": 16,
-        "liveHealth": 0,
-        "coverage": 8,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/id/noromax",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 12, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/id/noromax", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "family-reviewed",
       "score": 54
     },
@@ -811,19 +459,8 @@
       "health": "unsupported",
       "decision": "defer-engine",
       "reason": "Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime.",
-      "scores": {
-        "popularity": 12,
-        "engineFit": 18,
-        "upstreamActivity": 16,
-        "liveHealth": 0,
-        "coverage": 8,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/id/omicaso",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 12, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/id/omicaso", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "family-reviewed",
       "score": 54
     },
@@ -834,19 +471,8 @@
       "health": "unsupported",
       "decision": "defer-engine",
       "reason": "Current Keiyoushi fmReader source. High leverage once Ahoge implements the shared fmReader runtime.",
-      "scores": {
-        "popularity": 13,
-        "engineFit": 18,
-        "upstreamActivity": 16,
-        "liveHealth": 0,
-        "coverage": 8,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/ja/rawlh",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 13, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/ja/rawlh", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "family-reviewed",
       "score": 55
     },
@@ -857,19 +483,8 @@
       "health": "unsupported",
       "decision": "defer-engine",
       "reason": "Current Keiyoushi fmReader source. High leverage once Ahoge implements the shared fmReader runtime.",
-      "scores": {
-        "popularity": 11,
-        "engineFit": 18,
-        "upstreamActivity": 16,
-        "liveHealth": 0,
-        "coverage": 8,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/ja/rawinu",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 11, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/ja/rawinu", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "family-reviewed",
       "score": 53
     },
@@ -880,19 +495,8 @@
       "health": "unsupported",
       "decision": "defer-engine",
       "reason": "Current Keiyoushi fmReader source. High leverage once Ahoge implements the shared fmReader runtime.",
-      "scores": {
-        "popularity": 12,
-        "engineFit": 18,
-        "upstreamActivity": 16,
-        "liveHealth": 0,
-        "coverage": 8,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/ja/mangagun",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 12, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/ja/mangagun", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "family-reviewed",
       "score": 54
     },
@@ -903,19 +507,8 @@
       "health": "unsupported",
       "decision": "defer-engine",
       "reason": "Current Keiyoushi fmReader source. High leverage once Ahoge implements the shared fmReader runtime.",
-      "scores": {
-        "popularity": 11,
-        "engineFit": 18,
-        "upstreamActivity": 16,
-        "liveHealth": 0,
-        "coverage": 8,
-        "penalty": 0
-      },
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/ja/welovemangaone",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "scores": {"popularity": 11, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/ja/welovemangaone", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "family-reviewed",
       "score": 53
     },
@@ -926,14 +519,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Useful catalog candidate, but current upstream module/family and live behavior still require verification before implementation.",
-      "scores": {
-        "popularity": 26,
-        "engineFit": 7,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 26, "engineFit": 7, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "triage",
       "score": 48
@@ -945,14 +531,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Useful catalog candidate, but current upstream module/family and live behavior still require verification before implementation.",
-      "scores": {
-        "popularity": 27,
-        "engineFit": 7,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 27, "engineFit": 7, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "triage",
       "score": 49
@@ -964,14 +543,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Useful catalog candidate, but current upstream module/family and live behavior still require verification before implementation.",
-      "scores": {
-        "popularity": 22,
-        "engineFit": 7,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 22, "engineFit": 7, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "triage",
       "score": 44
@@ -983,14 +555,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Useful catalog candidate, but current upstream module/family and live behavior still require verification before implementation.",
-      "scores": {
-        "popularity": 22,
-        "engineFit": 7,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 22, "engineFit": 7, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "triage",
       "score": 44
@@ -1002,14 +567,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Useful catalog candidate, but current upstream module/family and live behavior still require verification before implementation.",
-      "scores": {
-        "popularity": 22,
-        "engineFit": 7,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 22, "engineFit": 7, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "triage",
       "score": 44
@@ -1021,14 +579,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Useful catalog candidate, but current upstream module/family and live behavior still require verification before implementation.",
-      "scores": {
-        "popularity": 22,
-        "engineFit": 7,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 22, "engineFit": 7, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "triage",
       "score": 44
@@ -1040,14 +591,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Useful catalog candidate, but current upstream module/family and live behavior still require verification before implementation.",
-      "scores": {
-        "popularity": 18,
-        "engineFit": 7,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 18, "engineFit": 7, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "triage",
       "score": 40
@@ -1059,14 +603,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Useful catalog candidate, but current upstream module/family and live behavior still require verification before implementation.",
-      "scores": {
-        "popularity": 17,
-        "engineFit": 7,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 17, "engineFit": 7, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "triage",
       "score": 39
@@ -1078,14 +615,7 @@
       "health": "not-tested",
       "decision": "investigate",
       "reason": "Useful catalog candidate, but current upstream module/family and live behavior still require verification before implementation.",
-      "scores": {
-        "popularity": 16,
-        "engineFit": 7,
-        "upstreamActivity": 8,
-        "liveHealth": 0,
-        "coverage": 7,
-        "penalty": 0
-      },
+      "scores": {"popularity": 16, "engineFit": 7, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
       "upstream": null,
       "evidence": "triage",
       "score": 38
