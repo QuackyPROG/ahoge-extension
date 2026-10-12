@@ -22,10 +22,11 @@ SOURCES_DIR = ROOT / "sources"
 INDEX_PATH = ROOT / "index.json"
 
 SUPPORTED_ENGINES = {"asuraScans", "api", "mangaBox", "natsuId", "madara", "mangaThemesia"}
-SUPPORTED_API_ADAPTERS = {"ezmanhwa", "heancms"}
+SUPPORTED_API_ADAPTERS = {"ezmanhwa", "heancms", "mangadex"}
 ALLOWED_OVERRIDE_KEYS = {
     "chapterListPageOverride",
     "latestSortOrder",
+    "translatedLanguage",
     "mangaPath",
     "genrePath",
     "chapterMode",
@@ -34,6 +35,7 @@ ALLOWED_OVERRIDE_KEYS = {
 }
 MADARA_CHAPTER_MODES = {"mangaPage", "adminAjax", "mangaAjax"}
 SAFE_PATH = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
+LANGUAGE_CODE = re.compile(r"^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})?$")
 
 
 def load_json(path: Path):
@@ -114,6 +116,13 @@ def validate_runtime_source(source: dict, origin: str) -> None:
             raise ValueError(f"{origin}:{source_id}: latestSortOrder requires api/heancms")
         if overrides["latestSortOrder"] not in {"asc", "desc"}:
             raise ValueError(f"{origin}:{source_id}: latestSortOrder must be 'asc' or 'desc'")
+
+    if "translatedLanguage" in overrides:
+        if engine != "api" or adapter != "mangadex":
+            raise ValueError(f"{origin}:{source_id}: translatedLanguage requires api/mangadex")
+        language = overrides["translatedLanguage"]
+        if not isinstance(language, str) or LANGUAGE_CODE.fullmatch(language) is None:
+            raise ValueError(f"{origin}:{source_id}: translatedLanguage must be a bounded language code")
 
     shared_html_keys = {"mangaPath", "dateFormat"}
     if set(overrides) & shared_html_keys and engine not in {"madara", "mangaThemesia"}:
