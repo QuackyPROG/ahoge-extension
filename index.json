@@ -271,6 +271,28 @@
       ]
     },
     {
+      "name": "ManhwaNex",
+      "pkg": "ahoge.extension.manhwanex",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "manhwanex-en",
+          "name": "ManhwaNex",
+          "lang": "en",
+          "baseUrl": "https://manhwanex.com",
+          "engine": "madara",
+          "rateLimit": 2,
+          "nsfw": 0,
+          "contentRating": "SAFE",
+          "overrides": {
+            "chapterMode": "mangaAjax"
+          }
+        }
+      ]
+    },
+    {
       "name": "Natsu",
       "pkg": "ahoge.extension.natsu",
       "lang": "id",
@@ -362,6 +384,51 @@
           "rateLimit": 2,
           "nsfw": 0,
           "contentRating": "SAFE"
+        }
+      ]
+    },
+    {
+      "name": "Marmota",
+      "pkg": "ahoge.extension.marmota",
+      "lang": "es",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "marmota-es",
+          "name": "Marmota",
+          "lang": "es",
+          "baseUrl": "https://marmota.me",
+          "engine": "madara",
+          "rateLimit": 2,
+          "nsfw": 0,
+          "contentRating": "SAFE",
+          "overrides": {
+            "mangaPath": "comic",
+            "chapterMode": "mangaAjax"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Anikiga",
+      "pkg": "ahoge.extension.anikiga",
+      "lang": "tr",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "anikiga-tr",
+          "name": "Anikiga",
+          "lang": "tr",
+          "baseUrl": "https://anikiga.com",
+          "engine": "madara",
+          "rateLimit": 2,
+          "nsfw": 0,
+          "contentRating": "SAFE",
+          "overrides": {
+            "chapterMode": "mangaAjax"
+          }
         }
       ]
     },

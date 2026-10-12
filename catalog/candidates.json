@@ -297,16 +297,16 @@
       "score": 44
     },
     {
-      "name": "MangaDotNet",
-      "engine": "custom",
-      "maintenanceTier": 3,
-      "health": "not-tested",
-      "decision": "investigate",
-      "reason": "Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase.",
-      "scores": {"popularity": 20, "engineFit": 5, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
-      "upstream": null,
-      "evidence": "seed-triage",
-      "score": 40
+      "name": "ManhwaNex",
+      "engine": "madara",
+      "maintenanceTier": 1,
+      "health": "healthy",
+      "decision": "include",
+      "reason": "Bounded Madara mangaAjax runtime; complete Ahoge live-health validation passed.",
+      "scores": {"popularity": 13, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 8, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/manhwanex", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
+      "evidence": "health-verified",
+      "score": 81
     },
     {
       "name": "Shinobi Scans",
@@ -333,28 +333,28 @@
       "score": 82
     },
     {
-      "name": "Project Suki",
-      "engine": "custom",
-      "maintenanceTier": 3,
-      "health": "not-tested",
-      "decision": "investigate",
-      "reason": "Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase.",
-      "scores": {"popularity": 20, "engineFit": 5, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
-      "upstream": null,
-      "evidence": "seed-triage",
-      "score": 40
+      "name": "Anikiga",
+      "engine": "madara",
+      "maintenanceTier": 1,
+      "health": "healthy",
+      "decision": "include",
+      "reason": "Bounded Madara mangaAjax runtime; complete Ahoge live-health validation passed and adds Turkish catalog coverage.",
+      "scores": {"popularity": 10, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 10, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/tr/anikiga", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
+      "evidence": "health-verified",
+      "score": 80
     },
     {
-      "name": "ReadComicOnline",
-      "engine": "custom",
-      "maintenanceTier": 3,
-      "health": "not-tested",
-      "decision": "investigate",
-      "reason": "Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase.",
-      "scores": {"popularity": 20, "engineFit": 5, "upstreamActivity": 8, "liveHealth": 0, "coverage": 7, "penalty": 0},
-      "upstream": null,
-      "evidence": "seed-triage",
-      "score": 40
+      "name": "Marmota",
+      "engine": "madara",
+      "maintenanceTier": 1,
+      "health": "healthy",
+      "decision": "include",
+      "reason": "Bounded Madara comic-path + mangaAjax runtime; complete Ahoge live-health validation passed.",
+      "scores": {"popularity": 10, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 9, "penalty": 0},
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/es/marmota", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
+      "evidence": "health-verified",
+      "score": 79
     },
     {
       "name": "Webtoon",

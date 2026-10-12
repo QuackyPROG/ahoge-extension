@@ -1,0 +1,22 @@
+{
+  "name": "ManhwaNex",
+  "pkg": "ahoge.extension.manhwanex",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": 0,
+  "sources": [
+    {
+      "id": "manhwanex-en",
+      "name": "ManhwaNex",
+      "lang": "en",
+      "baseUrl": "https://manhwanex.com",
+      "engine": "madara",
+      "rateLimit": 2,
+      "nsfw": 0,
+      "contentRating": "SAFE",
+      "overrides": {
+        "chapterMode": "mangaAjax"
+      }
+    }
+  ]
+}
