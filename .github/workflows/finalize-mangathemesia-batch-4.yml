@@ -1,0 +1,48 @@
+name: Finalize MangaThemesia Expansion Batch 4
+
+on:
+  push:
+    branches: [feature/mangathemesia-expansion-batch-4]
+    paths:
+      - .github/workflows/finalize-mangathemesia-batch-4.yml
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/mangathemesia-expansion-batch-4
+          fetch-depth: 0
+      - name: Keep only health-verified sources enabled
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('catalog/sources.json')
+          data = json.loads(path.read_text())
+          for source in data['sources']:
+              sid = source['sourceId']
+              if sid == 'gomanga-th':
+                  source['enabled'] = False
+                  source['notes'] = 'Tracked but disabled: MangaThemesia live health returned no manga slugs from the current popular archive page on 2026-10-12.'
+              elif sid == 'godhman-th':
+                  source['enabled'] = True
+                  source['notes'] = 'Plain MangaThemesia common-subset runtime; complete Ahoge metadata health validation passed on 2026-10-12.'
+              elif sid == 'kumapoi-id':
+                  source['enabled'] = True
+                  source['notes'] = 'MangaThemesia common-subset runtime with upstream rate limit 4; complete Ahoge metadata health validation passed on 2026-10-12.'
+          path.write_text(json.dumps(data, separators=(',', ':'), ensure_ascii=False) + '\n')
+          PY
+          python3 scripts/build_index.py
+          python3 scripts/build_source_report.py
+          rm .github/workflows/finalize-mangathemesia-batch-4.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add catalog/sources.json index.json sources Docs/source-catalog-report.md .github/workflows/finalize-mangathemesia-batch-4.yml
+          git commit -m "Publish two health-verified MangaThemesia sources"
+          git push origin HEAD:feature/mangathemesia-expansion-batch-4
