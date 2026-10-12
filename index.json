@@ -21,30 +21,6 @@
       ]
     },
     {
-      "name": "Manganato",
-      "pkg": "ahoge.extension.manganato",
-      "lang": "en",
-      "version": "1.0.0",
-      "nsfw": 1,
-      "sources": [
-        {
-          "id": "manganato-en",
-          "name": "Manganato",
-          "lang": "en",
-          "baseUrl": "https://www.natomanga.com",
-          "engine": "mangaBox",
-          "rateLimit": 2,
-          "nsfw": 1,
-          "contentRating": "MIXED",
-          "adapter": "mangabox",
-          "mirrors": [
-            "https://www.nelomanga.net",
-            "https://www.manganato.gg"
-          ]
-        }
-      ]
-    },
-    {
       "name": "QiScans",
       "pkg": "ahoge.extension.qiscans",
       "lang": "en",
@@ -66,29 +42,6 @@
       ]
     },
     {
-      "name": "Mangakakalot",
-      "pkg": "ahoge.extension.mangakakalot",
-      "lang": "en",
-      "version": "1.0.0",
-      "nsfw": 1,
-      "sources": [
-        {
-          "id": "mangakakalot-en",
-          "name": "Mangakakalot",
-          "lang": "en",
-          "baseUrl": "https://www.mangakakalot.gg",
-          "engine": "mangaBox",
-          "rateLimit": 2,
-          "nsfw": 1,
-          "contentRating": "MIXED",
-          "adapter": "mangabox",
-          "mirrors": [
-            "https://www.mangakakalove.com"
-          ]
-        }
-      ]
-    },
-    {
       "name": "Omega Scans",
       "pkg": "ahoge.extension.omegascans",
       "lang": "en",
@@ -106,26 +59,6 @@
           "contentRating": "NSFW",
           "adapter": "heancms",
           "apiUrl": "https://api.omegascans.org"
-        }
-      ]
-    },
-    {
-      "name": "Mangabat",
-      "pkg": "ahoge.extension.mangabat",
-      "lang": "en",
-      "version": "1.0.0",
-      "nsfw": 1,
-      "sources": [
-        {
-          "id": "mangabat-en",
-          "name": "Mangabat",
-          "lang": "en",
-          "baseUrl": "https://www.mangabats.com",
-          "engine": "mangaBox",
-          "rateLimit": 2,
-          "nsfw": 1,
-          "contentRating": "MIXED",
-          "adapter": "mangabox"
         }
       ]
     },
@@ -152,23 +85,83 @@
       ]
     },
     {
-      "name": "EZmanga",
-      "pkg": "ahoge.extension.ezmanga",
+      "name": "Lua Scans",
+      "pkg": "ahoge.extension.luascans",
       "lang": "en",
       "version": "1.0.0",
       "nsfw": 0,
       "sources": [
         {
-          "id": "ezmanga-en",
-          "name": "EZmanga",
+          "id": "luascans-en",
+          "name": "Lua Scans",
           "lang": "en",
-          "baseUrl": "https://ezmanga.org",
+          "baseUrl": "https://luacomic.org",
           "engine": "api",
           "rateLimit": 2,
           "nsfw": 0,
           "contentRating": "SAFE",
-          "adapter": "ezmanhwa",
-          "apiUrl": "https://vapi.ezmanga.org/api/v1"
+          "adapter": "heancms",
+          "apiUrl": "https://api.luacomic.org",
+          "overrides": {
+            "latestSortOrder": "asc"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rawkuma",
+      "pkg": "ahoge.extension.rawkuma",
+      "lang": "ja",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "rawkuma-ja",
+          "name": "Rawkuma",
+          "lang": "ja",
+          "baseUrl": "https://rawkuma.net",
+          "engine": "natsuId",
+          "rateLimit": 2,
+          "nsfw": 1,
+          "contentRating": "MIXED"
+        }
+      ]
+    },
+    {
+      "name": "Natsu",
+      "pkg": "ahoge.extension.natsu",
+      "lang": "id",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "natsu-id",
+          "name": "Natsu",
+          "lang": "id",
+          "baseUrl": "https://natsu.one",
+          "engine": "natsuId",
+          "rateLimit": 4,
+          "nsfw": 0,
+          "contentRating": "SAFE"
+        }
+      ]
+    },
+    {
+      "name": "Ikiru",
+      "pkg": "ahoge.extension.ikiru",
+      "lang": "id",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "ikiru-id",
+          "name": "Ikiru",
+          "lang": "id",
+          "baseUrl": "https://09.ikiru.wtf",
+          "engine": "natsuId",
+          "rateLimit": 2,
+          "nsfw": 0,
+          "contentRating": "SAFE"
         }
       ]
     }
