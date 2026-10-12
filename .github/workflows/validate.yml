@@ -25,8 +25,10 @@ jobs:
         run: python -m pip install --disable-pip-version-check jsonschema
       - name: Compile repository tooling
         run: python -m py_compile scripts/*.py
-      - name: Verify generated output
+      - name: Verify generated repository output
         run: python scripts/build_index.py --check
+      - name: Verify generated candidate report
+        run: python scripts/build_source_report.py --check
       - name: Validate catalog and manifests
         run: python scripts/validate.py
 
