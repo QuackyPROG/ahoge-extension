@@ -1,0 +1,19 @@
+{
+  "name": "Manga Kusu",
+  "pkg": "ahoge.extension.mangakusu",
+  "lang": "tr",
+  "version": "1.0.0",
+  "nsfw": 0,
+  "sources": [
+    {
+      "id": "mangakusu-tr",
+      "name": "Manga Kusu",
+      "lang": "tr",
+      "baseUrl": "https://mangakusu.com",
+      "engine": "mangaThemesia",
+      "rateLimit": 3,
+      "nsfw": 0,
+      "contentRating": "SAFE"
+    }
+  ]
+}

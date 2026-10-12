@@ -1,0 +1,19 @@
+{
+  "name": "LianScans",
+  "pkg": "ahoge.extension.lianscans",
+  "lang": "id",
+  "version": "1.0.0",
+  "nsfw": 1,
+  "sources": [
+    {
+      "id": "lianscans-id",
+      "name": "LianScans",
+      "lang": "id",
+      "baseUrl": "https://www.lianscans.com",
+      "engine": "mangaThemesia",
+      "rateLimit": 4,
+      "nsfw": 1,
+      "contentRating": "NSFW"
+    }
+  ]
+}

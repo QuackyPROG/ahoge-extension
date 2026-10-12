@@ -1,0 +1,19 @@
+{
+  "name": "NekoScans",
+  "pkg": "ahoge.extension.nekoscans",
+  "lang": "es",
+  "version": "1.0.0",
+  "nsfw": 1,
+  "sources": [
+    {
+      "id": "nekoscans-es",
+      "name": "NekoScans",
+      "lang": "es",
+      "baseUrl": "https://nekoproject.org",
+      "engine": "mangaThemesia",
+      "rateLimit": 2,
+      "nsfw": 1,
+      "contentRating": "MIXED"
+    }
+  ]
+}

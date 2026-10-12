@@ -1,0 +1,19 @@
+{
+  "name": "Asia Lotus",
+  "pkg": "ahoge.extension.asialotus",
+  "lang": "es",
+  "version": "1.0.0",
+  "nsfw": 1,
+  "sources": [
+    {
+      "id": "asialotus-es",
+      "name": "Asia Lotus",
+      "lang": "es",
+      "baseUrl": "https://asialotuss.com",
+      "engine": "mangaThemesia",
+      "rateLimit": 3,
+      "nsfw": 1,
+      "contentRating": "NSFW"
+    }
+  ]
+}
