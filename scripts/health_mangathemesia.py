@@ -42,6 +42,8 @@ def manga_slugs(html: str, base: str, manga_path: str) -> list[str]:
         if len(parts) != index + 2:
             continue
         slug = parts[index + 1]
+        if slug.lower() == "list-mode":
+            continue
         if slug and slug not in seen:
             seen.add(slug)
             output.append(slug)
