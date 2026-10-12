@@ -1,0 +1,19 @@
+{
+  "name": "Rawkuma",
+  "pkg": "ahoge.extension.rawkuma",
+  "lang": "ja",
+  "version": "1.0.0",
+  "nsfw": 1,
+  "sources": [
+    {
+      "id": "rawkuma-ja",
+      "name": "Rawkuma",
+      "lang": "ja",
+      "baseUrl": "https://rawkuma.net",
+      "engine": "natsuId",
+      "rateLimit": 2,
+      "nsfw": 1,
+      "contentRating": "MIXED"
+    }
+  ]
+}
