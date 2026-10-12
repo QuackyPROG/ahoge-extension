@@ -1,0 +1,22 @@
+{
+  "name": "Madara Scans",
+  "pkg": "ahoge.extension.madarascans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": 0,
+  "sources": [
+    {
+      "id": "madarascans-en",
+      "name": "Madara Scans",
+      "lang": "en",
+      "baseUrl": "https://madarascans.net",
+      "engine": "mangaThemesia",
+      "rateLimit": 2,
+      "nsfw": 0,
+      "contentRating": "SAFE",
+      "overrides": {
+        "mangaPath": "series"
+      }
+    }
+  ]
+}
