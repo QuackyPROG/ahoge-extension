@@ -132,13 +132,13 @@
       "name": "EZmanga",
       "engine": "api/ezmanhwa",
       "maintenanceTier": 1,
-      "health": "degraded",
-      "decision": "disable",
-      "reason": "API parses, but live sample exposed no free chapter page metadata; fail closed.",
-      "scores": {"popularity": 16, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 0, "coverage": 6, "penalty": -10},
+      "health": "healthy",
+      "decision": "include",
+      "reason": "Shared EZManhwa runtime; complete Ahoge live-health validation passed on retest.",
+      "scores": {"popularity": 16, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 6, "penalty": 0},
       "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/ezmanga", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "evidence": "health-verified",
-      "score": 57
+      "score": 82
     },
     {
       "name": "Ikiru",
@@ -396,13 +396,13 @@
       "name": "Rackus",
       "engine": "mangaThemesia",
       "maintenanceTier": 1,
-      "health": "unsupported",
-      "decision": "defer-engine",
-      "reason": "Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime.",
-      "scores": {"popularity": 12, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "health": "healthy",
+      "decision": "include",
+      "reason": "Shared MangaThemesia common-subset runtime; complete Ahoge live-health validation passed.",
+      "scores": {"popularity": 12, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 8, "penalty": 0},
       "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/rackus", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
-      "evidence": "family-reviewed",
-      "score": 54
+      "evidence": "health-verified",
+      "score": 80
     },
     {
       "name": "Razure",
@@ -432,25 +432,25 @@
       "name": "Ngomik",
       "engine": "mangaThemesia",
       "maintenanceTier": 1,
-      "health": "unsupported",
-      "decision": "defer-engine",
-      "reason": "Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime.",
-      "scores": {"popularity": 14, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "health": "healthy",
+      "decision": "include",
+      "reason": "Shared MangaThemesia common-subset runtime; complete Ahoge live-health validation passed.",
+      "scores": {"popularity": 14, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 8, "penalty": 0},
       "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/id/ngomik", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
-      "evidence": "family-reviewed",
-      "score": 56
+      "evidence": "health-verified",
+      "score": 82
     },
     {
       "name": "Noromax",
       "engine": "mangaThemesia",
       "maintenanceTier": 1,
-      "health": "unsupported",
-      "decision": "defer-engine",
-      "reason": "Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime.",
-      "scores": {"popularity": 12, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "health": "healthy",
+      "decision": "include",
+      "reason": "Shared MangaThemesia common-subset runtime; complete Ahoge live-health validation passed.",
+      "scores": {"popularity": 12, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 8, "penalty": 0},
       "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/id/noromax", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
-      "evidence": "family-reviewed",
-      "score": 54
+      "evidence": "health-verified",
+      "score": 80
     },
     {
       "name": "Omicaso",
