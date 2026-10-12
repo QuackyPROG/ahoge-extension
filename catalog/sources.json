@@ -98,7 +98,7 @@
       "rateLimit": 2,
       "priority": 95,
       "maintenanceTier": 1,
-      "enabled": true,
+      "enabled": false,
       "upstream": {
         "repository": "keiyoushi/extensions-source",
         "path": "src/en/manganelo",
@@ -106,7 +106,7 @@
         "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
       },
       "overrides": {},
-      "notes": "Stable Ahoge identity retained while mirrors/domains change."
+      "notes": "Stable Ahoge identity retained; disabled after CI health returned HTTP 403 from the primary domain on 2026-10-12."
     },
     {
       "packageId": "ahoge.extension.mangabat",
@@ -123,7 +123,7 @@
       "rateLimit": 2,
       "priority": 86,
       "maintenanceTier": 1,
-      "enabled": true,
+      "enabled": false,
       "upstream": {
         "repository": "keiyoushi/extensions-source",
         "path": "src/en/mangabat",
@@ -131,7 +131,7 @@
         "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
       },
       "overrides": {},
-      "notes": "Shared MangaBox runtime."
+      "notes": "Disabled after CI health returned HTTP 403 during search validation on 2026-10-12."
     },
     {
       "packageId": "ahoge.extension.mangakakalot",
@@ -150,7 +150,7 @@
       "rateLimit": 2,
       "priority": 90,
       "maintenanceTier": 1,
-      "enabled": true,
+      "enabled": false,
       "upstream": {
         "repository": "keiyoushi/extensions-source",
         "path": "src/en/mangakakalot",
@@ -158,7 +158,7 @@
         "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
       },
       "overrides": {},
-      "notes": "Shared MangaBox runtime."
+      "notes": "Disabled after CI health returned HTTP 403 from the primary domain on 2026-10-12."
     },
     {
       "packageId": "ahoge.extension.ezmanga",
@@ -175,7 +175,7 @@
       "rateLimit": 2,
       "priority": 78,
       "maintenanceTier": 1,
-      "enabled": true,
+      "enabled": false,
       "upstream": {
         "repository": "keiyoushi/extensions-source",
         "path": "src/en/ezmanga",
@@ -183,7 +183,7 @@
         "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
       },
       "overrides": {},
-      "notes": "Shared EZManhwa runtime."
+      "notes": "Disabled after live validation could not find free chapter page metadata in the sampled catalog on 2026-10-12."
     },
     {
       "packageId": "ahoge.extension.kiryuu",
@@ -210,7 +210,7 @@
       "overrides": {
         "chapterListPageOverride": 1
       },
-      "notes": "Existing native NatsuId runtime; source-specific chapter page override."
+      "notes": "Shared NatsuId runtime with source-specific chapter page override."
     },
     {
       "packageId": "ahoge.extension.natsu",
@@ -227,7 +227,7 @@
       "rateLimit": 4,
       "priority": 66,
       "maintenanceTier": 1,
-      "enabled": false,
+      "enabled": true,
       "upstream": {
         "repository": "keiyoushi/extensions-source",
         "path": "src/id/natsu",
@@ -235,7 +235,7 @@
         "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
       },
       "overrides": {},
-      "notes": "Tracked but disabled until Ahoge stops hardcoding Kiryuu's chapter-list page override for all NatsuId sources."
+      "notes": "Shared NatsuId runtime; uses the generic chapter-list page behavior."
     },
     {
       "packageId": "ahoge.extension.ikiru",
@@ -252,7 +252,7 @@
       "rateLimit": 2,
       "priority": 62,
       "maintenanceTier": 1,
-      "enabled": false,
+      "enabled": true,
       "upstream": {
         "repository": "keiyoushi/extensions-source",
         "path": "src/id/ikiru",
@@ -260,7 +260,7 @@
         "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
       },
       "overrides": {},
-      "notes": "Tracked but disabled pending NatsuId per-source chapter-list override support."
+      "notes": "Shared NatsuId runtime; formerly MangaTale upstream."
     },
     {
       "packageId": "ahoge.extension.rawkuma",
@@ -277,7 +277,7 @@
       "rateLimit": 2,
       "priority": 70,
       "maintenanceTier": 1,
-      "enabled": false,
+      "enabled": true,
       "upstream": {
         "repository": "keiyoushi/extensions-source",
         "path": "src/ja/rawkuma",
@@ -285,7 +285,7 @@
         "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
       },
       "overrides": {},
-      "notes": "Tracked but disabled pending NatsuId per-source chapter-list override support."
+      "notes": "Shared NatsuId runtime."
     },
     {
       "packageId": "ahoge.extension.luascans",
@@ -302,7 +302,7 @@
       "rateLimit": 2,
       "priority": 72,
       "maintenanceTier": 1,
-      "enabled": false,
+      "enabled": true,
       "upstream": {
         "repository": "keiyoushi/extensions-source",
         "path": "src/en/luascans",
@@ -312,7 +312,7 @@
       "overrides": {
         "latestSortOrder": "asc"
       },
-      "notes": "Tracked but disabled until the HeanCMS runtime consumes the per-source latest sort override."
+      "notes": "Shared HeanCMS runtime with source-specific latest sort order."
     }
   ]
 }
