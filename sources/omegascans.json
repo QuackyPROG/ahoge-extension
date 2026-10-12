@@ -1,0 +1,20 @@
+{
+  "name": "Omega Scans",
+  "pkg": "ahoge.extension.omegascans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": 1,
+  "sources": [
+    {
+      "id": "omegascans-en",
+      "name": "Omega Scans",
+      "lang": "en",
+      "baseUrl": "https://omegascans.org",
+      "engine": "api",
+      "adapter": "heancms",
+      "apiUrl": "https://api.omegascans.org",
+      "rateLimit": 1,
+      "nsfw": 1
+    }
+  ]
+}

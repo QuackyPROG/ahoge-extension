@@ -1,0 +1,82 @@
+{
+  "packages": [
+    {
+      "name": "Asura Scans",
+      "pkg": "ahoge.extension.asurascans",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "asurascans-en",
+          "name": "Asura Scans",
+          "lang": "en",
+          "baseUrl": "https://asurascans.com",
+          "engine": "asuraScans",
+          "apiUrl": "https://api.asurascans.com/api",
+          "rateLimit": 1,
+          "nsfw": 0
+        }
+      ]
+    },
+    {
+      "name": "QiScans",
+      "pkg": "ahoge.extension.qiscans",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "qiscans-en",
+          "name": "QiScans",
+          "lang": "en",
+          "baseUrl": "https://qimanga.com",
+          "engine": "api",
+          "adapter": "ezmanhwa",
+          "apiUrl": "https://api.qimanga.com/api/v1",
+          "rateLimit": 2,
+          "nsfw": 0
+        }
+      ]
+    },
+    {
+      "name": "Omega Scans",
+      "pkg": "ahoge.extension.omegascans",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "omegascans-en",
+          "name": "Omega Scans",
+          "lang": "en",
+          "baseUrl": "https://omegascans.org",
+          "engine": "api",
+          "adapter": "heancms",
+          "apiUrl": "https://api.omegascans.org",
+          "rateLimit": 1,
+          "nsfw": 1
+        }
+      ]
+    },
+    {
+      "name": "Manganato",
+      "pkg": "ahoge.extension.manganato",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "manganato-en",
+          "name": "Manganato",
+          "lang": "en",
+          "baseUrl": "https://www.natomanga.com",
+          "engine": "mangaBox",
+          "adapter": "mangabox",
+          "rateLimit": 2,
+          "nsfw": 0
+        }
+      ]
+    }
+  ]
+}

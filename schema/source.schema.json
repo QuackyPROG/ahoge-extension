@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/QuackyPROG/ahoge-extension/main/schema/source.schema.json",
+  "title": "Ahoge source package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "pkg", "lang", "version", "nsfw", "sources"],
+  "properties": {
+    "name": {"type": "string", "minLength": 1},
+    "pkg": {"type": "string", "pattern": "^ahoge\\.extension\\.[a-z0-9][a-z0-9._-]*$"},
+    "lang": {"type": "string", "pattern": "^[a-z]{2,3}(?:-[A-Z]{2})?$"},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"},
+    "nsfw": {"type": "integer", "enum": [0, 1]},
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/source"}
+    }
+  },
+  "$defs": {
+    "httpsUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "lang", "baseUrl", "engine", "rateLimit", "nsfw"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+        "name": {"type": "string", "minLength": 1},
+        "lang": {"type": "string", "pattern": "^[a-z]{2,3}(?:-[A-Z]{2})?$"},
+        "baseUrl": {"$ref": "#/$defs/httpsUrl"},
+        "engine": {"type": "string", "enum": ["asuraScans", "api", "mangaBox"]},
+        "adapter": {"type": "string", "enum": ["ezmanhwa", "heancms", "mangabox"]},
+        "apiUrl": {"$ref": "#/$defs/httpsUrl"},
+        "rateLimit": {"type": "integer", "minimum": 1, "maximum": 10},
+        "nsfw": {"type": "integer", "enum": [0, 1]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"engine": {"const": "api"}}, "required": ["engine"]},
+          "then": {
+            "required": ["adapter", "apiUrl"],
+            "properties": {"adapter": {"enum": ["ezmanhwa", "heancms"]}}
+          }
+        },
+        {
+          "if": {"properties": {"engine": {"const": "mangaBox"}}, "required": ["engine"]},
+          "then": {
+            "required": ["adapter"],
+            "properties": {"adapter": {"const": "mangabox"}}
+          }
+        },
+        {
+          "if": {"properties": {"engine": {"const": "asuraScans"}}, "required": ["engine"]},
+          "then": {"required": ["apiUrl"]}
+        }
+      ]
+    }
+  }
+}
