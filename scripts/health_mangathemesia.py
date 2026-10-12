@@ -51,6 +51,7 @@ def manga_slugs(html: str, base: str, manga_path: str) -> list[str]:
 def detail_title(html: str) -> str | None:
     patterns = [
         r'<(?:h1|h2|h3)[^>]*class=["\'][^"\']*entry-title[^"\']*["\'][^>]*>([\s\S]*?)</(?:h1|h2|h3)>',
+        r'<[^>]+class=["\'][^"\']*ts-breadcrumb[^"\']*["\'][^>]*>[\s\S]*<li[^>]*>[\s\S]*?<span[^>]*>([\s\S]*?)</span>',
         r'<meta[^>]+property=["\']og:title["\'][^>]+content=["\']([^"\']+)["\']',
         r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:title["\']',
     ]
@@ -65,25 +66,24 @@ def detail_title(html: str) -> str | None:
     return None
 
 
-def chapter_urls(html: str, base: str, manga_path: str, slug: str) -> list[str]:
-    path_name = manga_path.strip("/")
+def looks_like_chapter_block(block: str) -> bool:
+    lowered = block.lower()
+    return any(token in lowered for token in ("chapternum", "chapterdate", "chbox", "eph-num", "lch"))
+
+
+def chapter_urls(html: str, base: str) -> list[str]:
     output: list[str] = []
     seen: set[str] = set()
-    blocks = re.findall(r'<li\b[^>]*>([\s\S]*?)</li>', html, flags=re.I)
+    base_host = urllib.parse.urlparse(base).hostname
+    blocks = re.findall(r'(<li\b[^>]*>[\s\S]*?</li>)', html, flags=re.I)
     for block in blocks:
+        if not looks_like_chapter_block(block):
+            continue
         match = re.search(r'<a\b[^>]*href=["\']([^"\']+)["\']', block, flags=re.I)
         if not match:
             continue
         resolved = absolute_url(base, match.group(1))
-        parsed = urllib.parse.urlparse(resolved)
-        parts = [urllib.parse.unquote(part) for part in parsed.path.split("/") if part]
-        try:
-            manga_index = parts.index(path_name)
-        except ValueError:
-            continue
-        if manga_index + 1 >= len(parts) or parts[manga_index + 1] != slug:
-            continue
-        if len(parts) <= manga_index + 2:
+        if urllib.parse.urlparse(resolved).hostname != base_host:
             continue
         if resolved not in seen:
             seen.add(resolved)
@@ -149,7 +149,7 @@ def check(entry: dict, client: legacy.HttpClient) -> list[str]:
     require(bool(manga_slugs(search_html, base, manga_path)), "MangaThemesia search produced no manga slugs")
     checks.append("search")
 
-    chapters = chapter_urls(detail_html, base, manga_path, slug)
+    chapters = chapter_urls(detail_html, base)
     require(bool(chapters), "MangaThemesia chapter list empty")
     checks.append("chapters")
 
