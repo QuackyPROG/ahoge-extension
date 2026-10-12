@@ -1,0 +1,24 @@
+{
+  "name": "Lua Scans",
+  "pkg": "ahoge.extension.luascans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": 0,
+  "sources": [
+    {
+      "id": "luascans-en",
+      "name": "Lua Scans",
+      "lang": "en",
+      "baseUrl": "https://luacomic.org",
+      "engine": "api",
+      "rateLimit": 2,
+      "nsfw": 0,
+      "contentRating": "SAFE",
+      "adapter": "heancms",
+      "apiUrl": "https://api.luacomic.org",
+      "overrides": {
+        "latestSortOrder": "asc"
+      }
+    }
+  ]
+}
