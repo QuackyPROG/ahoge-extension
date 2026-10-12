@@ -35,7 +35,7 @@
         "name": {"type": "string", "minLength": 1},
         "lang": {"type": "string", "pattern": "^[a-z]{2,3}(?:-[A-Z]{2})?$"},
         "baseUrl": {"$ref": "#/$defs/httpsUrl"},
-        "engine": {"type": "string", "enum": ["asuraScans", "api", "mangaBox", "natsuId", "madara"]},
+        "engine": {"type": "string", "enum": ["asuraScans", "api", "mangaBox", "natsuId", "madara", "mangaThemesia"]},
         "adapter": {"type": "string", "enum": ["ezmanhwa", "heancms", "mangabox"]},
         "apiUrl": {"$ref": "#/$defs/httpsUrl"},
         "mirrors": {

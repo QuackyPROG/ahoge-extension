@@ -1,0 +1,19 @@
+{
+  "name": "Scythe Scans",
+  "pkg": "ahoge.extension.scythescans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": 0,
+  "sources": [
+    {
+      "id": "scythescans-en",
+      "name": "Scythe Scans",
+      "lang": "en",
+      "baseUrl": "https://scythescans.com",
+      "engine": "mangaThemesia",
+      "rateLimit": 3,
+      "nsfw": 0,
+      "contentRating": "SAFE"
+    }
+  ]
+}

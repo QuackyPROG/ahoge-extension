@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import healthcheck as legacy
+import health_mangathemesia as themesia
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG_PATH = ROOT / "catalog" / "sources.json"
@@ -208,10 +209,12 @@ def check_madara(entry: dict, client: legacy.HttpClient) -> list[str]:
 def run_source(entry: dict, client: legacy.HttpClient) -> tuple[str, list[str], str | None]:
     if not entry.get("enabled"):
         return "unsupported", [], "source disabled in canonical catalog"
-    if entry.get("engine") != "madara":
+    engine = entry.get("engine")
+    if engine not in {"madara", "mangaThemesia"}:
         return legacy.run_source(entry, client)
     try:
-        return "healthy", check_madara(entry, client), None
+        checks = check_madara(entry, client) if engine == "madara" else themesia.check(entry, client)
+        return "healthy", checks, None
     except legacy.BlockedError as exc:
         return "blocked", [], str(exc)
     except legacy.HealthError as exc:
