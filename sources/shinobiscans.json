@@ -1,0 +1,19 @@
+{
+  "name": "Shinobi Scans",
+  "pkg": "ahoge.extension.shinobiscans",
+  "lang": "it",
+  "version": "1.0.0",
+  "nsfw": 0,
+  "sources": [
+    {
+      "id": "shinobiscans-it",
+      "name": "Shinobi Scans",
+      "lang": "it",
+      "baseUrl": "https://shinobiscans.com",
+      "engine": "madara",
+      "rateLimit": 2,
+      "nsfw": 0,
+      "contentRating": "SAFE"
+    }
+  ]
+}

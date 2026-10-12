@@ -1,0 +1,22 @@
+{
+  "name": "Anisa Scans",
+  "pkg": "ahoge.extension.anisascans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": 1,
+  "sources": [
+    {
+      "id": "anisascans-en",
+      "name": "Anisa Scans",
+      "lang": "en",
+      "baseUrl": "https://anisascans.in",
+      "engine": "madara",
+      "rateLimit": 3,
+      "nsfw": 1,
+      "contentRating": "MIXED",
+      "overrides": {
+        "chapterMode": "mangaAjax"
+      }
+    }
+  ]
+}
