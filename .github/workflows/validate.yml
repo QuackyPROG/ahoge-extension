@@ -44,7 +44,7 @@ jobs:
         with:
           python-version: "3.x"
       - name: Validate enabled sources end-to-end
-        run: python scripts/healthcheck.py --strict --output /tmp/ahoge-health.json
+        run: python scripts/health_all.py --strict --output /tmp/ahoge-health.json
       - name: Upload health report
         if: always()
         uses: actions/upload-artifact@v4

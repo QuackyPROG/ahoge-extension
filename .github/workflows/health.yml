@@ -23,7 +23,7 @@ jobs:
       - name: Check enabled sources
         id: health
         continue-on-error: true
-        run: python scripts/healthcheck.py --strict --output health/status.json
+        run: python scripts/health_all.py --strict --output health/status.json
       - name: Upload health report
         if: always()
         uses: actions/upload-artifact@v4

@@ -85,6 +85,25 @@
       ]
     },
     {
+      "name": "S2Manga",
+      "pkg": "ahoge.extension.s2manga",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "s2manga-en",
+          "name": "S2Manga",
+          "lang": "en",
+          "baseUrl": "https://s2read.com",
+          "engine": "madara",
+          "rateLimit": 2,
+          "nsfw": 1,
+          "contentRating": "MIXED"
+        }
+      ]
+    },
+    {
       "name": "Rawkuma",
       "pkg": "ahoge.extension.rawkuma",
       "lang": "ja",
