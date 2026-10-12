@@ -43,42 +43,8 @@ def browse_fields(language: str, order_key: str) -> list[tuple[str, str]]:
     ]
 
 
-def check(entry: dict, client: legacy.HttpClient) -> list[str]:
-    api = entry["apiUrl"].rstrip("/")
-    language = str(entry.get("overrides", {}).get("translatedLanguage", entry.get("language", "en")))
-    checks: list[str] = []
-
-    popular = client.json(api_url(api, "/manga", browse_fields(language, "followedCount")))
-    popular_data = require_collection(popular, "MangaDex popular returned no manga")
-    manga = popular_data[0]
-    manga_id = manga.get("id")
-    attributes = manga.get("attributes") if isinstance(manga.get("attributes"), dict) else {}
-    title = localized(attributes.get("title"), language)
-    legacy.require(isinstance(manga_id, str) and bool(manga_id), "MangaDex popular manga missing UUID")
-    legacy.require(bool(title), "MangaDex popular manga missing localized title")
-    checks.append("popular")
-
-    latest = client.json(api_url(api, "/manga", browse_fields(language, "latestUploadedChapter")))
-    require_collection(latest, "MangaDex latest returned no manga")
-    checks.append("latest")
-
-    search_fields = browse_fields(language, "relevance")
-    search_fields.append(("title", legacy.first_word(str(title))))
-    search = client.json(api_url(api, "/manga", search_fields))
-    require_collection(search, "MangaDex search returned no manga")
-    checks.append("search")
-
-    detail = client.json(api_url(api, f"/manga/{manga_id}", [
-        ("includes[]", "cover_art"),
-        ("includes[]", "author"),
-        ("includes[]", "artist"),
-    ]))
-    legacy.require(isinstance(detail, dict) and isinstance(detail.get("data"), dict), "MangaDex detail did not parse")
-    detail_attributes = detail["data"].get("attributes")
-    legacy.require(isinstance(detail_attributes, dict) and bool(localized(detail_attributes.get("title"), language)), "MangaDex detail missing title")
-    checks.append("detail")
-
-    chapter_payload = client.json(api_url(api, f"/manga/{manga_id}/feed", [
+def chapter_fields(language: str) -> list[tuple[str, str]]:
+    return [
         ("translatedLanguage[]", language),
         ("order[volume]", "desc"),
         ("order[chapter]", "desc"),
@@ -87,11 +53,10 @@ def check(entry: dict, client: legacy.HttpClient) -> list[str]:
         ("includeEmptyPages", "0"),
         ("limit", "25"),
         ("offset", "0"),
-    ]))
-    chapters = require_collection(chapter_payload, "MangaDex chapter feed empty")
-    checks.append("chapters")
+    ]
 
-    readable = None
+
+def readable_chapter(chapters: list[dict]) -> dict | None:
     for chapter in chapters:
         attrs = chapter.get("attributes")
         if not isinstance(attrs, dict):
@@ -101,9 +66,74 @@ def check(entry: dict, client: legacy.HttpClient) -> list[str]:
         if isinstance(attrs.get("pages"), int) and attrs.get("pages", 0) <= 0:
             continue
         if isinstance(chapter.get("id"), str) and chapter["id"]:
+            return chapter
+    return None
+
+
+def check(entry: dict, client: legacy.HttpClient) -> list[str]:
+    api = entry["apiUrl"].rstrip("/")
+    language = str(entry.get("overrides", {}).get("translatedLanguage", entry.get("language", "en")))
+    checks: list[str] = []
+
+    popular = client.json(api_url(api, "/manga", browse_fields(language, "followedCount")))
+    popular_data = require_collection(popular, "MangaDex popular returned no manga")
+    checks.append("popular")
+
+    latest = client.json(api_url(api, "/manga", browse_fields(language, "latestUploadedChapter")))
+    latest_data = require_collection(latest, "MangaDex latest returned no manga")
+    checks.append("latest")
+
+    candidates: list[dict] = []
+    seen_ids: set[str] = set()
+    for manga in popular_data + latest_data:
+        manga_id = manga.get("id")
+        if isinstance(manga_id, str) and manga_id and manga_id not in seen_ids:
+            seen_ids.add(manga_id)
+            candidates.append(manga)
+
+    titled = next((
+        manga for manga in candidates
+        if isinstance(manga.get("attributes"), dict)
+        and localized(manga["attributes"].get("title"), language)
+    ), None)
+    legacy.require(titled is not None, "MangaDex browse results missing localized title metadata")
+    title = localized(titled["attributes"].get("title"), language)
+
+    search_fields = browse_fields(language, "relevance")
+    search_fields.append(("title", legacy.first_word(str(title))))
+    search = client.json(api_url(api, "/manga", search_fields))
+    require_collection(search, "MangaDex search returned no manga")
+    checks.append("search")
+
+    chosen_manga: dict | None = None
+    readable: dict | None = None
+    for manga in candidates[:10]:
+        manga_id = manga.get("id")
+        if not isinstance(manga_id, str) or not manga_id:
+            continue
+        chapter_payload = client.json(api_url(api, f"/manga/{manga_id}/feed", chapter_fields(language)))
+        data = chapter_payload.get("data") if isinstance(chapter_payload, dict) else None
+        if not isinstance(data, list) or not data:
+            continue
+        chapter = readable_chapter([item for item in data if isinstance(item, dict)])
+        if chapter is not None:
+            chosen_manga = manga
             readable = chapter
             break
-    legacy.require(readable is not None, "MangaDex feed has no readable chapter metadata to validate")
+
+    legacy.require(chosen_manga is not None and readable is not None, "MangaDex sampled titles exposed no readable translated chapter metadata")
+    checks.append("chapters")
+
+    manga_id = chosen_manga["id"]
+    detail = client.json(api_url(api, f"/manga/{manga_id}", [
+        ("includes[]", "cover_art"),
+        ("includes[]", "author"),
+        ("includes[]", "artist"),
+    ]))
+    legacy.require(isinstance(detail, dict) and isinstance(detail.get("data"), dict), "MangaDex detail did not parse")
+    detail_attributes = detail["data"].get("attributes")
+    legacy.require(isinstance(detail_attributes, dict) and bool(localized(detail_attributes.get("title"), language)), "MangaDex detail missing title")
+    checks.append("detail")
 
     at_home = client.json(api_url(api, f"/at-home/server/{readable['id']}"))
     legacy.require(isinstance(at_home, dict), "MangaDex@Home response did not parse")
