@@ -85,6 +85,29 @@
       ]
     },
     {
+      "name": "MangaTX",
+      "pkg": "ahoge.extension.mangatx",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "mangatx-en",
+          "name": "MangaTX",
+          "lang": "en",
+          "baseUrl": "https://mangatx.cc",
+          "engine": "mangaThemesia",
+          "rateLimit": 3,
+          "nsfw": 1,
+          "contentRating": "MIXED",
+          "overrides": {
+            "mangaPath": "manga-list",
+            "dateFormat": "dd-MM-yyyy"
+          }
+        }
+      ]
+    },
+    {
       "name": "S2Manga",
       "pkg": "ahoge.extension.s2manga",
       "lang": "en",
@@ -123,6 +146,25 @@
       ]
     },
     {
+      "name": "Rackus",
+      "pkg": "ahoge.extension.rackus",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "rackus-en",
+          "name": "Rackus",
+          "lang": "en",
+          "baseUrl": "https://rackusreads.com",
+          "engine": "mangaThemesia",
+          "rateLimit": 2,
+          "nsfw": 0,
+          "contentRating": "SAFE"
+        }
+      ]
+    },
+    {
       "name": "Natsu",
       "pkg": "ahoge.extension.natsu",
       "lang": "id",
@@ -136,6 +178,66 @@
           "baseUrl": "https://natsu.one",
           "engine": "natsuId",
           "rateLimit": 4,
+          "nsfw": 0,
+          "contentRating": "SAFE"
+        }
+      ]
+    },
+    {
+      "name": "Omicaso",
+      "pkg": "ahoge.extension.omicaso",
+      "lang": "id",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "omicaso-id",
+          "name": "Omicaso",
+          "lang": "id",
+          "baseUrl": "https://omicaso.org",
+          "engine": "mangaThemesia",
+          "rateLimit": 2,
+          "nsfw": 1,
+          "contentRating": "MIXED",
+          "overrides": {
+            "mangaPath": "comik"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ngomik",
+      "pkg": "ahoge.extension.ngomik",
+      "lang": "id",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "ngomik-id",
+          "name": "Ngomik",
+          "lang": "id",
+          "baseUrl": "https://02.ngomik.cc",
+          "engine": "mangaThemesia",
+          "rateLimit": 2,
+          "nsfw": 0,
+          "contentRating": "SAFE"
+        }
+      ]
+    },
+    {
+      "name": "Noromax",
+      "pkg": "ahoge.extension.noromax",
+      "lang": "id",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "noromax-id",
+          "name": "Noromax",
+          "lang": "id",
+          "baseUrl": "https://noromax02.my.id",
+          "engine": "mangaThemesia",
+          "rateLimit": 2,
           "nsfw": 0,
           "contentRating": "SAFE"
         }
