@@ -1,0 +1,19 @@
+{
+  "name": "Asura Scans",
+  "pkg": "ahoge.extension.asurascans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": 0,
+  "sources": [
+    {
+      "id": "asurascans-en",
+      "name": "Asura Scans",
+      "lang": "en",
+      "baseUrl": "https://asurascans.com",
+      "engine": "asuraScans",
+      "apiUrl": "https://api.asurascans.com/api",
+      "rateLimit": 1,
+      "nsfw": 0
+    }
+  ]
+}
