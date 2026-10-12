@@ -1,30 +1,29 @@
 # Source Catalog Report
 
-> Generated from `catalog/candidates.json`. Scores are engineering prioritization inputs, not traffic measurements. The health gate overrides score: an untested, blocked, broken, or unsupported source cannot be enabled.
+> Generated from `catalog/candidates.json` and the canonical `catalog/sources.json`. Scores are engineering prioritization inputs, not traffic measurements. The health gate overrides score: an untested, blocked, broken, or unsupported source cannot be enabled.
 
 ## Current result
 
 - **50 candidates evaluated/triaged**.
-- **6 enabled and live-health verified**: Asura Scans, QiScans, Omega Scans, Kiryuu, Natsu, Rawkuma.
-- **6 tracked but disabled** after current health failures/blocks.
-- **12 family-reviewed deferred candidates** that become cheap once shared runtimes are implemented.
-- **4 high-value bespoke candidates** deferred until shared families are covered.
-- **2 Tier-4 candidates rejected for now** because current upstream requires descrambling or challenge/signing logic.
-- Remaining candidates stay in investigation/triage rather than being published without evidence.
+- **11 enabled sources in the public index**: Asura Scans, QiScans, Omega Scans, Kiryuu, Natsu, Rawkuma, S2Manga, NekoScans, LianScans, Scythe Scans, MangaDex.
+- **18 additional cataloged sources are tracked but disabled** after health failures/blocks or compatibility review.
+- Sources outside the canonical catalog remain investigation candidates until they have a bounded native runtime and current live-health evidence.
+- Tier-4 candidates that require browser challenges, signing, or image descrambling remain intentionally excluded.
 
 ## Engine/runtime matrix
 
-| Engine family | Runtime exists | Manifest supported | Tested | Candidate source count |
+| Engine family | Runtime exists | Manifest supported | Tested | Catalog status |
 |---|---:|---:|---:|---:|
-| natsuId | Yes | Yes | Live health | 4 tracked / 3 healthy |
-| asuraScans | Yes | Yes | Live health | 1 / 1 healthy |
-| mangaBox | Yes | Yes | Live health | 3 / 0 healthy (CI blocked) |
-| api / ezmanhwa | Yes | Yes | Live health | 2 / 1 healthy |
-| api / heancms | Yes | Yes | Live health | 2 / 1 healthy |
-| madara | No | Classifier/planned only | No | high leverage; next-runtime candidate |
-| mangaThemesia | No | Classifier/planned only | No | multiple current upstream candidates |
-| fmReader | No | Classifier/planned only | No | 4 family-reviewed candidates |
-| foolSlide | No | Classifier/planned only | No | not yet shortlisted |
+| natsuId | Yes | Yes | Live health | 4 tracked / 3 enabled |
+| asuraScans | Yes | Yes | Live health | 1 tracked / 1 enabled |
+| mangaBox | Yes | Yes | Live health | 3 tracked / 0 enabled |
+| api / ezmanhwa | Yes | Yes | Live health | 2 tracked / 1 enabled |
+| api / heancms | Yes | Yes | Live health | 2 tracked / 1 enabled |
+| api / mangadex | Yes | Yes | Live health | 1 tracked / 1 enabled |
+| madara | Yes | Yes | Live health | 6 tracked / 1 enabled |
+| mangaThemesia | Yes | Yes | Live health | 10 tracked / 3 enabled |
+| fmReader | No | No | No | 0 tracked |
+| foolSlide | No | No | No | 0 tracked |
 
 ## Scoring
 
@@ -54,7 +53,7 @@
 | Ikiru | 44 | natsuId | 1 | broken | disable | health-verified | Tracked WordPress manga endpoint returned HTTP 404 in live health validation. |
 | Lua Scans | 48 | api/heancms | 1 | blocked | disable | health-verified | Runtime override is supported, but the site returns HTTP 403 to CI. |
 | WeebCentral | 72 | custom/API | 2 | not-tested | defer | upstream-reviewed | High-value custom KeiSource. Good candidate for a stable bespoke Swift adapter; no current Ahoge runtime. |
-| MangaDex | 75 | custom/API | 2 | not-tested | defer | upstream-reviewed | Stable public API/CDN shape, but needs a dedicated native adapter and DTO mappings. |
+| MangaDex | 100 | api/mangadex | 2 | healthy | include | health-verified | Dedicated native public MangaDex v5 API/MangaDex@Home adapter; complete Ahoge live-health validation passed. |
 | Kagane | 67 | custom/API | 2 | not-tested | defer | upstream-reviewed | Current custom KeiSource; attractive bespoke API candidate once shared families are covered. |
 | Atsumaru | 66 | custom/API | 2 | not-tested | defer | upstream-reviewed | Current custom KeiSource; mixed-content catalog and source-specific API logic need a native adapter. |
 | Comix | 30 | custom/descrambler | 4 | unsupported | reject-now | upstream-reviewed | Current upstream contains image descrambling logic. High-maintenance native image pipeline, not a first-50 runtime target. |
@@ -94,19 +93,19 @@
 
 ## Implementation order
 
-1. Keep the six enabled sources behind daily health validation; do not republish blocked sources merely because their runtime still parses locally.
-2. Implement **Madara** next if source-specific review confirms enough healthy Tier-1 candidates; it offers the highest likely source-per-runtime leverage.
-3. Implement **MangaThemesia** after/alongside Madara, then **FMReader** for Japanese/raw coverage.
-4. Add a small number of Tier-2 bespoke APIs after shared-family coverage. MangaDex and WeebCentral are stronger candidates than Tier-4 browser/crypto sites.
+1. Keep every enabled source behind the strict scheduled health gate; do not preserve a source in the public index merely because it worked previously.
+2. Continue adding Madara/MangaThemesia sites only when their current markup fits the bounded common runtimes and passes end-to-end health.
+3. FMReader remains deferred: the current upstream family is small and its active sites require substantial source-specific behavior, so it does not currently justify a broad shared runtime.
+4. MangaDex now has a dedicated native public-API adapter. Evaluate the remaining Tier-2 bespoke candidates such as WeebCentral and Kagane individually rather than adding generic remote scripting.
 5. Keep MangaFire and Comix out until there is a deliberate decision to own challenge/VRF or image-descrambling maintenance.
 
 ## Evidence notes
 
-- `health-verified` means the source was exercised by `scripts/healthcheck.py` through catalog/search/detail/chapter/page-metadata parsing without downloading chapter image payloads.
+- `health-verified` means the source was exercised by `scripts/health_all.py` through browse/search/detail/chapter/page-metadata parsing without downloading chapter image payloads.
 - `upstream-reviewed` means current upstream implementation characteristics were inspected at the tracked Keiyoushi revision.
-- `family-reviewed` means the current upstream module was identified as a member of the named reusable family, but Ahoge cannot live-test it until that runtime exists.
+- `family-reviewed` means the current upstream module was identified as a member of the named reusable family, but source-specific live behavior has not been proven by the current Ahoge health gate.
 - `seed-triage` and `triage` are intentionally weaker. They remain investigation candidates and must not be treated as working sources.
 
 ## Why popular sources are sometimes excluded
 
-Popularity does not override maintenance cost or health. MangaFire is a concrete example: current upstream includes VRF signing and browser/OpenCV challenge solving, so it is Tier 4 despite high popularity. Comix includes image descrambling, which also makes it Tier 4. Manganato/Mangakakalot score well on popularity and engine fit, but the current CI environment receives HTTP 403, so they remain disabled.
+Popularity does not override maintenance cost or health. MangaFire is a concrete example: current upstream includes VRF signing and browser/OpenCV challenge solving, so it is Tier 4 despite high popularity. Comix includes image descrambling, which also makes it Tier 4. Manganato/Mangakakalot score well on popularity and engine fit, but the current CI environment has returned HTTP 403, so they remain disabled.
