@@ -44,7 +44,7 @@ jobs:
           python scripts/validate.py
       - name: Health-check enabled sources before automation PR
         if: ${{ hashFiles('catalog/sources.json') != '' }}
-        run: python scripts/healthcheck.py --strict --output /tmp/ahoge-health.json
+        run: python scripts/health_all.py --strict --output /tmp/ahoge-health.json
       - name: Publish low-risk update PR
         env:
           GH_TOKEN: ${{ github.token }}
