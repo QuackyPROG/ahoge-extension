@@ -1,0 +1,19 @@
+{
+  "name": "Toonizy",
+  "pkg": "ahoge.extension.toonizy",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": 1,
+  "sources": [
+    {
+      "id": "toonizy-en",
+      "name": "Toonizy",
+      "lang": "en",
+      "baseUrl": "https://toonizy.com",
+      "engine": "madara",
+      "rateLimit": 2,
+      "nsfw": 1,
+      "contentRating": "MIXED"
+    }
+  ]
+}
