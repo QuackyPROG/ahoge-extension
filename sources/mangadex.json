@@ -1,0 +1,24 @@
+{
+  "name": "MangaDex",
+  "pkg": "ahoge.extension.mangadex",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": 1,
+  "sources": [
+    {
+      "id": "mangadex-en",
+      "name": "MangaDex",
+      "lang": "en",
+      "baseUrl": "https://mangadex.org",
+      "engine": "api",
+      "rateLimit": 3,
+      "nsfw": 1,
+      "contentRating": "MIXED",
+      "adapter": "mangadex",
+      "apiUrl": "https://api.mangadex.org",
+      "overrides": {
+        "translatedLanguage": "en"
+      }
+    }
+  ]
+}
