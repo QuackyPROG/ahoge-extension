@@ -1,0 +1,80 @@
+name: Stage MangaThemesia Candidate Batch 2
+
+on:
+  push:
+    branches:
+      - feature/mangathemesia-source-batch
+
+permissions:
+  contents: write
+
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/mangathemesia-source-batch
+          fetch-depth: 0
+      - name: Demote failed batch and stage clean common-subset candidates
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('catalog/sources.json')
+          catalog = json.loads(path.read_text())
+          by_id = {entry['sourceId']: entry for entry in catalog['sources']}
+
+          failures = {
+              'rackus-en': 'Disabled after live health reached a detail page but the common runtime could not resolve a supported title shape on 2026-10-12.',
+              'mangatx-en': 'Disabled after the current domain failed DNS resolution from GitHub CI on 2026-10-12.',
+              'ngomik-id': 'Disabled after live health reached a detail page but the common runtime could not resolve a supported title shape on 2026-10-12.',
+              'noromax-id': 'Disabled after live health reached a detail page but the common runtime could not resolve a supported title shape on 2026-10-12.',
+              'omicaso-id': 'Disabled after the configured MangaThemesia archive path returned HTTP 404 in GitHub CI on 2026-10-12.',
+          }
+          for source_id, note in failures.items():
+              if source_id in by_id:
+                  by_id[source_id]['enabled'] = False
+                  by_id[source_id]['notes'] = note
+
+          candidates = [
+              {
+                  'packageId':'ahoge.extension.asialotus','sourceId':'asialotus-es','name':'Asia Lotus','language':'es','version':'1.0.0','contentRating':'NSFW','engine':'mangaThemesia','adapter':None,'baseUrl':'https://asialotuss.com','apiUrl':None,'mirrors':[],'rateLimit':3,'priority':63,'maintenanceTier':1,'enabled':True,
+                  'upstream':{'repository':'keiyoushi/extensions-source','path':'src/es/asialotus','family':'mangathemesia','revision':'b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0'},'overrides':{},'notes':'Plain MangaThemesia common-subset source; staged for live validation.'
+              },
+              {
+                  'packageId':'ahoge.extension.nekoscans','sourceId':'nekoscans-es','name':'NekoScans','language':'es','version':'1.0.0','contentRating':'MIXED','engine':'mangaThemesia','adapter':None,'baseUrl':'https://nekoproject.org','apiUrl':None,'mirrors':[],'rateLimit':2,'priority':62,'maintenanceTier':1,'enabled':True,
+                  'upstream':{'repository':'keiyoushi/extensions-source','path':'src/es/nekoscans','family':'mangathemesia','revision':'b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0'},'overrides':{},'notes':'Plain MangaThemesia common-subset source; staged for live validation.'
+              },
+              {
+                  'packageId':'ahoge.extension.mangakusu','sourceId':'mangakusu-tr','name':'Manga Kusu','language':'tr','version':'1.0.0','contentRating':'SAFE','engine':'mangaThemesia','adapter':None,'baseUrl':'https://mangakusu.com','apiUrl':None,'mirrors':[],'rateLimit':3,'priority':61,'maintenanceTier':1,'enabled':True,
+                  'upstream':{'repository':'keiyoushi/extensions-source','path':'src/tr/mangakusu','family':'mangathemesia','revision':'b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0'},'overrides':{},'notes':'Plain MangaThemesia common-subset source; staged for live validation.'
+              },
+              {
+                  'packageId':'ahoge.extension.lianscans','sourceId':'lianscans-id','name':'LianScans','language':'id','version':'1.0.0','contentRating':'NSFW','engine':'mangaThemesia','adapter':None,'baseUrl':'https://www.lianscans.com','apiUrl':None,'mirrors':[],'rateLimit':4,'priority':60,'maintenanceTier':1,'enabled':True,
+                  'upstream':{'repository':'keiyoushi/extensions-source','path':'src/id/lianscans','family':'mangathemesia','revision':'b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0'},'overrides':{},'notes':'MangaThemesia common-subset source; upstream only adds project-page metadata and rate limiting.'
+              },
+              {
+                  'packageId':'ahoge.extension.scythescans','sourceId':'scythescans-en','name':'Scythe Scans','language':'en','version':'1.0.0','contentRating':'SAFE','engine':'mangaThemesia','adapter':None,'baseUrl':'https://scythescans.com','apiUrl':None,'mirrors':[],'rateLimit':3,'priority':68,'maintenanceTier':1,'enabled':True,
+                  'upstream':{'repository':'keiyoushi/extensions-source','path':'src/en/erosscans','family':'mangathemesia','revision':'b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0'},'overrides':{},'notes':'Current upstream name for the legacy erosscans module; common MangaThemesia runtime with rate/header hygiene only.'
+              },
+          ]
+          for entry in candidates:
+              existing = by_id.get(entry['sourceId'])
+              if existing is None:
+                  catalog['sources'].append(entry)
+                  by_id[entry['sourceId']] = entry
+              else:
+                  existing.update(entry)
+
+          path.write_text(json.dumps(catalog, ensure_ascii=False, separators=(',', ':')) + '\n')
+          PY
+          rm -f sources/rackus.json sources/mangatx.json sources/ngomik.json sources/noromax.json sources/omicaso.json
+          python3 scripts/build_index.py
+          git rm .github/workflows/stage-mangathemesia-batch-2.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add catalog/sources.json index.json sources
+          git commit -m "Stage second MangaThemesia live-health batch"
+          git push origin HEAD:feature/mangathemesia-source-batch
