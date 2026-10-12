@@ -16,7 +16,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG_PATH = ROOT / "catalog" / "sources.json"
 DEFAULT_STATUS_PATH = ROOT / "health" / "status.json"
-USER_AGENT = "Ahoge-SourceHealth/2.0 (+https://github.com/QuackyPROG/ahoge-extension)"
+USER_AGENT = "Ahoge-SourceHealth/2.1 (+https://github.com/QuackyPROG/ahoge-extension)"
 
 
 class HealthError(RuntimeError):
@@ -44,7 +44,14 @@ class HttpClient:
             time.sleep(remaining)
         self._last_request[host] = time.monotonic()
 
-    def request(self, url: str, *, method: str = "GET", body: bytes | None = None, headers: dict[str, str] | None = None) -> tuple[bytes, str]:
+    def request(
+        self,
+        url: str,
+        *,
+        method: str = "GET",
+        body: bytes | None = None,
+        headers: dict[str, str] | None = None,
+    ) -> tuple[bytes, str]:
         last_error: Exception | None = None
         merged_headers = {
             "User-Agent": USER_AGENT,
@@ -60,19 +67,18 @@ class HttpClient:
             try:
                 with urllib.request.urlopen(request, timeout=self.timeout) as response:
                     data = response.read(2_500_000)
-                    content_type = response.headers.get("Content-Type", "").lower()
-                    return data, content_type
+                    return data, response.headers.get("Content-Type", "").lower()
             except urllib.error.HTTPError as exc:
-                body_preview = exc.read(4096).decode("utf-8", errors="ignore").lower()
-                if exc.code in {403, 429} or (exc.code == 503 and any(token in body_preview for token in ("cloudflare", "challenge", "captcha"))):
+                preview = exc.read(4096).decode("utf-8", errors="ignore").lower()
+                if exc.code in {403, 429} or (
+                    exc.code == 503 and any(token in preview for token in ("cloudflare", "challenge", "captcha"))
+                ):
                     raise BlockedError(f"HTTP {exc.code} from {url}") from exc
                 last_error = HealthError(f"HTTP {exc.code} from {url}")
             except (urllib.error.URLError, TimeoutError, OSError) as exc:
                 last_error = exc
-
             if attempt < self.retries:
                 time.sleep(1.5 * (attempt + 1))
-
         raise HealthError(f"request failed for {url}: {last_error}")
 
     def text(self, url: str, **kwargs: Any) -> str:
@@ -91,9 +97,7 @@ class HttpClient:
 
 def url(base: str, path: str, query: dict[str, str] | None = None) -> str:
     value = base.rstrip("/") + "/" + path.lstrip("/")
-    if query:
-        value += "?" + urllib.parse.urlencode(query)
-    return value
+    return value + ("?" + urllib.parse.urlencode(query) if query else "")
 
 
 def require(condition: bool, message: str) -> None:
@@ -106,12 +110,15 @@ def first_word(value: str) -> str:
     return match.group(0) if match else "manga"
 
 
+def form_body(fields: list[tuple[str, str]]) -> bytes:
+    return urllib.parse.urlencode(fields).encode()
+
+
 def check_ezmanhwa(entry: dict, client: HttpClient) -> list[str]:
     api = entry["apiUrl"].rstrip("/")
     checks: list[str] = []
     client.text(entry["baseUrl"])
     checks.append("homepage")
-
     listing = client.json(url(api, "/series", {"page": "1", "perPage": "3", "sort": "latest"}))
     data = listing.get("data") if isinstance(listing, dict) else None
     require(isinstance(data, list) and data, "EZManhwa latest returned no series")
@@ -120,20 +127,16 @@ def check_ezmanhwa(entry: dict, client: HttpClient) -> list[str]:
     title = series.get("title") or slug
     require(isinstance(slug, str) and slug, "EZManhwa series missing slug")
     checks.append("latest")
-
     search = client.json(url(api, "/series/search", {"page": "1", "perPage": "3", "q": first_word(str(title))}))
     require(isinstance(search, dict) and isinstance(search.get("data"), list), "EZManhwa search did not parse")
     checks.append("search")
-
     detail = client.json(url(api, f"/series/{slug}"))
     require(isinstance(detail, dict), "EZManhwa detail did not parse")
     checks.append("detail")
-
     chapters = client.json(url(api, f"/series/{slug}/chapters", {"page": "1", "perPage": "10", "sort": "desc"}))
     chapter_data = chapters.get("data") if isinstance(chapters, dict) else None
     require(isinstance(chapter_data, list) and chapter_data, "EZManhwa chapter list empty")
     checks.append("chapters")
-
     free = next((item for item in chapter_data if not item.get("requiresPurchase") and isinstance(item.get("slug"), str)), None)
     require(free is not None, "EZManhwa has no free chapter metadata to validate")
     page_meta = client.json(url(api, f"/series/{slug}/chapters/{free['slug']}"))
@@ -148,7 +151,6 @@ def check_heancms(entry: dict, client: HttpClient) -> list[str]:
     checks: list[str] = []
     client.text(entry["baseUrl"])
     checks.append("homepage")
-
     common = {
         "query_string": "",
         "status": "All",
@@ -169,22 +171,18 @@ def check_heancms(entry: dict, client: HttpClient) -> list[str]:
     title = series.get("title") or slug
     require(isinstance(slug, str) and slug and isinstance(series_id, int), "HeanCMS series identity missing")
     checks.append("latest")
-
     search_query = dict(common)
     search_query["query_string"] = first_word(str(title))
     search = client.json(url(api, "/query", search_query))
     require(isinstance(search, dict) and isinstance(search.get("data"), list), "HeanCMS search did not parse")
     checks.append("search")
-
     detail = client.json(url(api, f"/series/{slug}"))
     require(isinstance(detail, dict), "HeanCMS detail did not parse")
     checks.append("detail")
-
     chapters = client.json(url(api, "/chapter/query", {"page": "1", "perPage": "20", "series_id": str(series_id)}))
     chapter_data = chapters.get("data") if isinstance(chapters, dict) else None
     require(isinstance(chapter_data, list) and chapter_data, "HeanCMS chapter list empty")
     checks.append("chapters")
-
     free = next((item for item in chapter_data if int(item.get("price") or 0) == 0 and isinstance(item.get("chapter_slug"), str)), None)
     require(free is not None, "HeanCMS has no free chapter metadata to validate")
     page_meta = client.json(url(api, f"/chapter/{slug}/{free['chapter_slug']}"))
@@ -209,21 +207,17 @@ def check_mangabox(entry: dict, client: HttpClient) -> list[str]:
     require(slugs, "MangaBox popular page produced no manga slugs")
     slug = slugs[0]
     checks.extend(["homepage", "popular"])
-
     search_html = client.text(url(base, f"/search/story/{urllib.parse.quote(slug.split('-')[0])}", {"page": "1"}))
     require(manga_slugs_from_html(search_html), "MangaBox search produced no manga slugs")
     checks.append("search")
-
     detail_html = client.text(url(base, f"/manga/{slug}"))
     require("<h1" in detail_html.lower() or "og:title" in detail_html.lower(), "MangaBox detail did not parse")
     checks.append("detail")
-
     chapters = client.json(url(base, f"/api/manga/{slug}/chapters", {"limit": "-1"}))
     data = chapters.get("data") if isinstance(chapters, dict) else None
     items = data.get("chapters") if isinstance(data, dict) else None
     require(chapters.get("success") is not False and isinstance(items, list) and items, "MangaBox chapter list empty")
     checks.append("chapters")
-
     chapter_slug = next((item.get("chapter_slug") for item in items if isinstance(item.get("chapter_slug"), str)), None)
     require(chapter_slug, "MangaBox chapter slug missing")
     chapter_html = client.text(url(base, f"/manga/{slug}/{chapter_slug}"))
@@ -246,11 +240,9 @@ def check_natsuid(entry: dict, client: HttpClient) -> list[str]:
     title = title_obj.get("rendered") if isinstance(title_obj, dict) else slug
     require(isinstance(manga_id, int) and isinstance(slug, str) and slug, "NatsuId manga identity missing")
     checks.extend(["homepage", "latest"])
-
     detail = client.json(url(base, f"/wp-json/wp/v2/manga/{manga_id}", {"_embed": ""}))
     require(isinstance(detail, dict) and detail.get("id") == manga_id, "NatsuId detail did not parse")
     checks.append("detail")
-
     nonce_html = client.text(url(base, "/wp-admin/admin-ajax.php", {"type": "search_form", "action": "get_nonce"}))
     nonce_match = re.search(r'name=["\']search_nonce["\'][^>]*value=["\']([^"\']+)', nonce_html, flags=re.I)
     require(nonce_match is not None, "NatsuId search nonce missing")
@@ -272,13 +264,11 @@ def check_natsuid(entry: dict, client: HttpClient) -> list[str]:
     )
     require(re.search(r'/manga/[^"\']+', search_html), "NatsuId search produced no manga links")
     checks.append("search")
-
     page_override = entry.get("overrides", {}).get("chapterListPageOverride", 999)
     chapter_html = client.text(url(base, "/wp-admin/admin-ajax.php", {"manga_id": str(manga_id), "page": str(page_override), "action": "chapter_list"}))
     hrefs = re.findall(r'<a[^>]*href=["\']([^"\']+)["\'][^>]*>[\s\S]*?<time', chapter_html, flags=re.I)
     require(hrefs, "NatsuId chapter list empty")
     checks.append("chapters")
-
     chapter_url = urllib.parse.urljoin(base + "/", hrefs[0])
     reader_html = client.text(chapter_url)
     images = re.findall(r'<img[^>]+src=["\']([^"\']+)', reader_html, flags=re.I)
@@ -294,7 +284,6 @@ def check_asura(entry: dict, client: HttpClient) -> list[str]:
     checks: list[str] = []
     client.text(base)
     checks.append("homepage")
-
     listing = client.json(url(api, "/series", {"offset": "0", "limit": "10", "sort": "latest", "order": "desc"}))
     data = listing.get("data") if isinstance(listing, dict) else None
     require(isinstance(data, list) and data, "Asura API returned no series")
@@ -304,26 +293,194 @@ def check_asura(entry: dict, client: HttpClient) -> list[str]:
     public_slug = urllib.parse.urlparse(public_path).path.rstrip("/").split("/")[-1] if public_path else series.get("slug")
     require(isinstance(public_slug, str) and public_slug, "Asura public slug missing")
     checks.append("latest")
-
     search = client.json(url(api, "/series", {"offset": "0", "limit": "10", "sort": "latest", "order": "desc", "search": first_word(str(title))}))
     require(isinstance(search, dict) and isinstance(search.get("data"), list), "Asura search did not parse")
     checks.append("search")
-
     detail_html = client.text(url(base, f"/comics/{public_slug}"))
     require("<h1" in detail_html.lower() or "og:title" in detail_html.lower(), "Asura detail did not parse")
     checks.append("detail")
-
     chapter_paths = list(dict.fromkeys(re.findall(r'href=["\'](/comics/[^"\']+/chapter/[0-9]+(?:\.[0-9]+)?)["\']', detail_html, flags=re.I)))
     require(chapter_paths, "Asura chapter list empty")
     checks.append("chapters")
-
     found_pages = False
     for path in chapter_paths[:4]:
-        chapter_html = client.text(urllib.parse.urljoin(base + "/", path))
-        if "cdn.asurascans.com/asura-images/chapters/" in chapter_html:
+        if "cdn.asurascans.com/asura-images/chapters/" in client.text(urllib.parse.urljoin(base + "/", path)):
             found_pages = True
             break
     require(found_pages, "Asura free page metadata not found in sampled chapters")
+    checks.append("pages")
+    return checks
+
+
+def madara_archive_items(html: str, manga_path: str) -> list[tuple[str, str]]:
+    path = re.escape(manga_path.strip("/"))
+    pattern = rf'<[^>]+class=["\'][^"\']*post-title[^"\']*["\'][^>]*>[\s\S]*?<a[^>]+href=["\']([^"\']*/{path}/([^"\'?#/]+)/?[^"\']*)["\'][^>]*>([\s\S]*?)</a>'
+    items: list[tuple[str, str]] = []
+    seen: set[str] = set()
+    for _, slug, title_html in re.findall(pattern, html, flags=re.I):
+        title = re.sub(r"<[^>]+>", " ", title_html)
+        title = re.sub(r"\s+", " ", title).strip()
+        if slug and title and slug not in seen:
+            seen.add(slug)
+            items.append((slug, title))
+    return items
+
+
+def madara_browse(entry: dict, client: HttpClient, *, query: str | None = None, sort_key: str | None = None) -> str:
+    base = entry["baseUrl"].rstrip("/")
+    overrides = entry.get("overrides", {})
+    manga_path = overrides.get("mangaPath", "manga")
+    fields: list[tuple[str, str]] = [
+        ("action", "madara_load_more"),
+        ("page", "0"),
+        ("template", "madara-core/content/content-archive"),
+        ("vars[paged]", "1"),
+        ("vars[template]", "archive"),
+        ("vars[posts_per_page]", "25"),
+        ("vars[post_type]", "wp-manga"),
+        ("vars[post_status]", "publish"),
+        ("vars[manga_archives_item_layout]", "big_thumbnail"),
+    ]
+    if overrides.get("filterNonMangaItems", True):
+        fields.extend([
+            ("vars[meta_query][0][key]", "_wp_manga_chapter_type"),
+            ("vars[meta_query][0][value]", "manga"),
+        ])
+    if query:
+        fields.append(("vars[s]", query))
+    if sort_key:
+        fields.extend([
+            ("vars[orderby]", "meta_value_num"),
+            ("vars[meta_key]", sort_key),
+            ("vars[order]", "DESC"),
+        ])
+    return client.text(
+        url(base, "/wp-admin/admin-ajax.php"),
+        method="POST",
+        body=form_body(fields),
+        headers={
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+            "X-Requested-With": "XMLHttpRequest",
+            "Referer": f"{base}/{manga_path}/",
+        },
+    )
+
+
+def madara_post_id(html: str) -> str | None:
+    patterns = [
+        r'id=["\']manga-chapters-holder[^"\']*["\'][^>]+data-id=["\']([0-9]+)',
+        r'data-id=["\']([0-9]+)["\'][^>]+id=["\']manga-chapters-holder',
+        r'id=["\']manga-chapters-holder-([0-9]+)',
+        r'class=["\'][^"\']*rating-post-id[^"\']*["\'][^>]+value=["\']([0-9]+)',
+        r'data-post=["\']([0-9]+)',
+        r'rel=["\']shortlink["\'][^>]+href=["\'][^"\']*\?p=([0-9]+)',
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, html, flags=re.I | re.S)
+        if match:
+            return match.group(1)
+    return None
+
+
+def madara_chapter_links(html: str) -> list[str]:
+    blocks = re.findall(r'<li[^>]+class=["\'][^"\']*wp-manga-chapter[^"\']*["\'][^>]*>([\s\S]*?)</li>', html, flags=re.I)
+    links: list[str] = []
+    for block in blocks:
+        match = re.search(r'<a[^>]+href=["\']([^"\']+)', block, flags=re.I)
+        if match and match.group(1) not in links:
+            links.append(match.group(1))
+    return links
+
+
+def madara_has_page_metadata(html: str) -> bool:
+    if "chapter-protector-data" in html.lower():
+        raise HealthError("Madara chapter uses unsupported protector markup")
+    scope_match = re.search(r'class=["\'][^"\']*reading-content[^"\']*["\']', html, flags=re.I)
+    scope = html[scope_match.start():] if scope_match else html
+    tags = re.findall(r'<img\b[^>]*>', scope, flags=re.I)
+    for tag in tags:
+        for attr in ("data-src", "data-lazy-src", "data-lzl-src", "data-cfsrc", "data-manga-src", "src"):
+            match = re.search(rf'\b{re.escape(attr)}\s*=\s*["\']([^"\']+)', tag, flags=re.I)
+            if not match:
+                continue
+            value = match.group(1).lower()
+            if value.startswith("data:image") or any(token in value for token in ("logo", "avatar", "banner", "favicon", "/ads/")):
+                continue
+            if "wp-content/uploads" in value or re.search(r'\.(?:webp|jpe?g|png)(?:\?|$)', value):
+                return True
+    return False
+
+
+def check_madara(entry: dict, client: HttpClient) -> list[str]:
+    base = entry["baseUrl"].rstrip("/")
+    overrides = entry.get("overrides", {})
+    manga_path = overrides.get("mangaPath", "manga")
+    chapter_mode = overrides.get("chapterMode", "mangaPage")
+    checks: list[str] = []
+
+    client.text(f"{base}/{manga_path}/")
+    checks.append("homepage")
+    popular_html = madara_browse(entry, client, sort_key="_wp_manga_views")
+    items = madara_archive_items(popular_html, manga_path)
+    require(items, "Madara popular AJAX returned no parseable manga")
+    slug, title = items[0]
+    checks.append("popular")
+
+    search_html = madara_browse(entry, client, query=first_word(title))
+    require(madara_archive_items(search_html, manga_path), "Madara search AJAX returned no parseable manga")
+    checks.append("search")
+
+    detail_url = f"{base}/{manga_path}/{urllib.parse.quote(slug)}/"
+    detail_html = client.text(detail_url)
+    require("chapter-protector-data" not in detail_html.lower(), "Madara detail uses unsupported protector markup")
+    require(
+        re.search(r'class=["\'][^"\']*post-title[^"\']*["\'][\s\S]{0,800}<h[13]', detail_html, flags=re.I)
+        or "og:title" in detail_html.lower(),
+        "Madara detail did not parse",
+    )
+    checks.append("detail")
+
+    if chapter_mode == "mangaPage":
+        chapter_html = detail_html
+    elif chapter_mode == "adminAjax":
+        post_id = madara_post_id(detail_html)
+        require(post_id is not None, "Madara adminAjax post ID missing")
+        chapter_html = client.text(
+            url(base, "/wp-admin/admin-ajax.php"),
+            method="POST",
+            body=form_body([("action", "manga_get_chapters"), ("manga", post_id)]),
+            headers={
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+                "X-Requested-With": "XMLHttpRequest",
+                "Referer": detail_url,
+            },
+        )
+    elif chapter_mode == "mangaAjax":
+        chapter_html = client.text(
+            f"{base}/{manga_path}/{urllib.parse.quote(slug)}/ajax/chapters/",
+            method="POST",
+            body=b"",
+            headers={
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+                "X-Requested-With": "XMLHttpRequest",
+                "Referer": detail_url,
+            },
+        )
+    else:
+        raise HealthError(f"unsupported Madara chapterMode {chapter_mode}")
+
+    require("chapter-protector-data" not in chapter_html.lower(), "Madara chapter list uses unsupported protector markup")
+    chapter_links = madara_chapter_links(chapter_html)
+    require(chapter_links, "Madara chapter list empty")
+    checks.append("chapters")
+
+    pages_ok = False
+    for href in chapter_links[:4]:
+        chapter_url = urllib.parse.urljoin(base + "/", href)
+        if madara_has_page_metadata(client.text(chapter_url)):
+            pages_ok = True
+            break
+    require(pages_ok, "Madara page metadata not found in sampled chapters")
     checks.append("pages")
     return checks
 
@@ -339,6 +496,8 @@ def run_source(entry: dict, client: HttpClient) -> tuple[str, list[str], str | N
             checks = check_natsuid(entry, client)
         elif engine == "asuraScans":
             checks = check_asura(entry, client)
+        elif engine == "madara":
+            checks = check_madara(entry, client)
         elif engine == "api" and entry.get("adapter") == "ezmanhwa":
             checks = check_ezmanhwa(entry, client)
         elif engine == "api" and entry.get("adapter") == "heancms":
@@ -350,7 +509,7 @@ def run_source(entry: dict, client: HttpClient) -> tuple[str, list[str], str | N
         return "blocked", [], str(exc)
     except HealthError as exc:
         return "broken", [], str(exc)
-    except Exception as exc:  # fail closed, but keep report generation alive
+    except Exception as exc:
         return "broken", [], f"{type(exc).__name__}: {exc}"
 
 
@@ -416,7 +575,6 @@ def main() -> int:
     payload = {"schemaVersion": 1, "checkedAt": checked_at, "sources": results}
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-
     return 1 if args.strict and failed else 0
 
 
