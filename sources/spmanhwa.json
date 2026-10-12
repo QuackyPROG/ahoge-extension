@@ -1,0 +1,19 @@
+{
+  "name": "Spmanhwa",
+  "pkg": "ahoge.extension.spmanhwa",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": 0,
+  "sources": [
+    {
+      "id": "spmanhwa-en",
+      "name": "Spmanhwa",
+      "lang": "en",
+      "baseUrl": "https://spmanhwa.online",
+      "engine": "madara",
+      "rateLimit": 2,
+      "nsfw": 0,
+      "contentRating": "SAFE"
+    }
+  ]
+}
