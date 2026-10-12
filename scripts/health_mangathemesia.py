@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+"""Health-check the same bounded MangaThemesia common subset Ahoge executes natively."""
+
 import re
 import urllib.parse
 
