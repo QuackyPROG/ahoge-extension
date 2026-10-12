@@ -211,6 +211,28 @@
       ]
     },
     {
+      "name": "Anisa Scans",
+      "pkg": "ahoge.extension.anisascans",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "anisascans-en",
+          "name": "Anisa Scans",
+          "lang": "en",
+          "baseUrl": "https://anisascans.in",
+          "engine": "madara",
+          "rateLimit": 3,
+          "nsfw": 1,
+          "contentRating": "MIXED",
+          "overrides": {
+            "chapterMode": "mangaAjax"
+          }
+        }
+      ]
+    },
+    {
       "name": "Rackus",
       "pkg": "ahoge.extension.rackus",
       "lang": "en",
@@ -321,6 +343,25 @@
           "rateLimit": 2,
           "nsfw": 1,
           "contentRating": "MIXED"
+        }
+      ]
+    },
+    {
+      "name": "Shinobi Scans",
+      "pkg": "ahoge.extension.shinobiscans",
+      "lang": "it",
+      "version": "1.0.0",
+      "nsfw": 0,
+      "sources": [
+        {
+          "id": "shinobiscans-it",
+          "name": "Shinobi Scans",
+          "lang": "it",
+          "baseUrl": "https://shinobiscans.com",
+          "engine": "madara",
+          "rateLimit": 2,
+          "nsfw": 0,
+          "contentRating": "SAFE"
         }
       ]
     },
