@@ -1,0 +1,32 @@
+name: Probe Runtime-Fit Expansion 2
+
+on:
+  push:
+    branches:
+      - feature/runtime-fit-expansion-batch-2
+    paths:
+      - .github/workflows/probe-runtime-fit-expansion-2.yml
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/runtime-fit-expansion-batch-2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Probe staged disabled candidates
+        run: |
+          python scripts/health_all.py \
+            --include-disabled --probe-disabled \
+            --source anikiga-tr \
+            --source marmota-es \
+            --source mangalek-ar \
+            --source manhwanex-en \
+            --output /tmp/runtime-fit-probe-2.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: runtime-fit-probe-2
+          path: /tmp/runtime-fit-probe-2.json
