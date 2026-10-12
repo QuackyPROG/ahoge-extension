@@ -7,20 +7,22 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CANDIDATES_PATH = ROOT / "catalog" / "candidates.json"
+CATALOG_PATH = ROOT / "catalog" / "sources.json"
 REPORT_PATH = ROOT / "Docs" / "source-catalog-report.md"
-
-ENGINE_MATRIX = [
-    ("natsuId", "Yes", "Yes", "Live health", "4 tracked / 3 healthy"),
-    ("asuraScans", "Yes", "Yes", "Live health", "1 / 1 healthy"),
-    ("mangaBox", "Yes", "Yes", "Live health", "3 / 0 healthy (CI blocked)"),
-    ("api / ezmanhwa", "Yes", "Yes", "Live health", "2 / 1 healthy"),
-    ("api / heancms", "Yes", "Yes", "Live health", "2 / 1 healthy"),
-    ("madara", "No", "Classifier/planned only", "No", "high leverage; next-runtime candidate"),
-    ("mangaThemesia", "No", "Classifier/planned only", "No", "multiple current upstream candidates"),
-    ("fmReader", "No", "Classifier/planned only", "No", "4 family-reviewed candidates"),
-    ("foolSlide", "No", "Classifier/planned only", "No", "not yet shortlisted"),
-]
 SCORE_KEYS = ("popularity", "engineFit", "upstreamActivity", "liveHealth", "coverage", "penalty")
+
+RUNTIME_ROWS = [
+    ("natsuId", "natsuId", None, "Yes", "Yes", "Live health"),
+    ("asuraScans", "asuraScans", None, "Yes", "Yes", "Live health"),
+    ("mangaBox", "mangaBox", "mangabox", "Yes", "Yes", "Live health"),
+    ("api / ezmanhwa", "api", "ezmanhwa", "Yes", "Yes", "Live health"),
+    ("api / heancms", "api", "heancms", "Yes", "Yes", "Live health"),
+    ("api / mangadex", "api", "mangadex", "Yes", "Yes", "Live health"),
+    ("madara", "madara", None, "Yes", "Yes", "Live health"),
+    ("mangaThemesia", "mangaThemesia", None, "Yes", "Yes", "Live health"),
+    ("fmReader", "fmReader", None, "No", "No", "No"),
+    ("foolSlide", "foolSlide", None, "No", "No", "No"),
+]
 
 
 def load_candidates() -> list[dict]:
@@ -49,29 +51,54 @@ def load_candidates() -> list[dict]:
     return candidates
 
 
-def render(candidates: list[dict]) -> str:
+def load_catalog() -> list[dict]:
+    payload = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
+    sources = payload.get("sources")
+    if not isinstance(sources, list):
+        raise ValueError("catalog/sources.json must contain a sources array")
+    return [source for source in sources if isinstance(source, dict)]
+
+
+def runtime_count(sources: list[dict], engine: str, adapter: str | None) -> str:
+    matching = [
+        source for source in sources
+        if source.get("engine") == engine
+        and (adapter is None or source.get("adapter") == adapter)
+    ]
+    healthy = [source for source in matching if source.get("enabled") is True]
+    if not matching:
+        return "0 tracked"
+    return f"{len(matching)} tracked / {len(healthy)} enabled"
+
+
+def render(candidates: list[dict], sources: list[dict]) -> str:
+    enabled = [source for source in sources if source.get("enabled") is True]
+    disabled = [source for source in sources if source.get("enabled") is not True]
+    enabled_names = ", ".join(source.get("name", source.get("sourceId", "unknown")) for source in enabled)
+
     lines = [
         "# Source Catalog Report",
         "",
-        "> Generated from `catalog/candidates.json`. Scores are engineering prioritization inputs, not traffic measurements. The health gate overrides score: an untested, blocked, broken, or unsupported source cannot be enabled.",
+        "> Generated from `catalog/candidates.json` and the canonical `catalog/sources.json`. Scores are engineering prioritization inputs, not traffic measurements. The health gate overrides score: an untested, blocked, broken, or unsupported source cannot be enabled.",
         "",
         "## Current result",
         "",
         "- **50 candidates evaluated/triaged**.",
-        "- **6 enabled and live-health verified**: Asura Scans, QiScans, Omega Scans, Kiryuu, Natsu, Rawkuma.",
-        "- **6 tracked but disabled** after current health failures/blocks.",
-        "- **12 family-reviewed deferred candidates** that become cheap once shared runtimes are implemented.",
-        "- **4 high-value bespoke candidates** deferred until shared families are covered.",
-        "- **2 Tier-4 candidates rejected for now** because current upstream requires descrambling or challenge/signing logic.",
-        "- Remaining candidates stay in investigation/triage rather than being published without evidence.",
+        f"- **{len(enabled)} enabled sources in the public index**: {enabled_names}.",
+        f"- **{len(disabled)} additional cataloged sources are tracked but disabled** after health failures/blocks or compatibility review.",
+        "- Sources outside the canonical catalog remain investigation candidates until they have a bounded native runtime and current live-health evidence.",
+        "- Tier-4 candidates that require browser challenges, signing, or image descrambling remain intentionally excluded.",
         "",
         "## Engine/runtime matrix",
         "",
-        "| Engine family | Runtime exists | Manifest supported | Tested | Candidate source count |",
+        "| Engine family | Runtime exists | Manifest supported | Tested | Catalog status |",
         "|---|---:|---:|---:|---:|",
     ]
-    for row in ENGINE_MATRIX:
-        lines.append("| " + " | ".join(row) + " |")
+    for label, engine, adapter, runtime_exists, manifest_supported, tested in RUNTIME_ROWS:
+        lines.append(
+            f"| {label} | {runtime_exists} | {manifest_supported} | {tested} | "
+            f"{runtime_count(sources, engine, adapter)} |"
+        )
 
     lines.extend([
         "",
@@ -103,22 +130,22 @@ def render(candidates: list[dict]) -> str:
         "",
         "## Implementation order",
         "",
-        "1. Keep the six enabled sources behind daily health validation; do not republish blocked sources merely because their runtime still parses locally.",
-        "2. Implement **Madara** next if source-specific review confirms enough healthy Tier-1 candidates; it offers the highest likely source-per-runtime leverage.",
-        "3. Implement **MangaThemesia** after/alongside Madara, then **FMReader** for Japanese/raw coverage.",
-        "4. Add a small number of Tier-2 bespoke APIs after shared-family coverage. MangaDex and WeebCentral are stronger candidates than Tier-4 browser/crypto sites.",
+        "1. Keep every enabled source behind the strict scheduled health gate; do not preserve a source in the public index merely because it worked previously.",
+        "2. Continue adding Madara/MangaThemesia sites only when their current markup fits the bounded common runtimes and passes end-to-end health.",
+        "3. FMReader remains deferred: the current upstream family is small and its active sites require substantial source-specific behavior, so it does not currently justify a broad shared runtime.",
+        "4. MangaDex now has a dedicated native public-API adapter. Evaluate the remaining Tier-2 bespoke candidates such as WeebCentral and Kagane individually rather than adding generic remote scripting.",
         "5. Keep MangaFire and Comix out until there is a deliberate decision to own challenge/VRF or image-descrambling maintenance.",
         "",
         "## Evidence notes",
         "",
-        "- `health-verified` means the source was exercised by `scripts/healthcheck.py` through catalog/search/detail/chapter/page-metadata parsing without downloading chapter image payloads.",
+        "- `health-verified` means the source was exercised by `scripts/health_all.py` through browse/search/detail/chapter/page-metadata parsing without downloading chapter image payloads.",
         "- `upstream-reviewed` means current upstream implementation characteristics were inspected at the tracked Keiyoushi revision.",
-        "- `family-reviewed` means the current upstream module was identified as a member of the named reusable family, but Ahoge cannot live-test it until that runtime exists.",
+        "- `family-reviewed` means the current upstream module was identified as a member of the named reusable family, but source-specific live behavior has not been proven by the current Ahoge health gate.",
         "- `seed-triage` and `triage` are intentionally weaker. They remain investigation candidates and must not be treated as working sources.",
         "",
         "## Why popular sources are sometimes excluded",
         "",
-        "Popularity does not override maintenance cost or health. MangaFire is a concrete example: current upstream includes VRF signing and browser/OpenCV challenge solving, so it is Tier 4 despite high popularity. Comix includes image descrambling, which also makes it Tier 4. Manganato/Mangakakalot score well on popularity and engine fit, but the current CI environment receives HTTP 403, so they remain disabled.",
+        "Popularity does not override maintenance cost or health. MangaFire is a concrete example: current upstream includes VRF signing and browser/OpenCV challenge solving, so it is Tier 4 despite high popularity. Comix includes image descrambling, which also makes it Tier 4. Manganato/Mangakakalot score well on popularity and engine fit, but the current CI environment has returned HTTP 403, so they remain disabled.",
         "",
     ])
     return "\n".join(lines)
@@ -128,7 +155,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Generate the curated source evaluation report")
     parser.add_argument("--check", action="store_true", help="fail if Docs/source-catalog-report.md is stale")
     args = parser.parse_args()
-    expected = render(load_candidates())
+    expected = render(load_candidates(), load_catalog())
     if args.check:
         actual = REPORT_PATH.read_text(encoding="utf-8") if REPORT_PATH.exists() else None
         if actual != expected:

@@ -178,15 +178,15 @@
     },
     {
       "name": "MangaDex",
-      "engine": "custom/API",
+      "engine": "api/mangadex",
       "maintenanceTier": 2,
-      "health": "not-tested",
-      "decision": "defer",
-      "reason": "Stable public API/CDN shape, but needs a dedicated native adapter and DTO mappings.",
-      "scores": {"popularity": 30, "engineFit": 15, "upstreamActivity": 20, "liveHealth": 0, "coverage": 10, "penalty": 0},
+      "health": "healthy",
+      "decision": "include",
+      "reason": "Dedicated native public MangaDex v5 API/MangaDex@Home adapter; complete Ahoge live-health validation passed.",
+      "scores": {"popularity": 30, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 10, "penalty": 0},
       "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/all/mangadex", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
-      "evidence": "upstream-reviewed",
-      "score": 75
+      "evidence": "health-verified",
+      "score": 100
     },
     {
       "name": "Kagane",

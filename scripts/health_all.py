@@ -10,6 +10,7 @@ from pathlib import Path
 
 import healthcheck as legacy
 import health_mangathemesia as themesia
+import health_mangadex as mangadex
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG_PATH = ROOT / "catalog" / "sources.json"
@@ -210,10 +211,17 @@ def run_source(entry: dict, client: legacy.HttpClient) -> tuple[str, list[str], 
     if not entry.get("enabled"):
         return "unsupported", [], "source disabled in canonical catalog"
     engine = entry.get("engine")
-    if engine not in {"madara", "mangaThemesia"}:
+    adapter = entry.get("adapter")
+    if engine == "api" and adapter == "mangadex":
+        checker = mangadex.check
+    elif engine == "madara":
+        checker = check_madara
+    elif engine == "mangaThemesia":
+        checker = themesia.check
+    else:
         return legacy.run_source(entry, client)
     try:
-        checks = check_madara(entry, client) if engine == "madara" else themesia.check(entry, client)
+        checks = checker(entry, client)
         return "healthy", checks, None
     except legacy.BlockedError as exc:
         return "blocked", [], str(exc)
