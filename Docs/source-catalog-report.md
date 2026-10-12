@@ -5,8 +5,8 @@
 ## Current result
 
 - **50 candidates evaluated/triaged**.
-- **22 enabled sources in the public index**: Asura Scans, QiScans, Omega Scans, EZmanga, Kiryuu, Natsu, Rawkuma, S2Manga, Rackus, Ngomik, Noromax, NekoScans, LianScans, Scythe Scans, MangaDex, WeebCentral, Madara Scans, Shinobi Scans, Anisa Scans, Anikiga, Marmota, ManhwaNex.
-- **15 additional cataloged sources are tracked but disabled** after health failures/blocks or compatibility review.
+- **24 enabled sources in the public index**: Asura Scans, QiScans, Omega Scans, EZmanga, Kiryuu, Natsu, Rawkuma, S2Manga, Rackus, Ngomik, Noromax, NekoScans, LianScans, Scythe Scans, MangaDex, WeebCentral, Madara Scans, Shinobi Scans, Anisa Scans, Anikiga, Marmota, ManhwaNex, GodhMan, KumaPoi.
+- **16 additional cataloged sources are tracked but disabled** after health failures/blocks or compatibility review.
 - Sources outside the canonical catalog remain investigation candidates until they have a bounded native runtime and current live-health evidence.
 - Tier-4 candidates that require browser challenges, signing, or image descrambling remain intentionally excluded.
 
@@ -22,7 +22,7 @@
 | api / mangadex | Yes | Yes | Live health | 1 tracked / 1 enabled |
 | api / weebcentral | Yes | Yes | Live health | 1 tracked / 1 enabled |
 | madara | Yes | Yes | Live health | 11 tracked / 6 enabled |
-| mangaThemesia | Yes | Yes | Live health | 12 tracked / 7 enabled |
+| mangaThemesia | Yes | Yes | Live health | 15 tracked / 9 enabled |
 | fmReader | No | No | No | 0 tracked |
 | foolSlide | No | No | No | 0 tracked |
 

@@ -350,25 +350,6 @@
       ]
     },
     {
-      "name": "Go Manga",
-      "pkg": "ahoge.extension.gomanga",
-      "lang": "th",
-      "version": "1.0.0",
-      "nsfw": 1,
-      "sources": [
-        {
-          "id": "gomanga-th",
-          "name": "Go Manga",
-          "lang": "th",
-          "baseUrl": "https://www.go-manga.com",
-          "engine": "mangaThemesia",
-          "rateLimit": 2,
-          "nsfw": 1,
-          "contentRating": "MIXED"
-        }
-      ]
-    },
-    {
       "name": "NekoScans",
       "pkg": "ahoge.extension.nekoscans",
       "lang": "es",
