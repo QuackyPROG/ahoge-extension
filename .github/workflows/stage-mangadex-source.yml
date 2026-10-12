@@ -1,0 +1,29 @@
+name: Stage MangaDex Source
+
+on:
+  push:
+    branches:
+      - feature/mangadex-source
+
+permissions:
+  contents: write
+
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/mangadex-source
+          fetch-depth: 0
+      - name: Wire health dispatch and canonical source
+        run: |
+          python3 -c 'from pathlib import Path; p=Path("scripts/health_all.py"); t=p.read_text(); a="import health_mangathemesia as themesia\n"; b="import health_mangathemesia as themesia\nimport health_mangadex as mangadex\n"; t=t.replace(a,b,1) if "import health_mangadex as mangadex" not in t else t; old="    engine = entry.get(\"engine\")\n    if engine not in {\"madara\", \"mangaThemesia\"}:\n        return legacy.run_source(entry, client)\n    try:\n        checks = check_madara(entry, client) if engine == \"madara\" else themesia.check(entry, client)\n"; new="    engine = entry.get(\"engine\")\n    adapter = entry.get(\"adapter\")\n    if engine == \"api\" and adapter == \"mangadex\":\n        checker = mangadex.check\n    elif engine == \"madara\":\n        checker = check_madara\n    elif engine == \"mangaThemesia\":\n        checker = themesia.check\n    else:\n        return legacy.run_source(entry, client)\n    try:\n        checks = checker(entry, client)\n"; assert old in t or new in t, "health dispatcher anchor changed"; p.write_text(t.replace(old,new,1) if old in t else t)'
+          python3 -c 'import json; from pathlib import Path; p=Path("catalog/sources.json"); x=json.loads(p.read_text()); sid="mangadex-en"; entry={"packageId":"ahoge.extension.mangadex","sourceId":sid,"name":"MangaDex","language":"en","version":"1.0.0","contentRating":"MIXED","engine":"api","adapter":"mangadex","baseUrl":"https://mangadex.org","apiUrl":"https://api.mangadex.org","mirrors":[],"rateLimit":3,"priority":96,"maintenanceTier":2,"enabled":True,"upstream":{"repository":"keiyoushi/extensions-source","path":"src/all/mangadex","family":"mangadex","revision":"b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},"overrides":{"translatedLanguage":"en"},"notes":"Native public MangaDex v5 API/MangaDex@Home adapter; anonymous reading only; pornographic browse content excluded."}; x["sources"]=[s for s in x["sources"] if s.get("sourceId")!=sid]+[entry]; p.write_text(json.dumps(x,separators=(",",":"))+"\n")'
+          python3 scripts/build_index.py
+          git rm .github/workflows/stage-mangadex-source.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/health_all.py catalog/sources.json index.json sources
+          git commit -m "Stage MangaDex source for strict health validation"
+          git push origin HEAD:feature/mangadex-source
