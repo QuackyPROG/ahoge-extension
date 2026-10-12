@@ -350,6 +350,25 @@
       ]
     },
     {
+      "name": "Go Manga",
+      "pkg": "ahoge.extension.gomanga",
+      "lang": "th",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "gomanga-th",
+          "name": "Go Manga",
+          "lang": "th",
+          "baseUrl": "https://www.go-manga.com",
+          "engine": "mangaThemesia",
+          "rateLimit": 2,
+          "nsfw": 1,
+          "contentRating": "MIXED"
+        }
+      ]
+    },
+    {
       "name": "NekoScans",
       "pkg": "ahoge.extension.nekoscans",
       "lang": "es",
@@ -384,6 +403,25 @@
           "rateLimit": 2,
           "nsfw": 0,
           "contentRating": "SAFE"
+        }
+      ]
+    },
+    {
+      "name": "KumaPoi",
+      "pkg": "ahoge.extension.kumapoi",
+      "lang": "id",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "kumapoi-id",
+          "name": "KumaPoi",
+          "lang": "id",
+          "baseUrl": "https://kumapoi.info",
+          "engine": "mangaThemesia",
+          "rateLimit": 4,
+          "nsfw": 1,
+          "contentRating": "NSFW"
         }
       ]
     },
@@ -429,6 +467,25 @@
           "overrides": {
             "chapterMode": "mangaAjax"
           }
+        }
+      ]
+    },
+    {
+      "name": "GodhMan",
+      "pkg": "ahoge.extension.godhman",
+      "lang": "th",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "godhman-th",
+          "name": "GodhMan",
+          "lang": "th",
+          "baseUrl": "https://www.godhman.net",
+          "engine": "mangaThemesia",
+          "rateLimit": 2,
+          "nsfw": 1,
+          "contentRating": "NSFW"
         }
       ]
     },

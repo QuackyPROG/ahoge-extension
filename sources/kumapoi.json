@@ -1,0 +1,19 @@
+{
+  "name": "KumaPoi",
+  "pkg": "ahoge.extension.kumapoi",
+  "lang": "id",
+  "version": "1.0.0",
+  "nsfw": 1,
+  "sources": [
+    {
+      "id": "kumapoi-id",
+      "name": "KumaPoi",
+      "lang": "id",
+      "baseUrl": "https://kumapoi.info",
+      "engine": "mangaThemesia",
+      "rateLimit": 4,
+      "nsfw": 1,
+      "contentRating": "NSFW"
+    }
+  ]
+}
