@@ -5,8 +5,8 @@
 ## Current result
 
 - **50 candidates evaluated/triaged**.
-- **12 enabled sources in the public index**: Asura Scans, QiScans, Omega Scans, Kiryuu, Natsu, Rawkuma, S2Manga, NekoScans, LianScans, Scythe Scans, MangaDex, WeebCentral.
-- **18 additional cataloged sources are tracked but disabled** after health failures/blocks or compatibility review.
+- **16 enabled sources in the public index**: Asura Scans, QiScans, Omega Scans, EZmanga, Kiryuu, Natsu, Rawkuma, S2Manga, Rackus, Ngomik, Noromax, NekoScans, LianScans, Scythe Scans, MangaDex, WeebCentral.
+- **14 additional cataloged sources are tracked but disabled** after health failures/blocks or compatibility review.
 - Sources outside the canonical catalog remain investigation candidates until they have a bounded native runtime and current live-health evidence.
 - Tier-4 candidates that require browser challenges, signing, or image descrambling remain intentionally excluded.
 
@@ -17,12 +17,12 @@
 | natsuId | Yes | Yes | Live health | 4 tracked / 3 enabled |
 | asuraScans | Yes | Yes | Live health | 1 tracked / 1 enabled |
 | mangaBox | Yes | Yes | Live health | 3 tracked / 0 enabled |
-| api / ezmanhwa | Yes | Yes | Live health | 2 tracked / 1 enabled |
+| api / ezmanhwa | Yes | Yes | Live health | 2 tracked / 2 enabled |
 | api / heancms | Yes | Yes | Live health | 2 tracked / 1 enabled |
 | api / mangadex | Yes | Yes | Live health | 1 tracked / 1 enabled |
 | api / weebcentral | Yes | Yes | Live health | 1 tracked / 1 enabled |
 | madara | Yes | Yes | Live health | 6 tracked / 1 enabled |
-| mangaThemesia | Yes | Yes | Live health | 10 tracked / 3 enabled |
+| mangaThemesia | Yes | Yes | Live health | 10 tracked / 6 enabled |
 | fmReader | No | No | No | 0 tracked |
 | foolSlide | No | No | No | 0 tracked |
 
@@ -50,7 +50,7 @@
 | Manganato / NatoManga | 62 | mangaBox | 1 | blocked | disable | health-verified | Existing stable Ahoge identity retained, but GitHub CI receives HTTP 403. |
 | Mangabat | 51 | mangaBox | 1 | blocked | disable | health-verified | Shared MangaBox runtime fits, but CI search validation receives HTTP 403. |
 | Mangakakalot | 62 | mangaBox | 1 | blocked | disable | health-verified | Shared MangaBox runtime fits, but current primary domain blocks CI with HTTP 403. |
-| EZmanga | 57 | api/ezmanhwa | 1 | degraded | disable | health-verified | API parses, but live sample exposed no free chapter page metadata; fail closed. |
+| EZmanga | 82 | api/ezmanhwa | 1 | healthy | include | health-verified | Shared EZManhwa runtime; complete Ahoge live-health validation passed on retest. |
 | Ikiru | 44 | natsuId | 1 | broken | disable | health-verified | Tracked WordPress manga endpoint returned HTTP 404 in live health validation. |
 | Lua Scans | 48 | api/heancms | 1 | blocked | disable | health-verified | Runtime override is supported, but the site returns HTTP 403 to CI. |
 | WeebCentral | 100 | api/weebcentral | 2 | healthy | include | health-verified | Dedicated native public WeebCentral reading adapter; complete Ahoge live-health validation passed. |
@@ -72,11 +72,11 @@
 | Webtoon | 45 | custom/API | 3 | not-tested | investigate | seed-triage | Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase. |
 | MadaraDex | 57 | madara | 1 | unsupported | defer-engine | family-reviewed | Current Keiyoushi madara source. High leverage once Ahoge implements the shared madara runtime. |
 | Madara Scans | 60 | mangaThemesia | 1 | unsupported | defer-engine | family-reviewed | Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime. |
-| Rackus | 54 | mangaThemesia | 1 | unsupported | defer-engine | family-reviewed | Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime. |
+| Rackus | 80 | mangaThemesia | 1 | healthy | include | health-verified | Shared MangaThemesia common-subset runtime; complete Ahoge live-health validation passed. |
 | Razure | 52 | mangaThemesia | 1 | unsupported | defer-engine | family-reviewed | Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime. |
 | MangaTX | 62 | mangaThemesia | 1 | unsupported | defer-engine | family-reviewed | Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime. |
-| Ngomik | 56 | mangaThemesia | 1 | unsupported | defer-engine | family-reviewed | Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime. |
-| Noromax | 54 | mangaThemesia | 1 | unsupported | defer-engine | family-reviewed | Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime. |
+| Ngomik | 82 | mangaThemesia | 1 | healthy | include | health-verified | Shared MangaThemesia common-subset runtime; complete Ahoge live-health validation passed. |
+| Noromax | 80 | mangaThemesia | 1 | healthy | include | health-verified | Shared MangaThemesia common-subset runtime; complete Ahoge live-health validation passed. |
 | Omicaso | 54 | mangaThemesia | 1 | unsupported | defer-engine | family-reviewed | Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime. |
 | RawLH | 55 | fmReader | 1 | unsupported | defer-engine | family-reviewed | Current Keiyoushi fmReader source. High leverage once Ahoge implements the shared fmReader runtime. |
 | RawInu | 53 | fmReader | 1 | unsupported | defer-engine | family-reviewed | Current Keiyoushi fmReader source. High leverage once Ahoge implements the shared fmReader runtime. |

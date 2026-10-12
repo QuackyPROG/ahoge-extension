@@ -1,0 +1,19 @@
+{
+  "name": "Rackus",
+  "pkg": "ahoge.extension.rackus",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": 0,
+  "sources": [
+    {
+      "id": "rackus-en",
+      "name": "Rackus",
+      "lang": "en",
+      "baseUrl": "https://rackusreads.com",
+      "engine": "mangaThemesia",
+      "rateLimit": 2,
+      "nsfw": 0,
+      "contentRating": "SAFE"
+    }
+  ]
+}
