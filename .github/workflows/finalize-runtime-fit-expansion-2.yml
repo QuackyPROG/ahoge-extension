@@ -1,0 +1,108 @@
+name: Finalize Runtime-Fit Expansion 2
+
+on:
+  push:
+    branches:
+      - feature/runtime-fit-expansion-batch-2
+    paths:
+      - .github/workflows/finalize-runtime-fit-expansion-2.yml
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/runtime-fit-expansion-batch-2
+      - name: Promote healthy candidates and keep candidate set at 50
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          catalog_path = Path('catalog/sources.json')
+          catalog = json.loads(catalog_path.read_text())
+          promoted = {'anikiga-tr', 'marmota-es', 'manhwanex-en'}
+          seen = set()
+          final_sources = []
+          for source in catalog['sources']:
+              sid = source['sourceId']
+              if sid == 'mangalek-ar':
+                  continue
+              if sid in promoted:
+                  source['enabled'] = True
+                  source['notes'] = 'Bounded Madara runtime; complete Ahoge metadata health validation passed.'
+                  seen.add(sid)
+              final_sources.append(source)
+          missing = promoted - seen
+          if missing:
+              raise SystemExit(f'missing staged sources: {sorted(missing)}')
+          catalog['sources'] = final_sources
+          catalog_path.write_text(json.dumps(catalog, separators=(',', ':'), ensure_ascii=False) + '\n')
+
+          candidate_path = Path('catalog/candidates.json')
+          text = candidate_path.read_text()
+          replacements = {
+              'Project Suki': {
+                  'name':'Anikiga','engine':'madara','maintenanceTier':1,'health':'healthy','decision':'include',
+                  'reason':'Bounded Madara mangaAjax runtime; complete Ahoge live-health validation passed and adds Turkish catalog coverage.',
+                  'scores':{'popularity':10,'engineFit':25,'upstreamActivity':20,'liveHealth':15,'coverage':10,'penalty':0},
+                  'upstream':{'repository':'keiyoushi/extensions-source','path':'src/tr/anikiga','revision':'b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0'},
+                  'evidence':'health-verified','score':80,
+              },
+              'ReadComicOnline': {
+                  'name':'Marmota','engine':'madara','maintenanceTier':1,'health':'healthy','decision':'include',
+                  'reason':'Bounded Madara comic-path + mangaAjax runtime; complete Ahoge live-health validation passed.',
+                  'scores':{'popularity':10,'engineFit':25,'upstreamActivity':20,'liveHealth':15,'coverage':9,'penalty':0},
+                  'upstream':{'repository':'keiyoushi/extensions-source','path':'src/es/marmota','revision':'b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0'},
+                  'evidence':'health-verified','score':79,
+              },
+              'MangaDotNet': {
+                  'name':'ManhwaNex','engine':'madara','maintenanceTier':1,'health':'healthy','decision':'include',
+                  'reason':'Bounded Madara mangaAjax runtime; complete Ahoge live-health validation passed.',
+                  'scores':{'popularity':13,'engineFit':25,'upstreamActivity':20,'liveHealth':15,'coverage':8,'penalty':0},
+                  'upstream':{'repository':'keiyoushi/extensions-source','path':'src/en/manhwanex','revision':'b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0'},
+                  'evidence':'health-verified','score':81,
+              },
+          }
+
+          def render(c):
+              return '\n'.join([
+                  '    {',
+                  f'      "name": {json.dumps(c["name"], ensure_ascii=False)},',
+                  f'      "engine": {json.dumps(c["engine"])},',
+                  f'      "maintenanceTier": {c["maintenanceTier"]},',
+                  f'      "health": {json.dumps(c["health"])},',
+                  f'      "decision": {json.dumps(c["decision"])},',
+                  f'      "reason": {json.dumps(c["reason"], ensure_ascii=False)},',
+                  '      "scores": ' + json.dumps(c['scores'], ensure_ascii=False, separators=(', ', ': ')) + ',',
+                  '      "upstream": ' + json.dumps(c['upstream'], ensure_ascii=False, separators=(', ', ': ')) + ',',
+                  f'      "evidence": {json.dumps(c["evidence"])},',
+                  f'      "score": {c["score"]}',
+                  '    },',
+              ])
+
+          for old_name, replacement in replacements.items():
+              marker = f'    {{\n      "name": "{old_name}",'
+              start = text.find(marker)
+              if start < 0:
+                  raise SystemExit(f'candidate block not found: {old_name}')
+              end = text.find('\n    },', start)
+              if end < 0:
+                  raise SystemExit(f'candidate block end not found: {old_name}')
+              end += len('\n    },')
+              text = text[:start] + render(replacement) + text[end:]
+          candidate_path.write_text(text)
+          PY
+          python3 scripts/build_index.py
+          python3 scripts/build_source_report.py
+          rm .github/workflows/probe-runtime-fit-expansion-2.yml
+          rm .github/workflows/finalize-runtime-fit-expansion-2.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add catalog/sources.json catalog/candidates.json index.json sources Docs/source-catalog-report.md .github/workflows/probe-runtime-fit-expansion-2.yml .github/workflows/finalize-runtime-fit-expansion-2.yml
+          git commit -m "Add three health-verified runtime-fit sources"
+          git push origin HEAD:feature/runtime-fit-expansion-batch-2
