@@ -208,8 +208,8 @@ def check_madara(entry: dict, client: legacy.HttpClient) -> list[str]:
     return checks
 
 
-def run_source(entry: dict, client: legacy.HttpClient) -> tuple[str, list[str], str | None]:
-    if not entry.get("enabled"):
+def run_source(entry: dict, client: legacy.HttpClient, *, probe_disabled: bool = False) -> tuple[str, list[str], str | None]:
+    if not entry.get("enabled") and not probe_disabled:
         return "unsupported", [], "source disabled in canonical catalog"
     engine = entry.get("engine")
     adapter = entry.get("adapter")
@@ -222,6 +222,10 @@ def run_source(entry: dict, client: legacy.HttpClient) -> tuple[str, list[str], 
     elif engine == "mangaThemesia":
         checker = themesia.check
     else:
+        if probe_disabled and not entry.get("enabled"):
+            probe_entry = dict(entry)
+            probe_entry["enabled"] = True
+            return legacy.run_source(probe_entry, client)
         return legacy.run_source(entry, client)
     try:
         checks = checker(entry, client)
@@ -252,10 +256,13 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Validate all enabled Ahoge source runtimes without downloading chapter image payloads")
     parser.add_argument("--source", action="append", default=[], help="source ID to check; may be repeated")
     parser.add_argument("--include-disabled", action="store_true")
+    parser.add_argument("--probe-disabled", action="store_true", help="actively health-check explicitly selected disabled sources without enabling or publishing them")
     parser.add_argument("--output", default=str(DEFAULT_STATUS_PATH.relative_to(ROOT)))
     parser.add_argument("--strict", action="store_true", help="return non-zero if any selected enabled source is not healthy")
     parser.add_argument("--timeout", type=int, default=15)
     args = parser.parse_args()
+    if args.probe_disabled and (not args.include_disabled or not args.source):
+        parser.error("--probe-disabled requires --include-disabled and at least one explicit --source")
 
     catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
     selected_ids = set(args.source)
@@ -277,7 +284,7 @@ def main() -> int:
     failed = False
 
     for entry in entries:
-        status, checks, error = run_source(entry, client)
+        status, checks, error = run_source(entry, client, probe_disabled=args.probe_disabled)
         previous_failures = int(previous.get(entry["sourceId"], {}).get("consecutiveFailures", 0) or 0)
         consecutive = 0 if status == "healthy" else previous_failures + 1
         if entry.get("enabled") and status != "healthy":
