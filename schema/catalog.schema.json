@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/QuackyPROG/ahoge-extension/main/schema/catalog.schema.json",
+  "title": "Ahoge curated source catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "generatedPolicy", "sources"],
+  "properties": {
+    "schemaVersion": {"const": 2},
+    "generatedPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["publicIndex", "stableIdentity"],
+      "properties": {
+        "publicIndex": {"const": "enabled-only"},
+        "stableIdentity": {"const": "packageId+sourceId"}
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/source"}
+    }
+  },
+  "$defs": {
+    "httpsUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "overrideValue": {
+      "type": ["string", "number", "integer", "boolean"]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packageId", "sourceId", "name", "language", "version", "contentRating",
+        "engine", "adapter", "baseUrl", "apiUrl", "mirrors", "rateLimit", "priority",
+        "maintenanceTier", "enabled", "upstream", "overrides", "notes"
+      ],
+      "properties": {
+        "packageId": {"type": "string", "pattern": "^ahoge\\.extension\\.[a-z0-9][a-z0-9._-]*$"},
+        "sourceId": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+        "name": {"type": "string", "minLength": 1, "maxLength": 100},
+        "language": {"type": "string", "pattern": "^[a-z]{2,3}(?:-[A-Z]{2})?$"},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"},
+        "contentRating": {"enum": ["SAFE", "MIXED", "NSFW"]},
+        "engine": {"enum": ["asuraScans", "api", "mangaBox", "natsuId"]},
+        "adapter": {"type": ["string", "null"], "enum": ["ezmanhwa", "heancms", "mangabox", null]},
+        "baseUrl": {"$ref": "#/$defs/httpsUrl"},
+        "apiUrl": {
+          "anyOf": [
+            {"$ref": "#/$defs/httpsUrl"},
+            {"type": "null"}
+          ]
+        },
+        "mirrors": {
+          "type": "array",
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/httpsUrl"}
+        },
+        "rateLimit": {"type": "integer", "minimum": 1, "maximum": 10},
+        "priority": {"type": "integer", "minimum": 0, "maximum": 100},
+        "maintenanceTier": {"type": "integer", "minimum": 1, "maximum": 4},
+        "enabled": {"type": "boolean"},
+        "upstream": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["repository", "path", "family", "revision"],
+          "properties": {
+            "repository": {"type": "string", "minLength": 1},
+            "path": {"type": "string", "minLength": 1},
+            "family": {"type": "string", "minLength": 1},
+            "revision": {"type": "string", "minLength": 7}
+          }
+        },
+        "overrides": {
+          "type": "object",
+          "maxProperties": 32,
+          "propertyNames": {"pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,63}$"},
+          "additionalProperties": {"$ref": "#/$defs/overrideValue"}
+        },
+        "notes": {"type": "string", "maxLength": 500}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"engine": {"const": "api"}}, "required": ["engine"]},
+          "then": {
+            "properties": {"adapter": {"enum": ["ezmanhwa", "heancms"]}},
+            "required": ["apiUrl"]
+          }
+        },
+        {
+          "if": {"properties": {"engine": {"const": "mangaBox"}}, "required": ["engine"]},
+          "then": {"properties": {"adapter": {"const": "mangabox"}}}
+        },
+        {
+          "if": {"properties": {"engine": {"const": "asuraScans"}}, "required": ["engine"]},
+          "then": {"required": ["apiUrl"]}
+        },
+        {
+          "if": {"properties": {"engine": {"const": "natsuId"}}, "required": ["engine"]},
+          "then": {"properties": {"adapter": {"type": "null"}}}
+        }
+      ]
+    }
+  }
+}

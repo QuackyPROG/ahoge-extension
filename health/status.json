@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-12T13:09:54Z",
+  "sources": [
+    {
+      "sourceId": "asurascans-en",
+      "name": "Asura Scans",
+      "engine": "asuraScans",
+      "adapter": null,
+      "language": "en",
+      "status": "healthy",
+      "checks": ["homepage", "latest", "search", "detail", "chapters", "pages"],
+      "checkedAt": "2026-10-12T13:09:54Z",
+      "consecutiveFailures": 0,
+      "error": null
+    },
+    {
+      "sourceId": "qiscans-en",
+      "name": "QiScans",
+      "engine": "api",
+      "adapter": "ezmanhwa",
+      "language": "en",
+      "status": "healthy",
+      "checks": ["homepage", "latest", "search", "detail", "chapters", "pages"],
+      "checkedAt": "2026-10-12T13:09:54Z",
+      "consecutiveFailures": 0,
+      "error": null
+    },
+    {
+      "sourceId": "omegascans-en",
+      "name": "Omega Scans",
+      "engine": "api",
+      "adapter": "heancms",
+      "language": "en",
+      "status": "healthy",
+      "checks": ["homepage", "latest", "search", "detail", "chapters", "pages"],
+      "checkedAt": "2026-10-12T13:09:54Z",
+      "consecutiveFailures": 0,
+      "error": null
+    },
+    {
+      "sourceId": "kiryuu-id",
+      "name": "Kiryuu",
+      "engine": "natsuId",
+      "adapter": null,
+      "language": "id",
+      "status": "healthy",
+      "checks": ["homepage", "latest", "detail", "search", "chapters", "pages"],
+      "checkedAt": "2026-10-12T13:09:54Z",
+      "consecutiveFailures": 0,
+      "error": null
+    },
+    {
+      "sourceId": "natsu-id",
+      "name": "Natsu",
+      "engine": "natsuId",
+      "adapter": null,
+      "language": "id",
+      "status": "healthy",
+      "checks": ["homepage", "latest", "detail", "search", "chapters", "pages"],
+      "checkedAt": "2026-10-12T13:09:54Z",
+      "consecutiveFailures": 0,
+      "error": null
+    },
+    {
+      "sourceId": "rawkuma-ja",
+      "name": "Rawkuma",
+      "engine": "natsuId",
+      "adapter": null,
+      "language": "ja",
+      "status": "healthy",
+      "checks": ["homepage", "latest", "detail", "search", "chapters", "pages"],
+      "checkedAt": "2026-10-12T13:09:54Z",
+      "consecutiveFailures": 0,
+      "error": null
+    }
+  ]
+}

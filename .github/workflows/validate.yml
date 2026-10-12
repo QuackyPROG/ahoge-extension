@@ -7,10 +7,13 @@ on:
     branches: ["main"]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,5 +23,32 @@ jobs:
           python-version: "3.x"
       - name: Install validator dependency
         run: python -m pip install --disable-pip-version-check jsonschema
-      - name: Validate source repository
+      - name: Compile repository tooling
+        run: python -m py_compile scripts/*.py
+      - name: Verify generated repository output
+        run: python scripts/build_index.py --check
+      - name: Verify generated candidate report
+        run: python scripts/build_source_report.py --check
+      - name: Validate catalog and manifests
         run: python scripts/validate.py
+
+  health:
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Validate enabled sources end-to-end
+        run: python scripts/healthcheck.py --strict --output /tmp/ahoge-health.json
+      - name: Upload health report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-health
+          path: /tmp/ahoge-health.json
+          if-no-files-found: warn

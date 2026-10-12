@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/QuackyPROG/ahoge-extension/main/schema/source.schema.json",
-  "title": "Ahoge source package",
+  "title": "Ahoge generated source package",
   "type": "object",
   "additionalProperties": false,
   "required": ["name", "pkg", "lang", "version", "nsfw", "sources"],
@@ -23,20 +23,36 @@
       "format": "uri",
       "pattern": "^https://"
     },
+    "overrideValue": {
+      "type": ["string", "number", "integer", "boolean"]
+    },
     "source": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "lang", "baseUrl", "engine", "rateLimit", "nsfw"],
+      "required": ["id", "name", "lang", "baseUrl", "engine", "rateLimit", "nsfw", "contentRating"],
       "properties": {
         "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
         "name": {"type": "string", "minLength": 1},
         "lang": {"type": "string", "pattern": "^[a-z]{2,3}(?:-[A-Z]{2})?$"},
         "baseUrl": {"$ref": "#/$defs/httpsUrl"},
-        "engine": {"type": "string", "enum": ["asuraScans", "api", "mangaBox"]},
+        "engine": {"type": "string", "enum": ["asuraScans", "api", "mangaBox", "natsuId"]},
         "adapter": {"type": "string", "enum": ["ezmanhwa", "heancms", "mangabox"]},
         "apiUrl": {"$ref": "#/$defs/httpsUrl"},
+        "mirrors": {
+          "type": "array",
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/httpsUrl"}
+        },
+        "overrides": {
+          "type": "object",
+          "maxProperties": 32,
+          "propertyNames": {"pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,63}$"},
+          "additionalProperties": {"$ref": "#/$defs/overrideValue"}
+        },
         "rateLimit": {"type": "integer", "minimum": 1, "maximum": 10},
-        "nsfw": {"type": "integer", "enum": [0, 1]}
+        "nsfw": {"type": "integer", "enum": [0, 1]},
+        "contentRating": {"enum": ["SAFE", "MIXED", "NSFW"]}
       },
       "allOf": [
         {

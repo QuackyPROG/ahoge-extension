@@ -11,9 +11,10 @@
       "lang": "en",
       "baseUrl": "https://asurascans.com",
       "engine": "asuraScans",
-      "apiUrl": "https://api.asurascans.com/api",
       "rateLimit": 1,
-      "nsfw": 0
+      "nsfw": 0,
+      "contentRating": "SAFE",
+      "apiUrl": "https://api.asurascans.com/api"
     }
   ]
 }

@@ -13,9 +13,10 @@
           "lang": "en",
           "baseUrl": "https://asurascans.com",
           "engine": "asuraScans",
-          "apiUrl": "https://api.asurascans.com/api",
           "rateLimit": 1,
-          "nsfw": 0
+          "nsfw": 0,
+          "contentRating": "SAFE",
+          "apiUrl": "https://api.asurascans.com/api"
         }
       ]
     },
@@ -32,10 +33,11 @@
           "lang": "en",
           "baseUrl": "https://qimanga.com",
           "engine": "api",
-          "adapter": "ezmanhwa",
-          "apiUrl": "https://api.qimanga.com/api/v1",
           "rateLimit": 2,
-          "nsfw": 0
+          "nsfw": 0,
+          "contentRating": "SAFE",
+          "adapter": "ezmanhwa",
+          "apiUrl": "https://api.qimanga.com/api/v1"
         }
       ]
     },
@@ -52,29 +54,71 @@
           "lang": "en",
           "baseUrl": "https://omegascans.org",
           "engine": "api",
-          "adapter": "heancms",
-          "apiUrl": "https://api.omegascans.org",
           "rateLimit": 1,
-          "nsfw": 1
+          "nsfw": 1,
+          "contentRating": "NSFW",
+          "adapter": "heancms",
+          "apiUrl": "https://api.omegascans.org"
         }
       ]
     },
     {
-      "name": "Manganato",
-      "pkg": "ahoge.extension.manganato",
-      "lang": "en",
+      "name": "Kiryuu",
+      "pkg": "ahoge.extension.kiryuu",
+      "lang": "id",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "kiryuu-id",
+          "name": "Kiryuu",
+          "lang": "id",
+          "baseUrl": "https://v7.kiryuu.to",
+          "engine": "natsuId",
+          "rateLimit": 4,
+          "nsfw": 1,
+          "contentRating": "MIXED",
+          "overrides": {
+            "chapterListPageOverride": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rawkuma",
+      "pkg": "ahoge.extension.rawkuma",
+      "lang": "ja",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "rawkuma-ja",
+          "name": "Rawkuma",
+          "lang": "ja",
+          "baseUrl": "https://rawkuma.net",
+          "engine": "natsuId",
+          "rateLimit": 2,
+          "nsfw": 1,
+          "contentRating": "MIXED"
+        }
+      ]
+    },
+    {
+      "name": "Natsu",
+      "pkg": "ahoge.extension.natsu",
+      "lang": "id",
       "version": "1.0.0",
       "nsfw": 0,
       "sources": [
         {
-          "id": "manganato-en",
-          "name": "Manganato",
-          "lang": "en",
-          "baseUrl": "https://www.natomanga.com",
-          "engine": "mangaBox",
-          "adapter": "mangabox",
-          "rateLimit": 2,
-          "nsfw": 0
+          "id": "natsu-id",
+          "name": "Natsu",
+          "lang": "id",
+          "baseUrl": "https://natsu.one",
+          "engine": "natsuId",
+          "rateLimit": 4,
+          "nsfw": 0,
+          "contentRating": "SAFE"
         }
       ]
     }

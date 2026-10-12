@@ -1,6 +1,6 @@
 # Ahoge Extensions
 
-Maintained source definitions for Ahoge. This repository is independent from the Ahoge iOS application: it contains source configuration and adapter selection, not application UI, reader code, persistence, or Xcode project files.
+Maintained source definitions for the Ahoge iOS manga reader. This repository is configuration-only: native source runtimes live in `QuackyPROG/ahoge`, while this repository owns remotely updateable source identities, URLs, adapters, overrides, health metadata, and generated repository output.
 
 ## Install
 
@@ -10,60 +10,151 @@ In Ahoge, open **Browse / Sources → Source Repositories** and add:
 https://raw.githubusercontent.com/QuackyPROG/ahoge-extension/main/index.json
 ```
 
-That single repository URL exposes all maintained sources. Users should not need to install the individual files under `sources/`.
+That URL has not changed. Users install the repository once; ordinary source-domain/API/configuration updates can then ship through this repository without an Ahoge rebuild when the installed app already contains the required runtime.
 
-## Available sources
+## Current catalog
 
-- Asura Scans — `asuraScans`
-- QiScans — `api` + `ezmanhwa`
-- Omega Scans — `api` + `heancms`
-- Manganato / NatoManga — `mangaBox` + `mangabox`
+- **12 tracked source identities** in the canonical catalog.
+- **6 enabled sources**.
+- **6/6 enabled sources healthy** in the latest committed end-to-end health snapshot.
+- **6 tracked but disabled** because current health validation is blocked, degraded, or broken.
+- **50 candidates evaluated/triaged** in `Docs/source-catalog-report.md`.
 
-## Repository layout
+| Source | Engine | Lang | Health | Last verified | State |
+|---|---|---|---|---|---|
+| Asura Scans | `asuraScans` | en | healthy | 2026-10-12 | enabled |
+| QiScans | `api/ezmanhwa` | en | healthy | 2026-10-12 | enabled |
+| Omega Scans | `api/heancms` | en | healthy | 2026-10-12 | enabled |
+| Kiryuu | `natsuId` | id | healthy | 2026-10-12 | enabled |
+| Natsu | `natsuId` | id | healthy | 2026-10-12 | enabled |
+| Rawkuma | `natsuId` | ja | healthy | 2026-10-12 | enabled |
+| Manganato / NatoManga | `mangaBox` | en | blocked (HTTP 403 in CI) | 2026-10-12 | disabled |
+| Mangabat | `mangaBox` | en | blocked (HTTP 403 in CI) | 2026-10-12 | disabled |
+| Mangakakalot | `mangaBox` | en | blocked (HTTP 403 in CI) | 2026-10-12 | disabled |
+| EZmanga | `api/ezmanhwa` | en | degraded (no free sampled page metadata) | 2026-10-12 | disabled |
+| Ikiru | `natsuId` | id | broken (current manga endpoint HTTP 404) | 2026-10-12 | disabled |
+| Lua Scans | `api/heancms` | en | blocked (HTTP 403 in CI) | 2026-10-12 | disabled |
+
+`health/status.json` is a committed passing snapshot for the enabled set. Scheduled health runs publish machine-readable artifacts and only raise/update an issue when meaningful failures occur; they do not create a daily timestamp commit.
+
+## Architecture
+
+The source system is deliberately split into two layers:
+
+1. **Native runtimes in Ahoge** implement reusable HTTP/parser behavior.
+2. **Declarative source configuration here** supplies stable identity, domains, API URLs, rate limits, mirrors, adapters, and bounded source-specific overrides.
+
+The currently executable runtime combinations are:
+
+- `asuraScans`
+- `natsuId`
+- `mangaBox` + `mangabox`
+- `api` + `ezmanhwa`
+- `api` + `heancms`
+
+Enums/classifiers for families such as `madara`, `mangaThemesia`, `fmReader`, and `foolSlide` exist in the app, but those are not treated as working runtimes until Swift implementations actually exist and pass tests/health validation. The candidate report uses that distinction when choosing the next engine family.
+
+Remote manifests are untrusted data. The schemas only permit constrained values such as HTTPS URLs, known engine/adapter combinations, bounded request rates, mirrors, and known overrides. They do **not** support arbitrary JavaScript, shell commands, Swift evaluation, Android extension execution, or other remote executable code.
+
+## Canonical data and generated output
+
+`catalog/sources.json` is the canonical source catalog. Do not manually maintain duplicate source metadata in `sources/*.json` or `index.json`.
 
 ```text
 .
-├── index.json
-├── schema/source.schema.json
-├── sources/
-│   ├── asurascans.json
-│   ├── qiscans.json
-│   ├── omegascans.json
-│   └── manganato.json
-└── scripts/validate.py
+├── catalog/
+│   ├── sources.json          # canonical tracked source definitions
+│   └── candidates.json       # 50-candidate scoring/evidence set
+├── Docs/
+│   └── source-catalog-report.md
+├── health/
+│   └── status.json
+├── schema/
+│   ├── catalog.schema.json
+│   └── source.schema.json
+├── sources/                  # generated enabled source packages only
+├── scripts/
+│   ├── build_index.py
+│   ├── build_source_report.py
+│   ├── healthcheck.py
+│   ├── sync_upstreams.py
+│   └── validate.py
+├── index.json                # generated install surface
+└── UPSTREAMS.md
 ```
 
-`index.json` is the install surface Ahoge consumes. The per-source files are the canonical maintained definitions and are validated against the same manifest contract.
+Generate repository output with:
 
-## Manifest contract
+```bash
+python3 scripts/build_index.py
+python3 scripts/build_source_report.py
+```
 
-Each package declares `name`, `pkg`, `lang`, `version`, `nsfw`, and one or more `sources`. Each source declares a stable `id`, display name/language, `baseUrl`, engine family, request rate, and NSFW value. Engine-specific fields such as `adapter` and `apiUrl` are required when the selected runtime needs them.
+CI requires both generated outputs to match the canonical inputs exactly. Duplicate package IDs/source IDs, unsupported engine combinations, invalid URLs, unknown overrides, stale generated manifests, or hand-edited index drift fail validation.
 
-Supported runtime combinations in this repository are:
+## Health validation
 
-- `asuraScans`
-- `api` with adapter `ezmanhwa`
-- `api` with adapter `heancms`
-- `mangaBox` with adapter `mangabox`
+Run all enabled sources:
 
-Configuration should live here rather than in the app. If a site changes domain or API endpoint but still uses a supported runtime, update the manifest and release it without rebuilding Ahoge.
+```bash
+python3 scripts/healthcheck.py --strict
+```
+
+The health checker validates, where the runtime supports it:
+
+1. homepage/API response;
+2. latest/popular listing parsing;
+3. search parsing;
+4. one manga-detail request;
+5. chapter-list parsing;
+6. chapter page-list **metadata** parsing.
+
+It does not download/store chapter image payloads for CI. Requests use timeouts, retries, per-host throttling, and a dedicated user agent. Results distinguish `healthy`, `broken`, `blocked`, and `unsupported`; the catalog also records degraded/disabled decisions from manual review. An enabled source must pass current live health validation regardless of candidate score.
+
+## Upstream synchronization
+
+`scripts/sync_upstreams.py` monitors only selected/tracked modules. It currently detects:
+
+- base URL and mirror changes;
+- upstream source-name changes;
+- multisrc-family changes;
+- upstream module removal/unavailability;
+- path revision changes indicating parser/code changes.
+
+Low-risk domain/mirror metadata can be applied to a predictable `automation/upstream-sync` branch and PR after regeneration, validation, and live health checks. A code-only revision change remains review-required instead of pretending arbitrary Kotlin diffs are safe. Family switches or unavailable modules are high-risk and open/update a runtime-review issue rather than being silently marked healthy.
+
+This repository never consumes APK/JAR/Kotlin binaries at runtime. Keiyoushi is an upstream reference, with attribution tracked in `UPSTREAMS.md`.
+
+## GitHub Actions
+
+- **PR validation**: schema validation, Python compile check, deterministic index/report checks, duplicate/runtime compatibility checks, and live health validation of enabled sources.
+- **Scheduled health**: daily end-to-end checks with a machine-readable artifact and one maintained failure issue.
+- **Scheduled upstream sync**: Monday/Wednesday/Friday drift scan with one predictable automation branch/PR for low-risk changes and review issues for high-risk changes.
+- **Main/publish**: committed `index.json` is the raw repository consumed by Ahoge, so a validated merge makes the new catalog immediately available at the existing install URL.
 
 ## Adding or updating a source
 
-1. Add or edit a JSON file under `sources/`.
-2. Keep `pkg` and source `id` stable when changing configuration; changing them can break stored library/source associations.
-3. Add the package to `index.json`.
-4. Run `python3 scripts/validate.py`.
-5. Open a pull request. CI validates JSON syntax, schema rules, URL fields, supported engines/adapters, duplicate package/source IDs, and index consistency.
+1. Edit `catalog/sources.json`. Keep `packageId` and `sourceId` stable when domains/routes change.
+2. Record upstream module/revision and maintenance tier. Update `UPSTREAMS.md` when attribution changes.
+3. Run `python3 scripts/build_index.py`.
+4. Run `python3 scripts/validate.py` and `python3 scripts/healthcheck.py --strict`.
+5. If candidate decisions changed, update `catalog/candidates.json` and regenerate `Docs/source-catalog-report.md`.
+6. Open a pull request and require both deterministic validation and live health CI to pass.
 
-Do not add copyrighted manga payloads, scraped chapter/page fixtures, or CI jobs that download manga content. Validation is configuration-only.
+A source is not considered working merely because its JSON validates. Do not enable a source to hit a target count when health is blocked/broken or its runtime is not implemented.
 
-## Versioning and compatibility
+## Compatibility
 
-Increment the package `version` when source configuration changes. A manifest change is compatible without an Ahoge release when it only changes configuration understood by an engine already compiled into the installed app.
+The existing Ahoge package/source IDs are preserved even when a source is disabled or its domain changes. In particular, the original source identities for Asura Scans, QiScans, Omega Scans, and Manganato remain stable.
 
-A new Ahoge build is required for a new runtime engine, importer/schema behavior changes, or application feature changes.
+A new Ahoge build is required only when a new runtime family/native capability is needed. Configuration changes understood by an existing runtime—domain, API endpoint, mirrors, request rate, or supported parser overrides—belong here.
+
+## Next runtime work
+
+The current candidate matrix points toward reusable families rather than 40+ bespoke parsers. The next implementation review should prioritize **Madara**, then **MangaThemesia** and **FMReader**, subject to source-specific health checks. Stable bespoke APIs such as MangaDex/WeebCentral can follow. Tier-4 sources that require browser challenges, custom signing, or image descrambling remain intentionally lower priority.
+
+See `Docs/source-catalog-report.md` for the complete 50-candidate decision table and engineering rationale.
 
 ## License
 
-See [LICENSE](LICENSE). Source definitions migrated from `QuackyPROG/mihon-ios` preserve the applicable upstream licensing and attribution obligations.
+See [LICENSE](LICENSE) and `UPSTREAMS.md`. Upstream reference code/configuration is subject to its original license and attribution requirements.

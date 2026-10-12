@@ -1,0 +1,19 @@
+{
+  "name": "Natsu",
+  "pkg": "ahoge.extension.natsu",
+  "lang": "id",
+  "version": "1.0.0",
+  "nsfw": 0,
+  "sources": [
+    {
+      "id": "natsu-id",
+      "name": "Natsu",
+      "lang": "id",
+      "baseUrl": "https://natsu.one",
+      "engine": "natsuId",
+      "rateLimit": 4,
+      "nsfw": 0,
+      "contentRating": "SAFE"
+    }
+  ]
+}
