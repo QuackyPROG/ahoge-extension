@@ -11,10 +11,11 @@
       "lang": "en",
       "baseUrl": "https://omegascans.org",
       "engine": "api",
-      "adapter": "heancms",
-      "apiUrl": "https://api.omegascans.org",
       "rateLimit": 1,
-      "nsfw": 1
+      "nsfw": 1,
+      "contentRating": "NSFW",
+      "adapter": "heancms",
+      "apiUrl": "https://api.omegascans.org"
     }
   ]
 }
