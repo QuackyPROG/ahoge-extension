@@ -1,0 +1,22 @@
+{
+  "name": "MangaKa",
+  "pkg": "ahoge.extension.mangaka",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": 0,
+  "sources": [
+    {
+      "id": "mangaka-en",
+      "name": "MangaKa",
+      "lang": "en",
+      "baseUrl": "https://mangaka.cc",
+      "engine": "madara",
+      "rateLimit": 2,
+      "nsfw": 0,
+      "contentRating": "SAFE",
+      "overrides": {
+        "chapterMode": "adminAjax"
+      }
+    }
+  ]
+}
