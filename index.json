@@ -161,25 +161,6 @@
       ]
     },
     {
-      "name": "Asia Lotus",
-      "pkg": "ahoge.extension.asialotus",
-      "lang": "es",
-      "version": "1.0.0",
-      "nsfw": 1,
-      "sources": [
-        {
-          "id": "asialotus-es",
-          "name": "Asia Lotus",
-          "lang": "es",
-          "baseUrl": "https://asialotuss.com",
-          "engine": "mangaThemesia",
-          "rateLimit": 3,
-          "nsfw": 1,
-          "contentRating": "NSFW"
-        }
-      ]
-    },
-    {
       "name": "NekoScans",
       "pkg": "ahoge.extension.nekoscans",
       "lang": "es",
@@ -195,25 +176,6 @@
           "rateLimit": 2,
           "nsfw": 1,
           "contentRating": "MIXED"
-        }
-      ]
-    },
-    {
-      "name": "Manga Kusu",
-      "pkg": "ahoge.extension.mangakusu",
-      "lang": "tr",
-      "version": "1.0.0",
-      "nsfw": 0,
-      "sources": [
-        {
-          "id": "mangakusu-tr",
-          "name": "Manga Kusu",
-          "lang": "tr",
-          "baseUrl": "https://mangakusu.com",
-          "engine": "mangaThemesia",
-          "rateLimit": 3,
-          "nsfw": 0,
-          "contentRating": "SAFE"
         }
       ]
     },
