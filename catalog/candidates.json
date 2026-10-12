@@ -384,13 +384,13 @@
       "name": "Madara Scans",
       "engine": "mangaThemesia",
       "maintenanceTier": 1,
-      "health": "unsupported",
-      "decision": "defer-engine",
-      "reason": "Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime.",
-      "scores": {"popularity": 18, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "health": "healthy",
+      "decision": "include",
+      "reason": "Shared MangaThemesia common-subset runtime with series path override; complete Ahoge live-health validation passed.",
+      "scores": {"popularity": 18, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 8, "penalty": 0},
       "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/madarascans", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
-      "evidence": "family-reviewed",
-      "score": 60
+      "evidence": "health-verified",
+      "score": 86
     },
     {
       "name": "Rackus",
@@ -408,13 +408,13 @@
       "name": "Razure",
       "engine": "mangaThemesia",
       "maintenanceTier": 1,
-      "health": "unsupported",
-      "decision": "defer-engine",
-      "reason": "Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime.",
-      "scores": {"popularity": 10, "engineFit": 18, "upstreamActivity": 16, "liveHealth": 0, "coverage": 8, "penalty": 0},
+      "health": "broken",
+      "decision": "disable",
+      "reason": "Current series detail markup does not expose the bounded MangaThemesia title/chapter markers; keep disabled rather than add source-specific selectors.",
+      "scores": {"popularity": 10, "engineFit": 18, "upstreamActivity": 20, "liveHealth": 0, "coverage": 8, "penalty": -10},
       "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/razure", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
-      "evidence": "family-reviewed",
-      "score": 52
+      "evidence": "health-verified",
+      "score": 46
     },
     {
       "name": "MangaTX",

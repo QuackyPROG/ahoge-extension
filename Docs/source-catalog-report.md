@@ -5,8 +5,8 @@
 ## Current result
 
 - **50 candidates evaluated/triaged**.
-- **16 enabled sources in the public index**: Asura Scans, QiScans, Omega Scans, EZmanga, Kiryuu, Natsu, Rawkuma, S2Manga, Rackus, Ngomik, Noromax, NekoScans, LianScans, Scythe Scans, MangaDex, WeebCentral.
-- **14 additional cataloged sources are tracked but disabled** after health failures/blocks or compatibility review.
+- **17 enabled sources in the public index**: Asura Scans, QiScans, Omega Scans, EZmanga, Kiryuu, Natsu, Rawkuma, S2Manga, Rackus, Ngomik, Noromax, NekoScans, LianScans, Scythe Scans, MangaDex, WeebCentral, Madara Scans.
+- **15 additional cataloged sources are tracked but disabled** after health failures/blocks or compatibility review.
 - Sources outside the canonical catalog remain investigation candidates until they have a bounded native runtime and current live-health evidence.
 - Tier-4 candidates that require browser challenges, signing, or image descrambling remain intentionally excluded.
 
@@ -22,7 +22,7 @@
 | api / mangadex | Yes | Yes | Live health | 1 tracked / 1 enabled |
 | api / weebcentral | Yes | Yes | Live health | 1 tracked / 1 enabled |
 | madara | Yes | Yes | Live health | 6 tracked / 1 enabled |
-| mangaThemesia | Yes | Yes | Live health | 10 tracked / 6 enabled |
+| mangaThemesia | Yes | Yes | Live health | 12 tracked / 7 enabled |
 | fmReader | No | No | No | 0 tracked |
 | foolSlide | No | No | No | 0 tracked |
 
@@ -71,9 +71,9 @@
 | ReadComicOnline | 40 | custom | 3 | not-tested | investigate | seed-triage | Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase. |
 | Webtoon | 45 | custom/API | 3 | not-tested | investigate | seed-triage | Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase. |
 | MadaraDex | 57 | madara | 1 | unsupported | defer-engine | family-reviewed | Current Keiyoushi madara source. High leverage once Ahoge implements the shared madara runtime. |
-| Madara Scans | 60 | mangaThemesia | 1 | unsupported | defer-engine | family-reviewed | Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime. |
+| Madara Scans | 86 | mangaThemesia | 1 | healthy | include | health-verified | Shared MangaThemesia common-subset runtime with series path override; complete Ahoge live-health validation passed. |
 | Rackus | 80 | mangaThemesia | 1 | healthy | include | health-verified | Shared MangaThemesia common-subset runtime; complete Ahoge live-health validation passed. |
-| Razure | 52 | mangaThemesia | 1 | unsupported | defer-engine | family-reviewed | Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime. |
+| Razure | 46 | mangaThemesia | 1 | broken | disable | health-verified | Current series detail markup does not expose the bounded MangaThemesia title/chapter markers; keep disabled rather than add source-specific selectors. |
 | MangaTX | 62 | mangaThemesia | 1 | unsupported | defer-engine | family-reviewed | Current Keiyoushi mangaThemesia source. High leverage once Ahoge implements the shared mangaThemesia runtime. |
 | Ngomik | 82 | mangaThemesia | 1 | healthy | include | health-verified | Shared MangaThemesia common-subset runtime; complete Ahoge live-health validation passed. |
 | Noromax | 80 | mangaThemesia | 1 | healthy | include | health-verified | Shared MangaThemesia common-subset runtime; complete Ahoge live-health validation passed. |
