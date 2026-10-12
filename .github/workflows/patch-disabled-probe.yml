@@ -1,0 +1,58 @@
+name: Patch Disabled Source Probe
+
+on:
+  push:
+    branches:
+      - feature/retest-disabled-sources
+    paths:
+      - .github/workflows/patch-disabled-probe.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/retest-disabled-sources
+      - name: Add explicit disabled-source probe mode
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('scripts/health_all.py')
+          s = p.read_text()
+          old = 'def run_source(entry: dict, client: legacy.HttpClient) -> tuple[str, list[str], str | None]:\n    if not entry.get("enabled"):\n        return "unsupported", [], "source disabled in canonical catalog"\n'
+          new = 'def run_source(entry: dict, client: legacy.HttpClient, *, probe_disabled: bool = False) -> tuple[str, list[str], str | None]:\n    if not entry.get("enabled") and not probe_disabled:\n        return "unsupported", [], "source disabled in canonical catalog"\n'
+          if old not in s:
+              raise SystemExit('run_source prelude not found')
+          s = s.replace(old, new, 1)
+          old = '    else:\n        return legacy.run_source(entry, client)\n'
+          new = '    else:\n        if probe_disabled and not entry.get("enabled"):\n            probe_entry = dict(entry)\n            probe_entry["enabled"] = True\n            return legacy.run_source(probe_entry, client)\n        return legacy.run_source(entry, client)\n'
+          if old not in s:
+              raise SystemExit('legacy fallback not found')
+          s = s.replace(old, new, 1)
+          old = '    parser.add_argument("--include-disabled", action="store_true")\n'
+          new = '    parser.add_argument("--include-disabled", action="store_true")\n    parser.add_argument("--probe-disabled", action="store_true", help="actively health-check explicitly selected disabled sources without enabling or publishing them")\n'
+          if old not in s:
+              raise SystemExit('parser include-disabled argument not found')
+          s = s.replace(old, new, 1)
+          old = '    args = parser.parse_args()\n\n    catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))\n'
+          new = '    args = parser.parse_args()\n    if args.probe_disabled and (not args.include_disabled or not args.source):\n        parser.error("--probe-disabled requires --include-disabled and at least one explicit --source")\n\n    catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))\n'
+          if old not in s:
+              raise SystemExit('parse_args block not found')
+          s = s.replace(old, new, 1)
+          old = '        status, checks, error = run_source(entry, client)\n'
+          new = '        status, checks, error = run_source(entry, client, probe_disabled=args.probe_disabled)\n'
+          if old not in s:
+              raise SystemExit('run_source call not found')
+          s = s.replace(old, new, 1)
+          p.write_text(s)
+          PY
+          rm .github/workflows/patch-disabled-probe.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/health_all.py .github/workflows/patch-disabled-probe.yml
+          git commit -m "Add explicit disabled-source health probe mode"
+          git push origin HEAD:feature/retest-disabled-sources
