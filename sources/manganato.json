@@ -3,7 +3,7 @@
   "pkg": "ahoge.extension.manganato",
   "lang": "en",
   "version": "1.0.0",
-  "nsfw": 0,
+  "nsfw": 1,
   "sources": [
     {
       "id": "manganato-en",
@@ -11,9 +11,14 @@
       "lang": "en",
       "baseUrl": "https://www.natomanga.com",
       "engine": "mangaBox",
-      "adapter": "mangabox",
       "rateLimit": 2,
-      "nsfw": 0
+      "nsfw": 1,
+      "contentRating": "MIXED",
+      "adapter": "mangabox",
+      "mirrors": [
+        "https://www.nelomanga.net",
+        "https://www.manganato.gg"
+      ]
     }
   ]
 }
