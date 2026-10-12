@@ -1,0 +1,19 @@
+{
+  "name": "Ikiru",
+  "pkg": "ahoge.extension.ikiru",
+  "lang": "id",
+  "version": "1.0.0",
+  "nsfw": 0,
+  "sources": [
+    {
+      "id": "ikiru-id",
+      "name": "Ikiru",
+      "lang": "id",
+      "baseUrl": "https://09.ikiru.wtf",
+      "engine": "natsuId",
+      "rateLimit": 2,
+      "nsfw": 0,
+      "contentRating": "SAFE"
+    }
+  ]
+}
