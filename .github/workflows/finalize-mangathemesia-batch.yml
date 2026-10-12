@@ -1,0 +1,48 @@
+name: Finalize MangaThemesia Batch
+
+on:
+  push:
+    branches:
+      - feature/mangathemesia-source-batch
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/mangathemesia-source-batch
+          fetch-depth: 0
+      - name: Demote failed candidates and regenerate public output
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('catalog/sources.json')
+          catalog = json.loads(path.read_text())
+          notes = {
+              'asialotus-es': 'Disabled after live health reached chapter pages but found no supported reader page metadata in sampled chapters on 2026-10-12.',
+              'mangakusu-tr': 'Disabled after the current site returned HTTP 403 to GitHub CI on 2026-10-12.',
+          }
+          for entry in catalog['sources']:
+              source_id = entry['sourceId']
+              if source_id in notes:
+                  entry['enabled'] = False
+                  entry['notes'] = notes[source_id]
+              elif source_id in {'nekoscans-es', 'lianscans-id', 'scythescans-en'}:
+                  entry['enabled'] = True
+                  entry['notes'] = 'Shared MangaThemesia common-subset runtime; end-to-end live health passed on 2026-10-12.'
+          path.write_text(json.dumps(catalog, ensure_ascii=False, separators=(',', ':')) + '\n')
+          PY
+          rm -f sources/asialotus.json sources/mangakusu.json
+          python3 scripts/build_index.py
+          git rm .github/workflows/finalize-mangathemesia-batch.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add catalog/sources.json index.json sources
+          git commit -m "Publish health-verified MangaThemesia sources"
+          git push origin HEAD:feature/mangathemesia-source-batch
