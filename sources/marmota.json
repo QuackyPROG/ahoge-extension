@@ -1,0 +1,23 @@
+{
+  "name": "Marmota",
+  "pkg": "ahoge.extension.marmota",
+  "lang": "es",
+  "version": "1.0.0",
+  "nsfw": 0,
+  "sources": [
+    {
+      "id": "marmota-es",
+      "name": "Marmota",
+      "lang": "es",
+      "baseUrl": "https://marmota.me",
+      "engine": "madara",
+      "rateLimit": 2,
+      "nsfw": 0,
+      "contentRating": "SAFE",
+      "overrides": {
+        "mangaPath": "comic",
+        "chapterMode": "mangaAjax"
+      }
+    }
+  ]
+}

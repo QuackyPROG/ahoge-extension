@@ -5,7 +5,7 @@
 ## Current result
 
 - **50 candidates evaluated/triaged**.
-- **19 enabled sources in the public index**: Asura Scans, QiScans, Omega Scans, EZmanga, Kiryuu, Natsu, Rawkuma, S2Manga, Rackus, Ngomik, Noromax, NekoScans, LianScans, Scythe Scans, MangaDex, WeebCentral, Madara Scans, Shinobi Scans, Anisa Scans.
+- **22 enabled sources in the public index**: Asura Scans, QiScans, Omega Scans, EZmanga, Kiryuu, Natsu, Rawkuma, S2Manga, Rackus, Ngomik, Noromax, NekoScans, LianScans, Scythe Scans, MangaDex, WeebCentral, Madara Scans, Shinobi Scans, Anisa Scans, Anikiga, Marmota, ManhwaNex.
 - **15 additional cataloged sources are tracked but disabled** after health failures/blocks or compatibility review.
 - Sources outside the canonical catalog remain investigation candidates until they have a bounded native runtime and current live-health evidence.
 - Tier-4 candidates that require browser challenges, signing, or image descrambling remain intentionally excluded.
@@ -21,7 +21,7 @@
 | api / heancms | Yes | Yes | Live health | 2 tracked / 1 enabled |
 | api / mangadex | Yes | Yes | Live health | 1 tracked / 1 enabled |
 | api / weebcentral | Yes | Yes | Live health | 1 tracked / 1 enabled |
-| madara | Yes | Yes | Live health | 8 tracked / 3 enabled |
+| madara | Yes | Yes | Live health | 11 tracked / 6 enabled |
 | mangaThemesia | Yes | Yes | Live health | 12 tracked / 7 enabled |
 | fmReader | No | No | No | 0 tracked |
 | foolSlide | No | No | No | 0 tracked |
@@ -64,11 +64,11 @@
 | MangaGo | 44 | custom | 3 | not-tested | investigate | seed-triage | Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase. |
 | VyManga | 44 | custom | 3 | not-tested | investigate | seed-triage | Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase. |
 | MangaTaro | 44 | custom | 3 | not-tested | investigate | seed-triage | Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase. |
-| MangaDotNet | 40 | custom | 3 | not-tested | investigate | seed-triage | Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase. |
+| ManhwaNex | 81 | madara | 1 | healthy | include | health-verified | Bounded Madara mangaAjax runtime; complete Ahoge live-health validation passed. |
 | Shinobi Scans | 80 | madara | 1 | healthy | include | health-verified | Plain Madara runtime; complete Ahoge live-health validation passed and adds Italian catalog coverage. |
 | Anisa Scans | 82 | madara | 1 | healthy | include | health-verified | Bounded Madara mangaAjax runtime with declarative chapter mode; complete Ahoge live-health validation passed. |
-| Project Suki | 40 | custom | 3 | not-tested | investigate | seed-triage | Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase. |
-| ReadComicOnline | 40 | custom | 3 | not-tested | investigate | seed-triage | Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase. |
+| Anikiga | 80 | madara | 1 | healthy | include | health-verified | Bounded Madara mangaAjax runtime; complete Ahoge live-health validation passed and adds Turkish catalog coverage. |
+| Marmota | 79 | madara | 1 | healthy | include | health-verified | Bounded Madara comic-path + mangaAjax runtime; complete Ahoge live-health validation passed. |
 | Webtoon | 45 | custom/API | 3 | not-tested | investigate | seed-triage | Popular seed from the project brief, but no compatible Ahoge runtime has been verified in this phase. |
 | MadaraDex | 57 | madara | 1 | unsupported | defer-engine | family-reviewed | Current Keiyoushi madara source. High leverage once Ahoge implements the shared madara runtime. |
 | Madara Scans | 86 | mangaThemesia | 1 | healthy | include | health-verified | Shared MangaThemesia common-subset runtime with series path override; complete Ahoge live-health validation passed. |
