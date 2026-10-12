@@ -22,18 +22,20 @@ jobs:
           from pathlib import Path
           path = Path('scripts/health_mangathemesia.py')
           text = path.read_text()
-          old = '''        slug = parts[index + 1]
-        if slug and slug not in seen:
-            seen.add(slug)
-            output.append(slug)
-'''
-          new = '''        slug = parts[index + 1]
-        if slug.lower() == "list-mode":
-            continue
-        if slug and slug not in seen:
-            seen.add(slug)
-            output.append(slug)
-'''
+          old = (
+              '        slug = parts[index + 1]\n'
+              '        if slug and slug not in seen:\n'
+              '            seen.add(slug)\n'
+              '            output.append(slug)\n'
+          )
+          new = (
+              '        slug = parts[index + 1]\n'
+              '        if slug.lower() == "list-mode":\n'
+              '            continue\n'
+              '        if slug and slug not in seen:\n'
+              '            seen.add(slug)\n'
+              '            output.append(slug)\n'
+          )
           if old not in text:
               if new in text:
                   raise SystemExit(0)
