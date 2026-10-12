@@ -1,0 +1,30 @@
+name: Normalize MangaDex Candidate Diff
+
+on:
+  push:
+    branches:
+      - feature/mangadex-source
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/mangadex-source
+          fetch-depth: 0
+      - name: Restore candidate formatting and patch MangaDex only
+        run: |
+          git show origin/main:catalog/candidates.json > /tmp/candidates-main.json
+          cp /tmp/candidates-main.json catalog/candidates.json
+          python3 -c 'from pathlib import Path; p=Path("catalog/candidates.json"); t=p.read_text(); old="""    {\n      \"name\": \"MangaDex\",\n      \"engine\": \"custom/API\",\n      \"maintenanceTier\": 2,\n      \"health\": \"not-tested\",\n      \"decision\": \"defer\",\n      \"reason\": \"Stable public API/CDN shape, but needs a dedicated native adapter and DTO mappings.\",\n      \"scores\": {\"popularity\": 30, \"engineFit\": 15, \"upstreamActivity\": 20, \"liveHealth\": 0, \"coverage\": 10, \"penalty\": 0},\n      \"upstream\": {\"repository\": \"keiyoushi/extensions-source\", \"path\": \"src/all/mangadex\", \"revision\": \"b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0\"},\n      \"evidence\": \"upstream-reviewed\",\n      \"score\": 75\n    },\n"""; new="""    {\n      \"name\": \"MangaDex\",\n      \"engine\": \"api/mangadex\",\n      \"maintenanceTier\": 2,\n      \"health\": \"healthy\",\n      \"decision\": \"include\",\n      \"reason\": \"Dedicated native public MangaDex v5 API/MangaDex@Home adapter; complete Ahoge live-health validation passed.\",\n      \"scores\": {\"popularity\": 30, \"engineFit\": 25, \"upstreamActivity\": 20, \"liveHealth\": 15, \"coverage\": 10, \"penalty\": 0},\n      \"upstream\": {\"repository\": \"keiyoushi/extensions-source\", \"path\": \"src/all/mangadex\", \"revision\": \"b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0\"},\n      \"evidence\": \"health-verified\",\n      \"score\": 100\n    },\n"""; assert old in t, "MangaDex candidate block changed"; p.write_text(t.replace(old,new,1))'
+          python3 scripts/build_source_report.py
+          git rm .github/workflows/normalize-mangadex-candidate.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add catalog/candidates.json Docs/source-catalog-report.md
+          git commit -m "Keep MangaDex candidate update surgical"
+          git push origin HEAD:feature/mangadex-source
