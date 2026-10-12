@@ -1,0 +1,28 @@
+name: Stage WeebCentral Source
+
+on:
+  push:
+    branches:
+      - feature/weebcentral-source
+
+permissions:
+  contents: write
+
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/weebcentral-source
+          fetch-depth: 0
+      - name: Add canonical WeebCentral source and regenerate
+        run: |
+          python3 -c 'import json; from pathlib import Path; p=Path("catalog/sources.json"); x=json.loads(p.read_text()); sid="weebcentral-en"; entry={"packageId":"ahoge.extension.weebcentral","sourceId":sid,"name":"WeebCentral","language":"en","version":"1.0.0","contentRating":"MIXED","engine":"api","adapter":"weebcentral","baseUrl":"https://weebcentral.com","apiUrl":"https://weebcentral.com","mirrors":[],"rateLimit":1,"priority":93,"maintenanceTier":2,"enabled":True,"upstream":{"repository":"keiyoushi/extensions-source","path":"src/en/weebcentral","family":"weebcentral","revision":"b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},"overrides":{},"notes":"Fixed native public WeebCentral HTML-fragment adapter; no account/session state, browser challenge solving, or remote scripting."}; x["sources"]=[s for s in x["sources"] if s.get("sourceId")!=sid]+[entry]; p.write_text(json.dumps(x,separators=(",",":"))+"\n")'
+          python3 scripts/build_index.py
+          git rm .github/workflows/stage-weebcentral-source.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add catalog/sources.json index.json sources
+          git commit -m "Stage WeebCentral source for strict health validation"
+          git push origin HEAD:feature/weebcentral-source
