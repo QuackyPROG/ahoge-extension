@@ -71,24 +71,35 @@ def looks_like_chapter_block(block: str) -> bool:
     return any(token in lowered for token in ("chapternum", "chapterdate", "chbox", "eph-num", "lch"))
 
 
-def chapter_urls(html: str, base: str) -> list[str]:
+def chapter_probe(html: str, base: str) -> tuple[list[str], dict[str, object]]:
     output: list[str] = []
     seen: set[str] = set()
     base_host = urllib.parse.urlparse(base).hostname
     blocks = re.findall(r'(<li\b[^>]*>[\s\S]*?</li>)', html, flags=re.I)
-    for block in blocks:
-        if not looks_like_chapter_block(block):
-            continue
+    marker_blocks = [block for block in blocks if looks_like_chapter_block(block)]
+    href_hosts: list[str] = []
+    for block in marker_blocks:
         match = re.search(r'<a\b[^>]*href=["\']([^"\']+)["\']', block, flags=re.I)
         if not match:
             continue
         resolved = absolute_url(base, match.group(1))
-        if urllib.parse.urlparse(resolved).hostname != base_host:
+        host = urllib.parse.urlparse(resolved).hostname or "<none>"
+        if host not in href_hosts and len(href_hosts) < 4:
+            href_hosts.append(host)
+        if host != base_host:
             continue
         if resolved not in seen:
             seen.add(resolved)
             output.append(resolved)
-    return output
+    return output, {
+        "li": len(blocks),
+        "chapterLike": len(marker_blocks),
+        "baseHost": base_host,
+        "hrefHosts": href_hosts,
+        "hasChapterListId": bool(re.search(r'id=["\']chapterlist["\']', html, flags=re.I)),
+        "hasBxcl": "bxcl" in html.lower(),
+        "hasClClass": bool(re.search(r'class=["\'][^"\']*(?:^|\s)cl(?:\s|$)[^"\']*["\']', html, flags=re.I)),
+    }
 
 
 def reader_images(html: str, chapter_url: str) -> list[str]:
@@ -142,15 +153,23 @@ def check(entry: dict, client: legacy.HttpClient) -> list[str]:
     detail_url = f"{base}/{manga_path}/{urllib.parse.quote(slug)}/"
     detail_html = client.text(detail_url)
     title = detail_title(detail_html)
-    require(bool(title), "MangaThemesia detail did not expose a title")
+    if not title:
+        markers = {
+            "entryTitle": "entry-title" in detail_html.lower(),
+            "breadcrumb": "ts-breadcrumb" in detail_html.lower(),
+            "ogTitle": "og:title" in detail_html.lower(),
+            "chapterlist": "chapterlist" in detail_html.lower(),
+        }
+        raise legacy.HealthError(f"MangaThemesia detail did not expose a title; slug={slug!r} markers={markers}")
     checks.append("detail")
 
     search_html = client.text(list_url(base, manga_path, query=legacy.first_word(title or slug)))
     require(bool(manga_slugs(search_html, base, manga_path)), "MangaThemesia search produced no manga slugs")
     checks.append("search")
 
-    chapters = chapter_urls(detail_html, base)
-    require(bool(chapters), "MangaThemesia chapter list empty")
+    chapters, probe = chapter_probe(detail_html, base)
+    if not chapters:
+        raise legacy.HealthError(f"MangaThemesia chapter list empty; slug={slug!r} probe={probe}")
     checks.append("chapters")
 
     pages_found = False
