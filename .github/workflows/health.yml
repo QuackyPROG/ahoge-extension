@@ -1,0 +1,58 @@
+name: Scheduled Source Health
+
+on:
+  schedule:
+    - cron: "23 18 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Check enabled sources
+        id: health
+        continue-on-error: true
+        run: python scripts/healthcheck.py --strict --output health/status.json
+      - name: Upload health report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-health-${{ github.run_id }}
+          path: health/status.json
+          if-no-files-found: error
+      - name: Open or update health issue
+        if: steps.health.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="Automated source health failures"
+          body_file="$(mktemp)"
+          {
+            echo "The scheduled Ahoge source health run found one or more enabled sources that are not healthy."
+            echo
+            echo "Workflow: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+            echo
+            echo '```json'
+            cat health/status.json
+            echo '```'
+          } > "$body_file"
+          number="$(gh issue list --state open --search \"$title in:title\" --json number,title --jq '.[] | select(.title == \"'"$title"'\") | .number' | head -n1)"
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body-file "$body_file"
+          else
+            gh issue create --title "$title" --body-file "$body_file"
+          fi
+      - name: Fail when source health is not clean
+        if: steps.health.outcome == 'failure'
+        run: exit 1
