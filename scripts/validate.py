@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 from urllib.parse import urlparse
@@ -20,12 +21,19 @@ SOURCE_SCHEMA_PATH = ROOT / "schema" / "source.schema.json"
 SOURCES_DIR = ROOT / "sources"
 INDEX_PATH = ROOT / "index.json"
 
-SUPPORTED_ENGINES = {"asuraScans", "api", "mangaBox", "natsuId"}
+SUPPORTED_ENGINES = {"asuraScans", "api", "mangaBox", "natsuId", "madara"}
 SUPPORTED_API_ADAPTERS = {"ezmanhwa", "heancms"}
 ALLOWED_OVERRIDE_KEYS = {
     "chapterListPageOverride",
     "latestSortOrder",
+    "mangaPath",
+    "genrePath",
+    "chapterMode",
+    "dateFormat",
+    "filterNonMangaItems",
 }
+MADARA_CHAPTER_MODES = {"mangaPage", "adminAjax", "mangaAjax"}
+SAFE_PATH = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
 
 
 def load_json(path: Path):
@@ -75,19 +83,36 @@ def validate_runtime_source(source: dict, origin: str) -> None:
         raise ValueError(f"{origin}:{source['id']}: mangaBox requires adapter 'mangabox'")
     if engine == "asuraScans" and not source.get("apiUrl"):
         raise ValueError(f"{origin}:{source['id']}: asuraScans requires apiUrl")
-    if engine == "natsuId" and adapter is not None:
-        raise ValueError(f"{origin}:{source['id']}: natsuId does not use an adapter")
+    if engine in {"natsuId", "madara"} and adapter is not None:
+        raise ValueError(f"{origin}:{source['id']}: {engine} does not use an adapter")
 
     overrides = source.get("overrides", {})
     unknown = sorted(set(overrides) - ALLOWED_OVERRIDE_KEYS)
     if unknown:
         raise ValueError(f"{origin}:{source['id']}: unknown override keys: {unknown}")
+
     if "chapterListPageOverride" in overrides:
         page = overrides["chapterListPageOverride"]
         if not isinstance(page, int) or isinstance(page, bool) or not (1 <= page <= 9999):
             raise ValueError(f"{origin}:{source['id']}: chapterListPageOverride must be an integer 1...9999")
     if "latestSortOrder" in overrides and overrides["latestSortOrder"] not in {"asc", "desc"}:
         raise ValueError(f"{origin}:{source['id']}: latestSortOrder must be 'asc' or 'desc'")
+
+    madara_keys = {"mangaPath", "genrePath", "chapterMode", "dateFormat", "filterNonMangaItems"}
+    if engine != "madara" and set(overrides) & madara_keys:
+        raise ValueError(f"{origin}:{source['id']}: Madara overrides require engine 'madara'")
+    if engine == "madara":
+        for key in ("mangaPath", "genrePath"):
+            if key in overrides and (not isinstance(overrides[key], str) or SAFE_PATH.fullmatch(overrides[key]) is None):
+                raise ValueError(f"{origin}:{source['id']}: {key} must be a single safe path component")
+        if "chapterMode" in overrides and overrides["chapterMode"] not in MADARA_CHAPTER_MODES:
+            raise ValueError(f"{origin}:{source['id']}: unsupported Madara chapterMode {overrides['chapterMode']!r}")
+        if "dateFormat" in overrides:
+            value = overrides["dateFormat"]
+            if not isinstance(value, str) or not (1 <= len(value) <= 40) or any(token in value for token in ("\n", "\r", "\x00")):
+                raise ValueError(f"{origin}:{source['id']}: dateFormat must be a bounded plain string")
+        if "filterNonMangaItems" in overrides and not isinstance(overrides["filterNonMangaItems"], bool):
+            raise ValueError(f"{origin}:{source['id']}: filterNonMangaItems must be boolean")
 
 
 def validate_catalog(catalog: dict, catalog_validator: jsonschema.Draft202012Validator) -> None:
