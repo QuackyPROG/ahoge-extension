@@ -166,15 +166,15 @@
     },
     {
       "name": "WeebCentral",
-      "engine": "custom/API",
+      "engine": "api/weebcentral",
       "maintenanceTier": 2,
-      "health": "not-tested",
-      "decision": "defer",
-      "reason": "High-value custom KeiSource. Good candidate for a stable bespoke Swift adapter; no current Ahoge runtime.",
-      "scores": {"popularity": 30, "engineFit": 12, "upstreamActivity": 20, "liveHealth": 0, "coverage": 10, "penalty": 0},
+      "health": "healthy",
+      "decision": "include",
+      "reason": "Dedicated native public WeebCentral reading adapter; complete Ahoge live-health validation passed.",
+      "scores": {"popularity": 30, "engineFit": 25, "upstreamActivity": 20, "liveHealth": 15, "coverage": 10, "penalty": 0},
       "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/weebcentral", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
-      "evidence": "upstream-reviewed",
-      "score": 72
+      "evidence": "health-verified",
+      "score": 100
     },
     {
       "name": "MangaDex",

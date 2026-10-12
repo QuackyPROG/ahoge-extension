@@ -5,7 +5,7 @@
 ## Current result
 
 - **50 candidates evaluated/triaged**.
-- **11 enabled sources in the public index**: Asura Scans, QiScans, Omega Scans, Kiryuu, Natsu, Rawkuma, S2Manga, NekoScans, LianScans, Scythe Scans, MangaDex.
+- **12 enabled sources in the public index**: Asura Scans, QiScans, Omega Scans, Kiryuu, Natsu, Rawkuma, S2Manga, NekoScans, LianScans, Scythe Scans, MangaDex, WeebCentral.
 - **18 additional cataloged sources are tracked but disabled** after health failures/blocks or compatibility review.
 - Sources outside the canonical catalog remain investigation candidates until they have a bounded native runtime and current live-health evidence.
 - Tier-4 candidates that require browser challenges, signing, or image descrambling remain intentionally excluded.
@@ -20,6 +20,7 @@
 | api / ezmanhwa | Yes | Yes | Live health | 2 tracked / 1 enabled |
 | api / heancms | Yes | Yes | Live health | 2 tracked / 1 enabled |
 | api / mangadex | Yes | Yes | Live health | 1 tracked / 1 enabled |
+| api / weebcentral | Yes | Yes | Live health | 1 tracked / 1 enabled |
 | madara | Yes | Yes | Live health | 6 tracked / 1 enabled |
 | mangaThemesia | Yes | Yes | Live health | 10 tracked / 3 enabled |
 | fmReader | No | No | No | 0 tracked |
@@ -52,7 +53,7 @@
 | EZmanga | 57 | api/ezmanhwa | 1 | degraded | disable | health-verified | API parses, but live sample exposed no free chapter page metadata; fail closed. |
 | Ikiru | 44 | natsuId | 1 | broken | disable | health-verified | Tracked WordPress manga endpoint returned HTTP 404 in live health validation. |
 | Lua Scans | 48 | api/heancms | 1 | blocked | disable | health-verified | Runtime override is supported, but the site returns HTTP 403 to CI. |
-| WeebCentral | 72 | custom/API | 2 | not-tested | defer | upstream-reviewed | High-value custom KeiSource. Good candidate for a stable bespoke Swift adapter; no current Ahoge runtime. |
+| WeebCentral | 100 | api/weebcentral | 2 | healthy | include | health-verified | Dedicated native public WeebCentral reading adapter; complete Ahoge live-health validation passed. |
 | MangaDex | 100 | api/mangadex | 2 | healthy | include | health-verified | Dedicated native public MangaDex v5 API/MangaDex@Home adapter; complete Ahoge live-health validation passed. |
 | Kagane | 67 | custom/API | 2 | not-tested | defer | upstream-reviewed | Current custom KeiSource; attractive bespoke API candidate once shared families are covered. |
 | Atsumaru | 66 | custom/API | 2 | not-tested | defer | upstream-reviewed | Current custom KeiSource; mixed-content catalog and source-specific API logic need a native adapter. |
@@ -96,7 +97,7 @@
 1. Keep every enabled source behind the strict scheduled health gate; do not preserve a source in the public index merely because it worked previously.
 2. Continue adding Madara/MangaThemesia sites only when their current markup fits the bounded common runtimes and passes end-to-end health.
 3. FMReader remains deferred: the current upstream family is small and its active sites require substantial source-specific behavior, so it does not currently justify a broad shared runtime.
-4. MangaDex now has a dedicated native public-API adapter. Evaluate the remaining Tier-2 bespoke candidates such as WeebCentral and Kagane individually rather than adding generic remote scripting.
+4. MangaDex and WeebCentral now have dedicated bounded native adapters. Evaluate the remaining Tier-2 bespoke candidates such as Kagane and Atsumaru individually rather than adding generic remote scripting.
 5. Keep MangaFire and Comix out until there is a deliberate decision to own challenge/VRF or image-descrambling maintenance.
 
 ## Evidence notes

@@ -22,7 +22,7 @@ SOURCES_DIR = ROOT / "sources"
 INDEX_PATH = ROOT / "index.json"
 
 SUPPORTED_ENGINES = {"asuraScans", "api", "mangaBox", "natsuId", "madara", "mangaThemesia"}
-SUPPORTED_API_ADAPTERS = {"ezmanhwa", "heancms", "mangadex"}
+SUPPORTED_API_ADAPTERS = {"ezmanhwa", "heancms", "mangadex", "weebcentral"}
 ALLOWED_OVERRIDE_KEYS = {
     "chapterListPageOverride",
     "latestSortOrder",

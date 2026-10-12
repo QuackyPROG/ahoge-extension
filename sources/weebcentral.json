@@ -1,0 +1,21 @@
+{
+  "name": "WeebCentral",
+  "pkg": "ahoge.extension.weebcentral",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": 1,
+  "sources": [
+    {
+      "id": "weebcentral-en",
+      "name": "WeebCentral",
+      "lang": "en",
+      "baseUrl": "https://weebcentral.com",
+      "engine": "api",
+      "rateLimit": 1,
+      "nsfw": 1,
+      "contentRating": "MIXED",
+      "adapter": "weebcentral",
+      "apiUrl": "https://weebcentral.com"
+    }
+  ]
+}

@@ -11,6 +11,7 @@ from pathlib import Path
 import healthcheck as legacy
 import health_mangathemesia as themesia
 import health_mangadex as mangadex
+import health_weebcentral as weebcentral
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG_PATH = ROOT / "catalog" / "sources.json"
@@ -214,6 +215,8 @@ def run_source(entry: dict, client: legacy.HttpClient) -> tuple[str, list[str], 
     adapter = entry.get("adapter")
     if engine == "api" and adapter == "mangadex":
         checker = mangadex.check
+    elif engine == "api" and adapter == "weebcentral":
+        checker = weebcentral.check
     elif engine == "madara":
         checker = check_madara
     elif engine == "mangaThemesia":
