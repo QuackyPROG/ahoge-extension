@@ -21,12 +21,7 @@
       "priority": 100,
       "maintenanceTier": 2,
       "enabled": true,
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/asurascans",
-        "family": "custom",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/asurascans", "family": "custom", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "overrides": {},
       "notes": "Dedicated native Ahoge runtime; free chapters only."
     },
@@ -46,12 +41,7 @@
       "priority": 92,
       "maintenanceTier": 1,
       "enabled": true,
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/qiscans",
-        "family": "ezmanhwa",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/qiscans", "family": "ezmanhwa", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "overrides": {},
       "notes": "Shared EZManhwa runtime."
     },
@@ -71,12 +61,7 @@
       "priority": 90,
       "maintenanceTier": 1,
       "enabled": true,
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/omegascans",
-        "family": "heancms",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/omegascans", "family": "heancms", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "overrides": {},
       "notes": "Shared HeanCMS runtime; anonymous/free chapters only."
     },
@@ -91,20 +76,12 @@
       "adapter": "mangabox",
       "baseUrl": "https://www.natomanga.com",
       "apiUrl": null,
-      "mirrors": [
-        "https://www.nelomanga.net",
-        "https://www.manganato.gg"
-      ],
+      "mirrors": ["https://www.nelomanga.net", "https://www.manganato.gg"],
       "rateLimit": 2,
       "priority": 95,
       "maintenanceTier": 1,
       "enabled": false,
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/manganelo",
-        "family": "mangabox",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/manganelo", "family": "mangabox", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "overrides": {},
       "notes": "Stable Ahoge identity retained; disabled after CI health returned HTTP 403 from the primary domain on 2026-10-12."
     },
@@ -124,12 +101,7 @@
       "priority": 86,
       "maintenanceTier": 1,
       "enabled": false,
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/mangabat",
-        "family": "mangabox",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/mangabat", "family": "mangabox", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "overrides": {},
       "notes": "Disabled after CI health returned HTTP 403 during search validation on 2026-10-12."
     },
@@ -144,19 +116,12 @@
       "adapter": "mangabox",
       "baseUrl": "https://www.mangakakalot.gg",
       "apiUrl": null,
-      "mirrors": [
-        "https://www.mangakakalove.com"
-      ],
+      "mirrors": ["https://www.mangakakalove.com"],
       "rateLimit": 2,
       "priority": 90,
       "maintenanceTier": 1,
       "enabled": false,
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/mangakakalot",
-        "family": "mangabox",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/mangakakalot", "family": "mangabox", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "overrides": {},
       "notes": "Disabled after CI health returned HTTP 403 from the primary domain on 2026-10-12."
     },
@@ -176,12 +141,7 @@
       "priority": 78,
       "maintenanceTier": 1,
       "enabled": false,
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/ezmanga",
-        "family": "ezmanhwa",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/ezmanga", "family": "ezmanhwa", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "overrides": {},
       "notes": "Disabled after live validation could not find free chapter page metadata in the sampled catalog on 2026-10-12."
     },
@@ -201,15 +161,8 @@
       "priority": 82,
       "maintenanceTier": 1,
       "enabled": true,
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/id/kiryuu",
-        "family": "natsuid",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
-      "overrides": {
-        "chapterListPageOverride": 1
-      },
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/id/kiryuu", "family": "natsuid", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
+      "overrides": {"chapterListPageOverride": 1},
       "notes": "Shared NatsuId runtime with source-specific chapter page override."
     },
     {
@@ -228,12 +181,7 @@
       "priority": 66,
       "maintenanceTier": 1,
       "enabled": true,
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/id/natsu",
-        "family": "natsuid",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/id/natsu", "family": "natsuid", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "overrides": {},
       "notes": "Shared NatsuId runtime; uses the generic chapter-list page behavior."
     },
@@ -252,15 +200,10 @@
       "rateLimit": 2,
       "priority": 62,
       "maintenanceTier": 1,
-      "enabled": true,
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/id/ikiru",
-        "family": "natsuid",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "enabled": false,
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/id/ikiru", "family": "natsuid", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "overrides": {},
-      "notes": "Shared NatsuId runtime; formerly MangaTale upstream."
+      "notes": "Tracked as the former MangaTale source; disabled after its current WordPress manga endpoint returned HTTP 404 in health validation on 2026-10-12."
     },
     {
       "packageId": "ahoge.extension.rawkuma",
@@ -278,12 +221,7 @@
       "priority": 70,
       "maintenanceTier": 1,
       "enabled": true,
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/ja/rawkuma",
-        "family": "natsuid",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/ja/rawkuma", "family": "natsuid", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
       "overrides": {},
       "notes": "Shared NatsuId runtime."
     },
@@ -302,17 +240,10 @@
       "rateLimit": 2,
       "priority": 72,
       "maintenanceTier": 1,
-      "enabled": true,
-      "upstream": {
-        "repository": "keiyoushi/extensions-source",
-        "path": "src/en/luascans",
-        "family": "heancms",
-        "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"
-      },
-      "overrides": {
-        "latestSortOrder": "asc"
-      },
-      "notes": "Shared HeanCMS runtime with source-specific latest sort order."
+      "enabled": false,
+      "upstream": {"repository": "keiyoushi/extensions-source", "path": "src/en/luascans", "family": "heancms", "revision": "b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
+      "overrides": {"latestSortOrder": "asc"},
+      "notes": "Runtime override is supported, but source is disabled after CI health returned HTTP 403 from the site on 2026-10-12."
     }
   ]
 }
