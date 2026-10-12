@@ -13,9 +13,34 @@
           "lang": "en",
           "baseUrl": "https://asurascans.com",
           "engine": "asuraScans",
-          "apiUrl": "https://api.asurascans.com/api",
           "rateLimit": 1,
-          "nsfw": 0
+          "nsfw": 0,
+          "contentRating": "SAFE",
+          "apiUrl": "https://api.asurascans.com/api"
+        }
+      ]
+    },
+    {
+      "name": "Manganato",
+      "pkg": "ahoge.extension.manganato",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "manganato-en",
+          "name": "Manganato",
+          "lang": "en",
+          "baseUrl": "https://www.natomanga.com",
+          "engine": "mangaBox",
+          "rateLimit": 2,
+          "nsfw": 1,
+          "contentRating": "MIXED",
+          "adapter": "mangabox",
+          "mirrors": [
+            "https://www.nelomanga.net",
+            "https://www.manganato.gg"
+          ]
         }
       ]
     },
@@ -32,10 +57,34 @@
           "lang": "en",
           "baseUrl": "https://qimanga.com",
           "engine": "api",
-          "adapter": "ezmanhwa",
-          "apiUrl": "https://api.qimanga.com/api/v1",
           "rateLimit": 2,
-          "nsfw": 0
+          "nsfw": 0,
+          "contentRating": "SAFE",
+          "adapter": "ezmanhwa",
+          "apiUrl": "https://api.qimanga.com/api/v1"
+        }
+      ]
+    },
+    {
+      "name": "Mangakakalot",
+      "pkg": "ahoge.extension.mangakakalot",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "mangakakalot-en",
+          "name": "Mangakakalot",
+          "lang": "en",
+          "baseUrl": "https://www.mangakakalot.gg",
+          "engine": "mangaBox",
+          "rateLimit": 2,
+          "nsfw": 1,
+          "contentRating": "MIXED",
+          "adapter": "mangabox",
+          "mirrors": [
+            "https://www.mangakakalove.com"
+          ]
         }
       ]
     },
@@ -52,29 +101,74 @@
           "lang": "en",
           "baseUrl": "https://omegascans.org",
           "engine": "api",
-          "adapter": "heancms",
-          "apiUrl": "https://api.omegascans.org",
           "rateLimit": 1,
-          "nsfw": 1
+          "nsfw": 1,
+          "contentRating": "NSFW",
+          "adapter": "heancms",
+          "apiUrl": "https://api.omegascans.org"
         }
       ]
     },
     {
-      "name": "Manganato",
-      "pkg": "ahoge.extension.manganato",
+      "name": "Mangabat",
+      "pkg": "ahoge.extension.mangabat",
+      "lang": "en",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "mangabat-en",
+          "name": "Mangabat",
+          "lang": "en",
+          "baseUrl": "https://www.mangabats.com",
+          "engine": "mangaBox",
+          "rateLimit": 2,
+          "nsfw": 1,
+          "contentRating": "MIXED",
+          "adapter": "mangabox"
+        }
+      ]
+    },
+    {
+      "name": "Kiryuu",
+      "pkg": "ahoge.extension.kiryuu",
+      "lang": "id",
+      "version": "1.0.0",
+      "nsfw": 1,
+      "sources": [
+        {
+          "id": "kiryuu-id",
+          "name": "Kiryuu",
+          "lang": "id",
+          "baseUrl": "https://v7.kiryuu.to",
+          "engine": "natsuId",
+          "rateLimit": 4,
+          "nsfw": 1,
+          "contentRating": "MIXED",
+          "overrides": {
+            "chapterListPageOverride": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "EZmanga",
+      "pkg": "ahoge.extension.ezmanga",
       "lang": "en",
       "version": "1.0.0",
       "nsfw": 0,
       "sources": [
         {
-          "id": "manganato-en",
-          "name": "Manganato",
+          "id": "ezmanga-en",
+          "name": "EZmanga",
           "lang": "en",
-          "baseUrl": "https://www.natomanga.com",
-          "engine": "mangaBox",
-          "adapter": "mangabox",
+          "baseUrl": "https://ezmanga.org",
+          "engine": "api",
           "rateLimit": 2,
-          "nsfw": 0
+          "nsfw": 0,
+          "contentRating": "SAFE",
+          "adapter": "ezmanhwa",
+          "apiUrl": "https://vapi.ezmanga.org/api/v1"
         }
       ]
     }
