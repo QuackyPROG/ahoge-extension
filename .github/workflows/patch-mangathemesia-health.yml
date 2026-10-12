@@ -1,0 +1,75 @@
+name: Patch MangaThemesia Health Dispatcher
+
+on:
+  push:
+    branches:
+      - feature/mangathemesia-source-batch
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/mangathemesia-source-batch
+          fetch-depth: 0
+      - name: Patch dispatcher
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("scripts/health_all.py")
+          text = path.read_text()
+          import_old = "import healthcheck as legacy\n"
+          import_new = "import healthcheck as legacy\nimport health_mangathemesia as themesia\n"
+          if import_new not in text:
+              if import_old not in text:
+                  raise SystemExit("health_all import anchor missing")
+              text = text.replace(import_old, import_new, 1)
+
+          old = '''def run_source(entry: dict, client: legacy.HttpClient) -> tuple[str, list[str], str | None]:
+    if not entry.get("enabled"):
+        return "unsupported", [], "source disabled in canonical catalog"
+    if entry.get("engine") != "madara":
+        return legacy.run_source(entry, client)
+    try:
+        return "healthy", check_madara(entry, client), None
+    except legacy.BlockedError as exc:
+        return "blocked", [], str(exc)
+    except legacy.HealthError as exc:
+        return "broken", [], str(exc)
+    except Exception as exc:
+        return "broken", [], f"{type(exc).__name__}: {exc}"
+'''
+          new = '''def run_source(entry: dict, client: legacy.HttpClient) -> tuple[str, list[str], str | None]:
+    if not entry.get("enabled"):
+        return "unsupported", [], "source disabled in canonical catalog"
+    engine = entry.get("engine")
+    if engine not in {"madara", "mangaThemesia"}:
+        return legacy.run_source(entry, client)
+    try:
+        checks = check_madara(entry, client) if engine == "madara" else themesia.check(entry, client)
+        return "healthy", checks, None
+    except legacy.BlockedError as exc:
+        return "blocked", [], str(exc)
+    except legacy.HealthError as exc:
+        return "broken", [], str(exc)
+    except Exception as exc:
+        return "broken", [], f"{type(exc).__name__}: {exc}"
+'''
+          if new not in text:
+              if old not in text:
+                  raise SystemExit("health_all run_source anchor missing")
+              text = text.replace(old, new, 1)
+
+          path.write_text(text)
+          PY
+          git rm .github/workflows/patch-mangathemesia-health.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/health_all.py
+          git commit -m "Route MangaThemesia through unified health checks"
+          git push origin HEAD:feature/mangathemesia-source-batch
