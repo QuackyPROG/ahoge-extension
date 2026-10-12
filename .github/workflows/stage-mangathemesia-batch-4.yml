@@ -1,0 +1,62 @@
+name: Stage MangaThemesia Expansion Batch 4
+
+on:
+  push:
+    branches: [feature/mangathemesia-expansion-batch-4]
+    paths:
+      - .github/workflows/stage-mangathemesia-batch-4.yml
+
+permissions:
+  contents: write
+
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/mangathemesia-expansion-batch-4
+          fetch-depth: 0
+      - name: Add bounded MangaThemesia candidates
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('catalog/sources.json')
+          data = json.loads(path.read_text())
+          existing = {s['sourceId'] for s in data['sources']}
+          batch = [
+            {
+              "packageId":"ahoge.extension.gomanga","sourceId":"gomanga-th","name":"Go Manga","language":"th","version":"1.0.0","contentRating":"MIXED","engine":"mangaThemesia","adapter":None,"baseUrl":"https://www.go-manga.com","apiUrl":None,"mirrors":[],"rateLimit":2,"priority":62,"maintenanceTier":1,"enabled":True,
+              "upstream":{"repository":"keiyoushi/extensions-source","path":"src/th/gomanga","family":"mangathemesia","revision":"b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
+              "overrides":{},"notes":"Plain MangaThemesia common-subset candidate; staged for strict live health validation."
+            },
+            {
+              "packageId":"ahoge.extension.godhman","sourceId":"godhman-th","name":"GodhMan","language":"th","version":"1.0.0","contentRating":"NSFW","engine":"mangaThemesia","adapter":None,"baseUrl":"https://www.godhman.net","apiUrl":None,"mirrors":[],"rateLimit":2,"priority":60,"maintenanceTier":1,"enabled":True,
+              "upstream":{"repository":"keiyoushi/extensions-source","path":"src/th/godhman","family":"mangathemesia","revision":"b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
+              "overrides":{},"notes":"Plain MangaThemesia common-subset candidate; staged for strict live health validation."
+            },
+            {
+              "packageId":"ahoge.extension.kumapoi","sourceId":"kumapoi-id","name":"KumaPoi","language":"id","version":"1.0.0","contentRating":"NSFW","engine":"mangaThemesia","adapter":None,"baseUrl":"https://kumapoi.info","apiUrl":None,"mirrors":[],"rateLimit":4,"priority":61,"maintenanceTier":1,"enabled":True,
+              "upstream":{"repository":"keiyoushi/extensions-source","path":"src/id/kumapoi","family":"mangathemesia","revision":"b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
+              "overrides":{},"notes":"MangaThemesia common-subset candidate with upstream rate limit 4; staged for strict live health validation."
+            },
+            {
+              "packageId":"ahoge.extension.omicaso","sourceId":"omicaso-id","name":"Omicaso","language":"id","version":"1.0.0","contentRating":"MIXED","engine":"mangaThemesia","adapter":None,"baseUrl":"https://omicaso.org","apiUrl":None,"mirrors":[],"rateLimit":2,"priority":59,"maintenanceTier":1,"enabled":True,
+              "upstream":{"repository":"keiyoushi/extensions-source","path":"src/id/omicaso","family":"mangathemesia","revision":"b5d2cd5c3d23a3408c7daa3eb807668aedfce3e0"},
+              "overrides":{"mangaPath":"comik"},"notes":"MangaThemesia common-subset candidate using the bounded comik path override; staged for strict live health validation."
+            },
+          ]
+          for source in batch:
+              if source['sourceId'] not in existing:
+                  data['sources'].append(source)
+          path.write_text(json.dumps(data, separators=(',', ':'), ensure_ascii=False) + '\n')
+          PY
+          python3 scripts/build_index.py
+          rm .github/workflows/stage-mangathemesia-batch-4.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add catalog/sources.json index.json sources .github/workflows/stage-mangathemesia-batch-4.yml
+          git commit -m "Stage four MangaThemesia sources for health validation"
+          git push origin HEAD:feature/mangathemesia-expansion-batch-4
