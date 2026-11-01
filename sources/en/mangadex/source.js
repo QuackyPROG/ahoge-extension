@@ -27,7 +27,17 @@ function coverOf(item) {
 function titleOf(item) {
   const a = item.attributes;
   const alt = (a.altTitles || []).find((t) => t.en);
-  return localized(a.title) || (alt ? alt.en : "");
+  if (a.title && a.title.en) return a.title.en;
+  if (alt) return alt.en;
+  return Object.values(a.title || {})[0] || "";
+}
+
+const UUID = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+
+function idOf(url) {
+  const match = String(url).match(UUID);
+  if (!match) throw new Error("Invalid MangaDex id in url: " + url);
+  return match[0].toLowerCase();
 }
 
 async function list(page, extra) {
@@ -42,7 +52,7 @@ async function list(page, extra) {
   ]);
   return {
     manga: json.data.map((m) => ({ url: "/manga/" + m.id, title: titleOf(m), cover: coverOf(m) })),
-    hasNextPage: json.offset + json.limit < json.total,
+    hasNextPage: json.offset + json.data.length < Math.min(json.total, 10000),
   };
 }
 
@@ -52,7 +62,7 @@ source = {
   search: (q, page) => list(page, [["title", q], ["order[relevance]", "desc"]]),
 
   async details(url) {
-    const id = url.split("/").pop();
+    const id = idOf(url);
     const json = await api("/manga/" + id, [["includes[]", "cover_art"], ["includes[]", "author"], ["includes[]", "artist"]]);
     const m = json.data;
     const names = (type) => related(m, type).map((r) => r.attributes.name).join(", ");
@@ -68,7 +78,7 @@ source = {
   },
 
   async chapters(url) {
-    const id = url.split("/").pop();
+    const id = idOf(url);
     const chapters = [];
     let offset = 0;
     for (;;) {
@@ -91,19 +101,19 @@ source = {
         chapters.push({
           url: "/chapter/" + ch.id,
           name: a.title ? label + " - " + a.title : label,
-          number: a.chapter ? Number(a.chapter) : -1,
+          number: a.chapter && Number.isFinite(Number(a.chapter)) ? Number(a.chapter) : -1,
           date: a.publishAt ? Date.parse(a.publishAt) : null,
           scanlator: group ? group.attributes.name : null,
         });
       }
-      offset = json.offset + json.limit;
+      offset = json.offset + json.data.length;
       if (offset >= json.total || json.data.length === 0) break;
     }
     return chapters;
   },
 
   async pages(url) {
-    const id = url.split("/").pop();
+    const id = idOf(url);
     const res = ensureOk(await http.get(API + "/at-home/server/" + id, { headers: HEADERS }));
     const json = JSON.parse(res.body);
     return json.chapter.data.map((file) => ({ url: json.baseUrl + "/data/" + json.chapter.hash + "/" + file, headers: {} }));
