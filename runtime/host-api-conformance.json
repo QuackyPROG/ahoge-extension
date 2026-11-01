@@ -1,0 +1,25 @@
+{
+  "baseUrl": "https://example.com/manga/one/",
+  "cases": [
+    { "name": "select count", "html": "<ul><li>a</li><li>b</li></ul>", "select": "li", "op": "count", "expected": 2 },
+    { "name": "text collapses whitespace", "html": "<div id=x>  Hello \n  <b>World</b>  </div>", "select": "#x", "op": "text", "expected": "Hello World" },
+    { "name": "text separates blocks", "html": "<div id=x><p>One</p><p>Two</p></div>", "select": "#x", "op": "text", "expected": "One Two" },
+    { "name": "text skips script", "html": "<div id=x>A<script>var z=1;</script>B</div>", "select": "#x", "op": "text", "expected": "AB" },
+    { "name": "text decodes entities", "html": "<p id=x>Tom &amp; Jerry</p>", "select": "#x", "op": "text", "expected": "Tom & Jerry" },
+    { "name": "ownText", "html": "<h1 id=x>Title <span>Badge</span></h1>", "select": "#x", "op": "ownText", "expected": "Title" },
+    { "name": "attr present", "html": "<a id=x href='/a'>a</a>", "select": "#x", "op": "attr", "arg": "href", "expected": "/a" },
+    { "name": "attr missing", "html": "<a id=x>a</a>", "select": "#x", "op": "attr", "arg": "title", "expected": "" },
+    { "name": "absUrl relative", "html": "<a id=x href='../two/'>a</a>", "select": "#x", "op": "absUrl", "arg": "href", "expected": "https://example.com/manga/two/" },
+    { "name": "absUrl root", "html": "<img id=x src='/c.jpg'>", "select": "#x", "op": "absUrl", "arg": "src", "expected": "https://example.com/c.jpg" },
+    { "name": "absUrl protocol-relative", "html": "<img id=x src='//cdn.example.net/c.jpg'>", "select": "#x", "op": "absUrl", "arg": "src", "expected": "https://cdn.example.net/c.jpg" },
+    { "name": "absUrl missing", "html": "<img id=x>", "select": "#x", "op": "absUrl", "arg": "src", "expected": "" },
+    { "name": "selectFirst none", "html": "<div></div>", "select": "span", "op": "firstIsNull", "expected": true },
+    { "name": "contains pseudo", "html": "<div class=h>Status</div><div class=h>Type</div>", "select": "div.h:contains(Type)", "op": "text", "expected": "Type" },
+    { "name": "has pseudo", "html": "<li><a>x</a></li><li>y</li>", "select": "li:has(a)", "op": "count", "expected": 1 },
+    { "name": "adjacent sibling", "html": "<div class=k>Status</div><div class=v>Ongoing</div>", "select": "div.k:contains(Status) + div", "op": "text", "expected": "Ongoing" },
+    { "name": "select includes self", "html": "<div class=r><img id=a src='/1.jpg'><img id=b src='/2.jpg'></div>", "select": ".r img", "op": "selfSelectCount", "arg": "img", "expected": 1 },
+    { "name": "data of script", "html": "<script id=x>var manga = {\"a\":1};</script>", "select": "#x", "op": "data", "expected": "var manga = {\"a\":1};" },
+    { "name": "html inner", "html": "<div id=x><b>y</b></div>", "select": "#x", "op": "html", "expected": "<b>y</b>" },
+    { "name": "tagName", "html": "<section id=x></section>", "select": "#x", "op": "tagName", "expected": "section" }
+  ]
+}
