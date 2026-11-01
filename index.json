@@ -33,6 +33,22 @@
         "status": "unknown",
         "checkedAt": null
       }
+    },
+    {
+      "id": "en.qimanga",
+      "name": "Qi Manga",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://qimanga.com",
+      "icon": "icons/en.qimanga.png",
+      "script": "dist/en.qimanga.js",
+      "sha256": "7f79fd4071945802383afcbdd90fc8517151e0b5aff974cde269e0afde5a8fae",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
     }
   ]
 }
