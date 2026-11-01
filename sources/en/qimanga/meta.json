@@ -1,0 +1,8 @@
+{
+  "id": "en.qimanga",
+  "name": "Qi Manga",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://qimanga.com"
+}
