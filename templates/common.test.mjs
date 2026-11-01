@@ -112,3 +112,9 @@ test("parseDate returns null for unsupported or invalid input", () => {
   assert.equal(ctx.parseDate("2024/01/05", NOW), null);
   assert.equal(ctx.parseDate(null, NOW), null);
 });
+
+test("imageUrl ignores empty or blank attributes (absUrl of an empty attribute is the base url)", () => {
+  const doc = parse("<img id=a data-src='' data-lazy-src='  ' src='/real.jpg'><img id=b data-src=''>", "https://a.com/x/");
+  assert.equal(ctx.imageUrl(doc.selectFirst("#a")), "https://a.com/real.jpg");
+  assert.equal(ctx.imageUrl(doc.selectFirst("#b")), "");
+});

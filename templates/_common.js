@@ -79,6 +79,7 @@ function chapterNumber(name) {
 function imageUrl(element) {
   if (!element) return "";
   for (const name of ["data-src", "data-lazy-src", "data-cfsrc", "src"]) {
+    if (!element.attr(name).trim()) continue; // absUrl of an empty attribute is the base url
     const value = element.absUrl(name);
     if (value && !/^\s*data:/i.test(value)) return value.trim();
   }
