@@ -56,7 +56,7 @@ test("popular posts madara_load_more sorted by views", async () => {
     { url: "/manga/alpha/", title: "Alpha", cover: `${BASE}/wp-content/a.jpg` },
     { url: "/manga/beta/", title: "Beta", cover: `${BASE}/wp-content/b.jpg` },
   ]);
-  assert.equal(result.hasNextPage, false);
+  assert.equal(result.hasNextPage, true);
   assert.equal(calls[0].method, "POST");
   assert.match(calls[0].body, /action=madara_load_more/);
   assert.match(calls[0].body, /page=0/);
@@ -124,4 +124,118 @@ test("pages custom selector matching img directly", async () => {
 test("protected chapters raise a clear error", async () => {
   const src = makeSource({ baseUrl: BASE }, { [`${BASE}/c/1/`]: `<script id="chapter-protector-data">x</script>` });
   await assert.rejects(src.pages("/c/1/"), /protected/i);
+});
+
+const AJAX = `${BASE}/wp-admin/admin-ajax.php`;
+
+test("hasNextPage is true for a full page even when the count differs from pageSize", async () => {
+  const cards = Array.from(
+    { length: 30 },
+    (_, i) => `<div class="page-item-detail"><div class="post-title"><h3><a href="${BASE}/manga/m${i}/">M${i}</a></h3></div></div>`,
+  ).join("");
+  const src = makeSource({ baseUrl: BASE }, { [AJAX]: cards });
+  const result = await src.popular(1);
+  assert.equal(result.manga.length, 30);
+  assert.equal(result.hasNextPage, true);
+});
+
+test("hasNextPage is false for an empty result or a .no-posts marker", async () => {
+  const empty = makeSource({ baseUrl: BASE }, { [AJAX]: "" });
+  assert.equal((await empty.popular(1)).hasNextPage, false);
+  const marked = makeSource({ baseUrl: BASE }, { [AJAX]: ARCHIVE + `<div class="no-posts">No more</div>` });
+  const result = await marked.popular(1);
+  assert.equal(result.manga.length, 2);
+  assert.equal(result.hasNextPage, false);
+});
+
+test("archive link falls back to h3 a, h5 a, then any a[href]", async () => {
+  const html =
+    `<div class="page-item-detail"><h3><a href="${BASE}/manga/x/">X</a></h3></div>` +
+    `<div class="page-item-detail"><h5><a href="${BASE}/manga/y/">Y</a></h5></div>` +
+    `<div class="page-item-detail"><span><a href="${BASE}/manga/z/">Z</a></span></div>`;
+  const src = makeSource({ baseUrl: BASE }, { [AJAX]: html });
+  const result = await src.popular(1);
+  assert.deepEqual(
+    result.manga.map((m) => [m.url, m.title]),
+    [["/manga/x/", "X"], ["/manga/y/", "Y"], ["/manga/z/", "Z"]],
+  );
+});
+
+test("archive results are deduped by url in order when cards are nested", async () => {
+  const html =
+    `<div class="c-tabs-item__content"><div class="page-item-detail"><div class="post-title"><h3><a href="${BASE}/manga/a/">A</a></h3></div></div></div>` +
+    `<div class="page-item-detail"><div class="post-title"><h3><a href="${BASE}/manga/b/">B</a></h3></div></div>`;
+  const src = makeSource({ baseUrl: BASE }, { [AJAX]: html });
+  const result = await src.popular(1);
+  assert.deepEqual(result.manga.map((m) => m.url), ["/manga/a/", "/manga/b/"]);
+});
+
+test("chapter date skips a non-date img alt and uses the next candidate", async () => {
+  const html = `<ul><li class="wp-manga-chapter"><a href="${BASE}/manga/alpha/chapter-3/">Chapter 3</a><img alt="New"><span class="chapter-release-date"><a title="3 hours ago">3 hours ago</a></span></li></ul>`;
+  const src = makeSource({ baseUrl: BASE }, { [`${BASE}/manga/alpha/ajax/chapters/`]: html });
+  const before = Date.now();
+  const [chapter] = await src.chapters("/manga/alpha/");
+  assert.notEqual(chapter.date, null);
+  assert.ok(Math.abs(chapter.date - (before - 3 * 3600000)) < 60000);
+});
+
+test("chapter date falls back to the chapterDateSelector text", async () => {
+  const html = `<ul><li class="wp-manga-chapter"><a href="${BASE}/manga/alpha/chapter-3/">Chapter 3</a><img alt="New"><span class="chapter-release-date"><i>January 5, 2024</i></span></li></ul>`;
+  const src = makeSource({ baseUrl: BASE }, { [`${BASE}/manga/alpha/ajax/chapters/`]: html });
+  const [chapter] = await src.chapters("/manga/alpha/");
+  assert.equal(chapter.date, Date.UTC(2024, 0, 5));
+});
+
+test("chapter name ignores badge spans inside the link", async () => {
+  const html = `<ul><li class="wp-manga-chapter"><a href="${BASE}/manga/alpha/chapter-3/">Chapter 3 <span class="badge">NEW</span></a></li></ul>`;
+  const src = makeSource({ baseUrl: BASE }, { [`${BASE}/manga/alpha/ajax/chapters/`]: html });
+  const [chapter] = await src.chapters("/manga/alpha/");
+  assert.equal(chapter.name, "Chapter 3");
+  assert.equal(chapter.number, 3);
+});
+
+test("adminAjax prefers the #manga-chapters-holder id over a decoy data-post-id", async () => {
+  const calls = [];
+  const page = `<div class="item-thumb" data-post-id="999"></div><div id="manga-chapters-holder" data-id="42"></div>`;
+  const src = makeSource({ baseUrl: BASE, chapterMode: "adminAjax" }, { [`${BASE}/manga/alpha/`]: page, [AJAX]: CHAPTERS }, calls);
+  assert.equal((await src.chapters("/manga/alpha/")).length, 2);
+  const post = calls.find((c) => c.method === "POST");
+  assert.match(post.body, /manga=42(&|$)/);
+  assert.doesNotMatch(post.body, /999/);
+});
+
+test("adminAjax falls back to [data-post-id]", async () => {
+  const calls = [];
+  const src = makeSource(
+    { baseUrl: BASE, chapterMode: "adminAjax" },
+    { [`${BASE}/manga/alpha/`]: `<div data-post-id="7"></div>`, [AJAX]: CHAPTERS },
+    calls,
+  );
+  await src.chapters("/manga/alpha/");
+  assert.match(calls.find((c) => c.method === "POST").body, /manga=7(&|$)/);
+});
+
+test("pages are deduped by url in order when selectors match nested elements", async () => {
+  const html = `<div class="reading-content"><div class="text-left"><div class="page-break"><img src="${BASE}/p1.jpg"></div><div class="page-break"><img src="${BASE}/p2.jpg"></div></div></div>`;
+  const src = makeSource({ baseUrl: BASE }, { [`${BASE}/c/1/`]: html });
+  assert.deepEqual((await src.pages("/c/1/")).map((p) => p.url), [`${BASE}/p1.jpg`, `${BASE}/p2.jpg`]);
+  const direct = makeSource({ baseUrl: BASE, pageSelector: ".text-left > .page-break > img" }, { [`${BASE}/c/1/`]: html });
+  assert.deepEqual((await direct.pages("/c/1/")).map((p) => p.url), [`${BASE}/p1.jpg`, `${BASE}/p2.jpg`]);
+});
+
+test("single-pager reload does not append a second style= parameter", async () => {
+  const calls = [];
+  const src = makeSource(
+    { baseUrl: BASE },
+    {
+      [`${BASE}/c/1/?style=paged`]: `<div id="single-pager"></div>`,
+      [`${BASE}/c/1/?style=list`]: READER,
+      [`${BASE}/c/1/`]: `<div id="single-pager"></div>`,
+    },
+    calls,
+  );
+  assert.equal((await src.pages("/c/1/?style=paged")).length, 2);
+  assert.ok(calls.every((c) => (c.url.match(/style=/g) || []).length <= 1));
+  assert.equal((await src.pages("/c/1/")).length, 2);
+  assert.equal(calls[calls.length - 1].url, `${BASE}/c/1/?style=list`);
 });

@@ -35,16 +35,27 @@ function Madara(config) {
     return html.parse(res.body, res.url);
   }
 
+  function dedupeBy(items, keyOf) {
+    const seen = new Set();
+    return items.filter((item) => {
+      const key = keyOf(item);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
   function parseArchive(doc) {
-    return doc
+    const items = doc
       .select(c.archiveSelector)
       .map((el) => {
-        const link = el.selectFirst(c.archiveUrlSelector);
+        const link = el.selectFirst(c.archiveUrlSelector) || el.selectFirst("h3 a, h5 a") || el.selectFirst("a[href]");
         const href = link ? link.absUrl("href") : "";
         if (!href) return null;
         return { url: pathOf(href), title: link.text(), cover: imageUrl(el.selectFirst("img")) };
       })
       .filter(Boolean);
+    return dedupeBy(items, (m) => m.url);
   }
 
   async function loadMore(page, vars) {
@@ -64,8 +75,9 @@ function Madara(config) {
       body["vars[meta_query][0][value]"] = "manga";
     }
     Object.assign(body, vars);
-    const manga = parseArchive(await postDocument(base + "/wp-admin/admin-ajax.php", body));
-    return { manga, hasNextPage: manga.length === c.pageSize };
+    const doc = await postDocument(base + "/wp-admin/admin-ajax.php", body);
+    const manga = parseArchive(doc);
+    return { manga, hasNextPage: manga.length > 0 && !doc.selectFirst(".no-posts") };
   }
 
   const sortBy = (key) => ({ "vars[orderby]": "meta_value_num", "vars[meta_key]": key, "vars[order]": "DESC" });
@@ -80,9 +92,18 @@ function Madara(config) {
         const imgAlt = el.selectFirst("img:not(.thumb)");
         const titled = el.selectFirst("span a");
         const dated = el.selectFirst(c.chapterDateSelector);
-        const dateText = (imgAlt && imgAlt.attr("alt")) || (titled && titled.attr("title")) || (dated && dated.text()) || "";
-        const name = link.text();
-        return { url: pathOf(href), name, number: chapterNumber(name), date: parseDate(dateText), scanlator: null };
+        const candidates = [imgAlt && imgAlt.attr("alt"), titled && titled.attr("title"), dated && dated.text()];
+        let date = null;
+        for (const candidate of candidates) {
+          if (!candidate) continue;
+          const parsed = parseDate(candidate);
+          if (parsed !== null) {
+            date = parsed;
+            break;
+          }
+        }
+        const name = link.ownText() || link.text();
+        return { url: pathOf(href), name, number: chapterNumber(name), date, scanlator: null };
       })
       .filter(Boolean);
   }
@@ -120,8 +141,8 @@ function Madara(config) {
       if (c.chapterMode === "mangaPage") return parseChapters(await getDocument(base + url));
       if (c.chapterMode === "adminAjax") {
         const page = await getDocument(base + url);
-        const holder = page.selectFirst("[data-post-id], #manga-chapters-holder[data-id]");
-        const id = holder ? holder.attr("data-post-id") || holder.attr("data-id") : "";
+        const holder = page.selectFirst("#manga-chapters-holder[data-id]");
+        const id = holder ? holder.attr("data-id") : (page.selectFirst("[data-post-id]") || { attr: () => "" }).attr("data-post-id");
         if (!id) throw new Error("Madara post id not found on " + url);
         return parseChapters(await postDocument(base + "/wp-admin/admin-ajax.php", { action: "manga_get_chapters", manga: id }));
       }
@@ -130,13 +151,18 @@ function Madara(config) {
 
     async pages(url) {
       let doc = await getDocument(base + url);
-      if (doc.selectFirst("#single-pager")) doc = await getDocument(base + url + (url.includes("?") ? "&" : "?") + "style=list");
+      if (doc.selectFirst("#single-pager")) {
+        let listUrl;
+        if (/[?&]style=/.test(url)) listUrl = url.replace(/([?&]style=)[^&#]*/, "$1list");
+        else listUrl = url + (url.includes("?") ? "&" : "?") + "style=list";
+        if (listUrl !== url) doc = await getDocument(base + listUrl);
+      }
       if (doc.selectFirst("#chapter-protector-data")) throw new Error("This chapter is protected (chapter-protector) and is not supported yet");
-      return doc
+      const urls = doc
         .select(c.pageSelector)
-        .map((el) => imageUrl(el.tagName() === "img" ? el : el.selectFirst("img")))
-        .filter(Boolean)
-        .map((u) => ({ url: u, headers: { Referer: base + "/" } }));
+        .map((el) => imageUrl(el.selectFirst("img")))
+        .filter(Boolean);
+      return dedupeBy(urls, (u) => u).map((u) => ({ url: u, headers: { Referer: base + "/" } }));
     },
   };
 }
