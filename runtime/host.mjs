@@ -8,7 +8,7 @@ export const DEFAULT_USER_AGENT =
 
 const METHODS = ["popular", "latest", "search", "details", "chapters", "pages"];
 
-export function loadSource(script, { fetchImpl = fetch, userAgent = DEFAULT_USER_AGENT, log = () => {} } = {}) {
+export function loadSource(script, { fetchImpl = fetch, userAgent = DEFAULT_USER_AGENT, log = () => {}, callTimeoutMs = 30000 } = {}) {
   const context = vm.createContext({
     http: createHttp({ userAgent, fetchImpl }),
     html: { parse },
@@ -23,7 +23,16 @@ export function loadSource(script, { fetchImpl = fetch, userAgent = DEFAULT_USER
 
   const call = async (name, args) => {
     if (typeof source[name] !== "function") throw new Error(`Source does not implement ${name}`);
-    const result = await source[name](...args);
+    let timer;
+    const timeout = new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error(`Source call ${name} timed out after ${callTimeoutMs} ms`)), callTimeoutMs);
+    });
+    let result;
+    try {
+      result = await Promise.race([Promise.resolve().then(() => source[name](...args)), timeout]);
+    } finally {
+      clearTimeout(timer);
+    }
     return JSON.parse(JSON.stringify(result ?? null));
   };
 

@@ -52,3 +52,13 @@ test("atob and btoa exist", async () => {
   const src = loadSource(`var source = { async popular() { return { manga: [], hasNextPage: atob(btoa("hi")) === "hi" }; } };`);
   assert.equal((await src.popular(1)).hasNextPage, true);
 });
+
+test("a call that never settles rejects with a timeout and does not hang", async () => {
+  const src = loadSource(`var source = { popular() { return new Promise(function () {}); } };`, { callTimeoutMs: 20 });
+  await assert.rejects(src.popular(1), /timed out/);
+});
+
+test("fast calls are not affected by the timeout", async () => {
+  const src = loadSource(`var source = { async popular() { return { manga: [], hasNextPage: false }; } };`, { callTimeoutMs: 20 });
+  assert.deepEqual(await src.popular(1), { manga: [], hasNextPage: false });
+});
