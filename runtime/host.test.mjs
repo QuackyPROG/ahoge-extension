@@ -62,3 +62,20 @@ test("fast calls are not affected by the timeout", async () => {
   const src = loadSource(`var source = { async popular() { return { manga: [], hasNextPage: false }; } };`, { callTimeoutMs: 20 });
   assert.deepEqual(await src.popular(1), { manga: [], hasNextPage: false });
 });
+
+test("docs state the user agent and timeouts", async () => {
+  const { readFileSync } = await import("node:fs");
+  const { DEFAULT_USER_AGENT } = await import("./host.mjs");
+  const doc = readFileSync(new URL("../docs/HOST_API.md", import.meta.url), "utf8");
+  assert.ok(doc.includes(DEFAULT_USER_AGENT));
+  assert.ok(doc.includes("**5 seconds**") && doc.includes("**30 second**"));
+});
+
+test("atob is forgiving-base64 and btoa rejects characters above U+00FF", async () => {
+  const src = loadSource(String.raw`var source = { async popular() {
+    var err = function (f) { try { f(); return "none"; } catch (e) { return e.name; } };
+    return { manga: [], hasNextPage: false, a: atob(" YW Jj\n"), b: atob("YQ"), c: atob("YQ=="), bad: err(function () { atob("Y"); }), wide: err(function () { btoa("\u0100"); }), e: btoa("\u00e9") };
+  } };`);
+  const r = await src.popular(1);
+  assert.deepEqual([r.a, r.b, r.c, r.bad, r.wide, r.e], ["abc", "a", "a", "InvalidCharacterError", "InvalidCharacterError", "6Q=="]);
+});

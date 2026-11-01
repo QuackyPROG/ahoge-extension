@@ -96,11 +96,11 @@ const PSEUDOS = {
 // Selector features Jsoup treats differently from cheerio (or does not have). The exact rule is in
 // docs/HOST_API.md; the scan is over the raw selector string, case-insensitively, with no quote or
 // escape awareness.
-const FORBIDDEN = [
-  [/:(?:eq|lt|gt)\(/i, "jQuery positional pseudo; use :nth-child()/:nth-of-type() or index the result array"],
-  [/:(?:first|last|even|odd)(?![-A-Za-z0-9_])/i, "jQuery positional pseudo; use :first-child/:last-child/:nth-child() or index the result array"],
-  [/:(?:matches|matchesown|matchestext|matcheswholetext|matcheswholeowntext|containsdata|containswholetext|containswholeowntext)\(/i, "Jsoup-only pseudo; filter in JavaScript instead"],
-  [/:contains(?:own)?\(\s*["']/i, "quoted argument; write the text unquoted"],
+export const FORBIDDEN = [
+  [/:(eq|lt|gt)\(/i, "jQuery positional pseudo; use :nth-child()/:nth-of-type() or index the result array"],
+  [/:(first|last|even|odd)(?![-A-Za-z0-9_])/i, "jQuery positional pseudo; use :first-child/:last-child/:nth-child() or index the result array"],
+  [/:(matches|matchesOwn|matchesText|matchesWholeText|matchesWholeOwnText|containsData|containsWholeText|containsWholeOwnText)\(/i, "Jsoup-only pseudo; filter in JavaScript instead"],
+  [/:contains(Own)?\(\s*["']/i, "quoted argument; write the text unquoted"],
 ];
 
 export function assertSupportedSelector(css) {

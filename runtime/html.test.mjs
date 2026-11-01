@@ -1,8 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { parse, assertSupportedSelector } from "./html.mjs";
+import { parse, assertSupportedSelector, BLOCK_TAGS, FORBIDDEN } from "./html.mjs";
 
+const hostApiDoc = readFileSync(new URL("../docs/HOST_API.md", import.meta.url), "utf8");
 const conformance = JSON.parse(readFileSync(new URL("./host-api-conformance.json", import.meta.url), "utf8"));
 
 export function runCase(doc, c) {
@@ -57,4 +58,13 @@ test("assertSupportedSelector error text names the feature", () => {
 test("noscript is parsed with scripting disabled", () => {
   const doc = parse("<div><noscript><img src='/a.jpg'></noscript></div>", "https://e.com/");
   assert.equal(doc.select("noscript > img").length, 1);
+});
+
+test("docs state the exact BLOCK_TAGS list", () => {
+  assert.ok(hostApiDoc.includes([...BLOCK_TAGS].join(", ")), "docs/HOST_API.md must list BLOCK_TAGS in order");
+});
+
+test("docs state the forbidden selector rule", () => {
+  assert.equal(FORBIDDEN.length, 4);
+  for (const [pattern] of FORBIDDEN) assert.ok(hostApiDoc.includes(pattern.source), pattern.source);
 });
