@@ -6,13 +6,13 @@
       "id": "en.mangadex",
       "name": "MangaDex",
       "lang": "en",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://mangadex.org",
       "icon": "icons/en.mangadex.png",
       "script": "dist/en.mangadex.js",
-      "sha256": "2ebcdeac5ae35886b366aa74920157b5bffdba709e549b1c0d268f05caf40a22",
+      "sha256": "3b3eca91aa4b5613c32c85d5c54f898fd469d7b81b12f8a80e03579305827a70",
       "health": {
         "status": "unknown",
         "checkedAt": null
@@ -22,13 +22,13 @@
       "id": "en.manhuaplus",
       "name": "ManhuaPlus",
       "lang": "en",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://manhuaplus.com",
       "icon": "icons/en.manhuaplus.png",
       "script": "dist/en.manhuaplus.js",
-      "sha256": "f10f3b39019e7d0e12ed8e1c123b4c9f6f1726f527181e2a947c881dc64bc036",
+      "sha256": "03b40f232c1d0e3d9d79b1bb9c1e1c2381e8e47f5ff85ecf2658e9a10c885b1e",
       "health": {
         "status": "unknown",
         "checkedAt": null

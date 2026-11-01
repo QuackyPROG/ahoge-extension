@@ -1,5 +1,5 @@
 var source = null;
-const META = {"id":"en.manhuaplus","name":"ManhuaPlus","lang":"en","version":"1.0.1","nsfw":false,"baseUrl":"https://manhuaplus.com","template":"madara","upstream":"src/en/manhuaplus"};
+const META = {"id":"en.manhuaplus","name":"ManhuaPlus","lang":"en","version":"1.1.0","nsfw":false,"baseUrl":"https://manhuaplus.com","template":"madara","upstream":"src/en/manhuaplus"};
 // Helpers available to every source. Plain functions: no URL/fetch exist in the host.
 
 function pathOf(url) {
@@ -213,10 +213,112 @@ function Madara(config) {
       .filter(Boolean);
   }
 
+  // Filters mirror the theme's advanced search form; genres and statuses are read from the site's own form.
+  const ORDER = [
+    { value: "", label: "Relevance" },
+    { value: "latest", label: "Latest" },
+    { value: "alphabet", label: "A-Z" },
+    { value: "rating", label: "Rating" },
+    { value: "trending", label: "Trending" },
+    { value: "views", label: "Most views" },
+    { value: "new-manga", label: "New" },
+  ];
+  const STATUSES = [
+    { value: "on-going", label: "Ongoing" },
+    { value: "end", label: "Completed" },
+    { value: "canceled", label: "Cancelled" },
+    { value: "on-hold", label: "On hold" },
+  ];
+  let filterCache = null;
+
+  function formOptions(doc, name) {
+    return doc
+      .select("input")
+      .filter((input) => input.attr("name") === name && input.attr("value"))
+      .map((input) => {
+        const id = input.attr("id");
+        const label = id ? doc.selectFirst('label[for="' + id + '"]') : null;
+        return { value: input.attr("value"), label: (label && label.text()) || input.attr("value") };
+      });
+  }
+
+  async function filters() {
+    if (filterCache) return filterCache;
+    let genres = [];
+    let statuses = STATUSES;
+    let loaded = false;
+    try {
+      const doc = await getDocument(base + "/?s=&post_type=wp-manga");
+      genres = dedupeBy(formOptions(doc, "genre[]"), (o) => o.value);
+      const found = formOptions(doc, "status[]");
+      if (found.length) statuses = found;
+      loaded = true;
+    } catch (e) {
+      // Browse still works with the fixed filters; the genre list is fetched again next time.
+    }
+    const list = [
+      { type: "select", key: "orderby", name: "Order by", options: ORDER },
+      { type: "group", key: "status", name: "Status", filters: statuses.map((o) => ({ type: "checkbox", key: o.value, name: o.label })) },
+      { type: "text", key: "author", name: "Author" },
+      { type: "text", key: "artist", name: "Artist" },
+      { type: "text", key: "year", name: "Year of release" },
+      {
+        type: "select",
+        key: "adult",
+        name: "Adult content",
+        options: [{ value: "", label: "All" }, { value: "0", label: "None" }, { value: "1", label: "Only" }],
+      },
+    ];
+    if (genres.length) {
+      list.push(
+        { type: "group", key: "genres", name: "Genres", filters: genres.map((o) => ({ type: "checkbox", key: o.value, name: o.label })) },
+        {
+          type: "select",
+          key: "genreMode",
+          name: "Genres condition",
+          options: [{ value: "", label: "Any selected genre (OR)" }, { value: "1", label: "All selected genres (AND)" }],
+        },
+      );
+    }
+    if (loaded) filterCache = list;
+    return list;
+  }
+
+  const checked = (group) => Object.keys(group || {}).filter((k) => group[k] === true);
+
+  // The advanced search page, used once any filter differs from its default.
+  function searchPairs(q, f) {
+    const pairs = [["s", q], ["post_type", "wp-manga"]];
+    for (const g of checked(f.genres)) pairs.push(["genre[]", g]);
+    if (f.genreMode) pairs.push(["op", f.genreMode]);
+    if (f.author) pairs.push(["author", f.author]);
+    if (f.artist) pairs.push(["artist", f.artist]);
+    if (f.year) pairs.push(["release", f.year]);
+    if (f.adult) pairs.push(["adult", f.adult]);
+    for (const s of checked(f.status)) pairs.push(["status[]", s]);
+    if (f.orderby) pairs.push(["m_orderby", f.orderby]);
+    return pairs;
+  }
+
+  function hasFilters(f) {
+    return Boolean(
+      f && (checked(f.genres).length || checked(f.status).length || f.author || f.artist || f.year || f.adult || f.orderby),
+    );
+  }
+
+  async function search(q, page, f) {
+    if (!hasFilters(f)) return loadMore(page, { "vars[s]": q });
+    const path = page > 1 ? "/page/" + page + "/" : "/";
+    const doc = await getDocument(base + path + "?" + query(searchPairs(q, f)));
+    const manga = parseArchive(doc);
+    return { manga, hasNextPage: manga.length > 0 && Boolean(doc.selectFirst("a.nextpostslink, .nav-previous a, a.next.page-numbers")) };
+  }
+
   return {
     popular: (page) => loadMore(page, sortBy("_wp_manga_views")),
     latest: (page) => loadMore(page, sortBy("_latest_update")),
-    search: (q, page) => loadMore(page, { "vars[s]": q }),
+    search,
+    filters,
 
     async details(url) {
       const doc = await getDocument(base + url);
