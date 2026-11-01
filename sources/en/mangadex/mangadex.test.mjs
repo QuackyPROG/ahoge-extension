@@ -11,12 +11,14 @@ const root = join(here, "..", "..", "..");
 function makeSource(handler) {
   const { script } = bundleSource(root, here);
   const calls = [];
-  const fetchImpl = async (url) => {
+  const headersSeen = [];
+  const fetchImpl = async (url, init) => {
     calls.push(url);
+    headersSeen.push(init.headers);
     const body = handler(url);
     return new Response(JSON.stringify(body ?? { result: "error" }), { status: body ? 200 : 404 });
   };
-  return { src: loadSource(script, { fetchImpl }), calls };
+  return { src: loadSource(script, { fetchImpl }), calls, headersSeen };
 }
 
 const manga = (id, title, fileName) => ({
@@ -89,4 +91,17 @@ test("pages come from at-home server", async () => {
     { url: "https://node.test/data/h/1.png", headers: {} },
     { url: "https://node.test/data/h/2.png", headers: {} },
   ]);
+});
+
+test("requests use a non-browser User-Agent (MangaDex bot-challenges browser UAs)", async () => {
+  const { src, headersSeen } = makeSource((url) =>
+    url.endsWith("/at-home/server/c1") ? { result: "ok", baseUrl: "https://n.test", chapter: { hash: "h", data: [] } } : { result: "ok", data: [], limit: 20, offset: 0, total: 0 },
+  );
+  await src.popular(1);
+  await src.pages("/chapter/c1");
+  assert.equal(headersSeen.length, 2);
+  for (const h of headersSeen) {
+    assert.match(h["User-Agent"], /^Ahoge\//);
+    assert.doesNotMatch(h["User-Agent"], /Mozilla/);
+  }
 });

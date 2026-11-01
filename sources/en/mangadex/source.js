@@ -1,10 +1,12 @@
 // MangaDex public API (https://api.mangadex.org/docs/). English, safe + suggestive ratings.
 const API = "https://api.mangadex.org";
 const LIMIT = 20;
+// MangaDex redirects browser User-Agents to a bot challenge; the API wants a non-browser one.
+const HEADERS = { "User-Agent": "Ahoge/2.0 (+https://github.com/QuackyPROG/ahoge-extension)" };
 const RATINGS = [["contentRating[]", "safe"], ["contentRating[]", "suggestive"]];
 
 async function api(path, pairs) {
-  const res = ensureOk(await http.get(API + path + "?" + query(pairs)));
+  const res = ensureOk(await http.get(API + path + "?" + query(pairs), { headers: HEADERS }));
   return JSON.parse(res.body);
 }
 
@@ -102,7 +104,7 @@ source = {
 
   async pages(url) {
     const id = url.split("/").pop();
-    const res = ensureOk(await http.get(API + "/at-home/server/" + id));
+    const res = ensureOk(await http.get(API + "/at-home/server/" + id, { headers: HEADERS }));
     const json = JSON.parse(res.body);
     return json.chapter.data.map((file) => ({ url: json.baseUrl + "/data/" + json.chapter.hash + "/" + file, headers: {} }));
   },
