@@ -2,7 +2,7 @@
   "id": "en.manhuaplus",
   "name": "ManhuaPlus",
   "lang": "en",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nsfw": false,
   "baseUrl": "https://manhuaplus.com",
   "template": "madara",
