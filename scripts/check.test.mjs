@@ -17,7 +17,7 @@ test("ok when every step yields data", async () => {
 
 test("broken with the failing step", async () => {
   const empty = { ...working, chapters: async () => [] };
-  assert.deepEqual(await checkSource(empty, { timeoutMs: 1000 }), { status: "broken", step: "chapters", error: "no chapters returned for first 5 manga" });
+  assert.deepEqual(await checkSource(empty, { timeoutMs: 1000 }), { status: "broken", step: "chapters", error: "no chapters returned for first 1 manga" });
 });
 
 test("thrown errors are reported", async () => {
@@ -96,7 +96,7 @@ test("reports chapters when some candidates reached chapters and others failed i
     details: async (url) => { if (url === "/m/3") throw new Error("HTTP 403"); return { title: "T" }; },
     chapters: async () => [],
   };
-  assert.deepEqual(await checkSource(source, { timeoutMs: 1000 }), { status: "broken", step: "chapters", error: "no chapters returned for first 5 manga" });
+  assert.deepEqual(await checkSource(source, { timeoutMs: 1000 }), { status: "broken", step: "chapters", error: "no chapters returned for first 3 manga" });
 });
 
 test("reports the last failing step when no candidate reached chapters", async () => {
@@ -133,10 +133,13 @@ test("a load failure is recorded and the run continues", async () => {
     check: async () => ({ status: "ok", step: null, error: null }),
     log: (l) => logs.push(l),
   });
-  assert.deepEqual(results, {
-    a: { status: "broken", step: "load", error: "syntax error" },
-    b: { status: "ok", step: null, error: null },
-  });
+  assert.deepEqual(
+    Object.fromEntries(Object.entries(results).map(([id, { checkedAt, sha256, ...r }]) => [id, r])),
+    {
+      a: { status: "broken", step: "load", error: "syntax error" },
+      b: { status: "ok", step: null, error: null },
+    },
+  );
   assert.equal(logs.length, 2);
 });
 
@@ -144,4 +147,36 @@ test("applyHealth from a saved report ignores ids missing from the index", () =>
   const index = { sources: [{ id: "a", health: { status: "unknown", checkedAt: null } }] };
   const out = applyHealth(index, { a: { status: "ok" }, gone: { status: "broken" } }, "t");
   assert.deepEqual(out.sources, [{ id: "a", health: { status: "ok", checkedAt: "t" } }]);
+});
+
+test("the chapters message reports how many manga were actually tried", async () => {
+  const source = { ...working, popular: async () => many(2), chapters: async () => [] };
+  assert.deepEqual(await checkSource(source, { timeoutMs: 1000 }), { status: "broken", step: "chapters", error: "no chapters returned for first 2 manga" });
+});
+
+test("checkEntries records sha256 and checkedAt per result", async () => {
+  const results = await checkEntries([{ id: "a", sha256: "h1" }, { id: "b", sha256: "h2" }], {
+    load: () => working,
+    check: async () => ({ status: "ok", step: null, error: null }),
+  });
+  for (const [id, sha] of [["a", "h1"], ["b", "h2"]]) {
+    assert.equal(results[id].sha256, sha);
+    assert.ok(!Number.isNaN(Date.parse(results[id].checkedAt)));
+  }
+  const failed = await checkEntries([{ id: "c", sha256: "h3" }], { load: () => { throw new Error("x"); } });
+  assert.equal(failed.c.sha256, "h3");
+  assert.ok(failed.c.checkedAt);
+});
+
+test("applyHealth skips results for a different script version", () => {
+  const index = { sources: [{ id: "a", sha256: "new", health: { status: "unknown", checkedAt: null } }] };
+  const out = applyHealth(index, { a: { status: "broken", sha256: "old", checkedAt: "c" } }, "t");
+  assert.deepEqual(out.sources[0].health, { status: "unknown", checkedAt: null });
+});
+
+test("applyHealth applies matching or legacy results and prefers result.checkedAt", () => {
+  const index = { sources: [{ id: "a", sha256: "h", health: {} }, { id: "b", sha256: "h", health: {} }] };
+  const out = applyHealth(index, { a: { status: "ok", sha256: "h", checkedAt: "c" }, b: { status: "ok" } }, "t");
+  assert.deepEqual(out.sources[0].health, { status: "ok", checkedAt: "c" });
+  assert.deepEqual(out.sources[1].health, { status: "ok", checkedAt: "t" });
 });

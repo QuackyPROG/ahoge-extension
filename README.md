@@ -21,4 +21,4 @@ Sources are ported from [keiyoushi/extensions-source](https://github.com/keiyous
 1. `sources/<lang>/<name>/meta.json` and `source.js` (see existing sources).
 2. Optional icon: `node scripts/fetch-icon.mjs src/<lang>/<name> sources/<lang>/<name>/icon.png`
 3. `npm test && npm run build && node scripts/check.mjs --dir out --only <id>`
-4. Bump `version` in `meta.json` whenever `source.js` or its template changes.
+4. Bump `version` in `meta.json` whenever `source.js`, its template, or `templates/_common.js` changes.

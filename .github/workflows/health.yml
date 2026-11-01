@@ -11,7 +11,7 @@ concurrency:
 jobs:
   health:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     env: { GH_TOKEN: "${{ github.token }}" }
     steps:
       - uses: actions/checkout@v4
@@ -30,6 +30,7 @@ jobs:
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
       - name: Check sources
+        id: check
         if: steps.repo.outputs.exists == 'true'
         run: node scripts/check.mjs --dir out --write --report health-report.json
       - name: Push health
@@ -41,7 +42,7 @@ jobs:
           commit_health() {
             git add index.json
             if git diff --cached --quiet; then return 1; fi
-            git commit -q -m "Health check $(date -u +%Y-%m-%d)"
+            git commit -q -m "Health check $(date -u +%Y-%m-%d)" || exit 1
           }
           commit_health || { echo "no health changes"; exit 0; }
           for attempt in 1 2 3; do
@@ -55,5 +56,5 @@ jobs:
           echo "::error::could not push health after 3 attempts"
           exit 1
       - name: Sync issues
-        if: steps.repo.outputs.exists == 'true'
+        if: always() && steps.repo.outputs.exists == 'true' && steps.check.outcome == 'success'
         run: node scripts/sync-issues.mjs health-report.json

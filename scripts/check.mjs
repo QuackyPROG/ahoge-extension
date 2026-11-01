@@ -14,7 +14,7 @@ function withTimeout(promise, ms, step) {
 }
 
 // Tries one manga end to end up to chapters. The step is local so candidates never share state.
-async function tryCandidate(source, manga, timeoutMs) {
+async function tryCandidate(source, manga, timeoutMs, tried) {
   let step = "details";
   const run = (name, fn) => {
     step = name;
@@ -25,7 +25,7 @@ async function tryCandidate(source, manga, timeoutMs) {
     if (!details?.title) return { failure: { step: "details", error: "details missing title" } };
     const chapters = await run("chapters", () => source.chapters(manga.url));
     if (!chapters?.length) {
-      return { failure: { step: "chapters", error: `no chapters returned for first ${MAX_CANDIDATES} manga` } };
+      return { failure: { step: "chapters", error: `no chapters returned for first ${tried} manga` } };
     }
     return { chapter: chapters[0] };
   } catch (e) {
@@ -43,8 +43,9 @@ export async function checkSource(source, { timeoutMs = 30000 } = {}) {
     let chosen = null;
     let lastFailure = null;
     let chaptersFailure = null;
-    for (const manga of list.manga.slice(0, MAX_CANDIDATES)) {
-      const { chapter, failure } = await tryCandidate(source, manga, timeoutMs);
+    const candidates = list.manga.slice(0, MAX_CANDIDATES);
+    for (const manga of candidates) {
+      const { chapter, failure } = await tryCandidate(source, manga, timeoutMs, candidates.length);
       if (chapter) {
         chosen = chapter;
         break;
@@ -75,11 +76,14 @@ export function selectEntries(index, only) {
 export async function checkEntries(entries, { load, check = checkSource, log = () => {} }) {
   const results = {};
   for (const entry of entries) {
+    const checkedAt = new Date().toISOString();
+    let result;
     try {
-      results[entry.id] = await check(load(entry));
+      result = await check(load(entry));
     } catch (e) {
-      results[entry.id] = { status: "broken", step: "load", error: String(e?.message ?? e) };
+      result = { status: "broken", step: "load", error: String(e?.message ?? e) };
     }
+    results[entry.id] = { ...result, sha256: entry.sha256, checkedAt };
     const r = results[entry.id];
     log(`${r.status === "ok" ? "OK    " : "BROKEN"} ${entry.id}${r.step ? `  [${r.step}] ${r.error}` : ""}`);
   }
@@ -89,7 +93,12 @@ export async function checkEntries(entries, { load, check = checkSource, log = (
 export function applyHealth(index, results, checkedAt) {
   return {
     ...index,
-    sources: index.sources.map((s) => (results[s.id] ? { ...s, health: { status: results[s.id].status, checkedAt } } : s)),
+    sources: index.sources.map((s) => {
+      const r = results[s.id];
+      // A result for a different script version (rebuilt since the check) must not be applied.
+      if (!r || (r.sha256 !== undefined && r.sha256 !== s.sha256)) return s;
+      return { ...s, health: { status: r.status, checkedAt: r.checkedAt ?? checkedAt } };
+    }),
   };
 }
 

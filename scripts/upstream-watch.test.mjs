@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { watchedPaths, diffUpstream, pruneLock, newChanges, upstreamTitle } from "./upstream-watch.mjs";
+import { watchedPaths, diffUpstream, pruneLock, newChanges, upstreamTitle, revertChanges, shaFromCommits } from "./upstream-watch.mjs";
 
 test("watched paths include sources and their templates", () => {
   const metas = [
@@ -42,4 +42,14 @@ test("issues that already exist are skipped", () => {
   const open = ["[upstream] src/en/a changed", "something else"];
   assert.deepEqual(newChanges(changes, open), [{ path: "src/en/b", from: "1", to: "2" }]);
   assert.equal(upstreamTitle("src/en/b"), "[upstream] src/en/b changed");
+});
+
+test("revertChanges restores the old sha for each change", () => {
+  const next = revertChanges({ "src/en/a": "s2", "src/en/b": "t2" }, [{ path: "src/en/a", from: "s1", to: "s2" }]);
+  assert.deepEqual(next, { "src/en/a": "s1", "src/en/b": "t2" });
+});
+
+test("shaFromCommits rejects an empty commit list", () => {
+  assert.equal(shaFromCommits([{ sha: "abc" }], "p"), "abc");
+  assert.throws(() => shaFromCommits([], "src/x"), /no commits found for src.x/);
 });

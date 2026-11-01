@@ -31,6 +31,19 @@ export function pruneLock(lock, watched) {
   return Object.fromEntries(Object.entries(lock).filter(([path]) => keep.has(path)));
 }
 
+// Undoes lock advances for changes that were not reported, so they surface again next run.
+export function revertChanges(lock, changes) {
+  const next = { ...lock };
+  for (const c of changes) next[c.path] = c.from;
+  return next;
+}
+
+export function shaFromCommits(commits, path) {
+  const sha = commits?.[0]?.sha;
+  if (!sha) throw new Error(`no commits found for ${path} (does it exist upstream?)`);
+  return sha;
+}
+
 export const upstreamTitle = (path) => `[upstream] ${path} changed`;
 
 export function newChanges(changes, openTitles) {
@@ -43,8 +56,7 @@ async function latestSha(path) {
   if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
   const res = await fetch(`https://api.github.com/repos/${UPSTREAM_REPO}/commits?path=${encodeURIComponent(path)}&per_page=1`, { headers });
   if (!res.ok) throw new Error(`GitHub API ${res.status} for ${path}`);
-  const [commit] = await res.json();
-  return commit?.sha ?? null;
+  return shaFromCommits(await res.json(), path);
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
@@ -58,14 +70,14 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   for (const path of Object.keys(paths)) {
     try {
       const sha = await latestSha(path);
-      if (sha) latest[path] = sha;
+      latest[path] = sha;
     } catch (e) {
       failed++;
       console.warn(`skipping ${path}: ${e.message}`);
     }
   }
   const diff = diffUpstream(lock, latest);
-  const nextLock = pruneLock(diff.nextLock, Object.keys(paths));
+  let nextLock = pruneLock(diff.nextLock, Object.keys(paths));
   const openIssues = process.argv.includes("--open-issues");
   let toReport = diff.changes;
   if (openIssues) {
@@ -76,6 +88,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
       failed++;
       console.warn(`could not list open issues, not opening any: ${e.message}`);
       toReport = [];
+      nextLock = revertChanges(nextLock, diff.changes);
     }
   }
   for (const change of diff.changes) {
