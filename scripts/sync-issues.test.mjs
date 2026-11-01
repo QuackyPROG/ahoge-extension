@@ -14,3 +14,18 @@ test("opens issues for newly broken and closes recovered", () => {
     close: [{ number: 7, id: "en.b" }],
   });
 });
+
+test("closes open broken issues whose source is no longer in the report", () => {
+  const report = { "en.a": { status: "broken", step: "pages", error: "x" } };
+  const open = [{ number: 3, title: "[broken] en.a" }, { number: 4, title: "[broken] en.gone" }, { number: 5, title: "unrelated" }];
+  assert.deepEqual(planIssues(report, open), {
+    create: [],
+    close: [{ number: 4, id: "en.gone", removed: true }],
+  });
+});
+
+test("triple backticks in the error cannot break the fence", () => {
+  const report = { "en.a": { status: "broken", step: "popular", error: "bad ```html``` body" } };
+  const [issue] = planIssues(report, []).create;
+  assert.equal(issue.body, "Health check failed at `popular`:\n\n```\nbad ʼʼʼhtmlʼʼʼ body\n```");
+});
