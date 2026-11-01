@@ -1,5 +1,5 @@
 var source = null;
-const META = {"id":"en.mangadex","name":"MangaDex","lang":"en","version":"1.0.0","nsfw":false,"baseUrl":"https://mangadex.org","upstream":"src/all/mangadex"};
+const META = {"id":"en.mangadex","name":"MangaDex","lang":"en","version":"1.0.1","nsfw":false,"baseUrl":"https://mangadex.org","upstream":"src/all/mangadex"};
 // Helpers available to every source. Plain functions: no URL/fetch exist in the host.
 
 function pathOf(url) {
@@ -81,6 +81,7 @@ function chapterNumber(name) {
 function imageUrl(element) {
   if (!element) return "";
   for (const name of ["data-src", "data-lazy-src", "data-cfsrc", "src"]) {
+    if (!element.attr(name).trim()) continue; // absUrl of an empty attribute is the base url
     const value = element.absUrl(name);
     if (value && !/^\s*data:/i.test(value)) return value.trim();
   }
