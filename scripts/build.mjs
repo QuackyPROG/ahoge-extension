@@ -9,13 +9,8 @@ const UNKNOWN_HEALTH = { status: "unknown", checkedAt: null };
 
 export function build({ root, outDir, previousIndex }) {
   const previous = new Map((previousIndex?.sources ?? []).map((s) => [s.id, s]));
-  for (const sub of ["dist", "icons"]) {
-    rmSync(join(outDir, sub), { recursive: true, force: true });
-    mkdirSync(join(outDir, sub), { recursive: true });
-  }
-
   const seen = new Set();
-  const sources = listSourceDirs(root).map((dir) => {
+  const built = listSourceDirs(root).map((dir) => {
     const { meta, script } = bundleSource(root, dir);
     if (seen.has(meta.id)) throw new Error(`duplicate id ${meta.id}`);
     seen.add(meta.id);
@@ -26,28 +21,39 @@ export function build({ root, outDir, previousIndex }) {
       throw new Error(`${meta.id} changed but version ${meta.version} was not bumped`);
     }
 
-    writeFileSync(join(outDir, "dist", `${meta.id}.js`), script);
-    let icon = null;
-    if (existsSync(join(dir, "icon.png"))) {
-      copyFileSync(join(dir, "icon.png"), join(outDir, "icons", `${meta.id}.png`));
-      icon = `icons/${meta.id}.png`;
-    }
+    const iconPath = join(dir, "icon.png");
+    const hasIcon = existsSync(iconPath);
+    const icon = hasIcon ? `icons/${meta.id}.png` : null;
 
     return {
-      id: meta.id,
-      name: meta.name,
-      lang: meta.lang,
-      version: meta.version,
-      runtime: RUNTIME_VERSION,
-      nsfw: meta.nsfw,
-      baseUrl: meta.baseUrl,
-      icon,
-      script: `dist/${meta.id}.js`,
-      sha256,
-      health: prior && prior.sha256 === sha256 ? prior.health : UNKNOWN_HEALTH,
+      files: { id: meta.id, script, iconPath: hasIcon ? iconPath : null },
+      entry: {
+        id: meta.id,
+        name: meta.name,
+        lang: meta.lang,
+        version: meta.version,
+        runtime: RUNTIME_VERSION,
+        nsfw: meta.nsfw,
+        baseUrl: meta.baseUrl,
+        icon,
+        script: `dist/${meta.id}.js`,
+        sha256,
+        health: (prior && prior.sha256 === sha256 && prior.health) || { ...UNKNOWN_HEALTH },
+      },
     };
   });
 
+  // Everything validated in memory; only now touch the output directory.
+  for (const sub of ["dist", "icons"]) {
+    rmSync(join(outDir, sub), { recursive: true, force: true });
+    mkdirSync(join(outDir, sub), { recursive: true });
+  }
+  for (const { files } of built) {
+    writeFileSync(join(outDir, "dist", `${files.id}.js`), files.script);
+    if (files.iconPath) copyFileSync(files.iconPath, join(outDir, "icons", `${files.id}.png`));
+  }
+
+  const sources = built.map((b) => b.entry);
   const index = { schema: 1, name: "Ahoge Extensions", sources };
   writeFileSync(join(outDir, "index.json"), JSON.stringify(index, null, 2) + "\n");
   return index;

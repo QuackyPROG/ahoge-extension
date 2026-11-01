@@ -72,3 +72,41 @@ test("stale dist files are removed", () => {
   build({ root, outDir: out, previousIndex: null });
   assert.ok(!existsSync(join(out, "dist", "en.gone.js")));
 });
+
+test("a failing build leaves the previous output untouched", () => {
+  const { root, dir, out } = repo();
+  const first = build({ root, outDir: out, previousIndex: null });
+  const indexBefore = readFileSync(join(out, "index.json"), "utf8");
+  const distBefore = readFileSync(join(out, "dist", "en.demo.js"), "utf8");
+  writeFileSync(join(dir, "source.js"), "source = { async popular() { return null; } };\n");
+  assert.throws(() => build({ root, outDir: out, previousIndex: first }), /was not bumped/);
+  assert.equal(readFileSync(join(out, "index.json"), "utf8"), indexBefore);
+  assert.equal(readFileSync(join(out, "dist", "en.demo.js"), "utf8"), distBefore);
+  assert.ok(existsSync(join(out, "icons", "en.demo.png")));
+});
+
+test("a failing build does not create output directories", () => {
+  const { root, dir, out } = repo();
+  cpSync(dir, join(root, "sources", "en", "demo2"), { recursive: true });
+  assert.throws(() => build({ root, outDir: out, previousIndex: null }), /duplicate id/);
+  assert.ok(!existsSync(out));
+});
+
+test("each entry gets its own unknown-health object", () => {
+  const { root, dir, out } = repo();
+  const dir2 = join(root, "sources", "en", "demo2");
+  cpSync(dir, dir2, { recursive: true });
+  writeFileSync(join(dir2, "meta.json"), JSON.stringify({ id: "en.demo2", name: "Demo2", lang: "en", version: "1.0.0", nsfw: false, baseUrl: "https://demo.test" }));
+  const index = build({ root, outDir: out, previousIndex: null });
+  assert.notEqual(index.sources[0].health, index.sources[1].health);
+  index.sources[0].health.status = "ok";
+  assert.equal(index.sources[1].health.status, "unknown");
+});
+
+test("unchanged script with no recorded health gets fresh unknown health", () => {
+  const { root, out } = repo();
+  const first = build({ root, outDir: out, previousIndex: null });
+  delete first.sources[0].health;
+  const second = build({ root, outDir: out, previousIndex: first });
+  assert.deepEqual(second.sources[0].health, { status: "unknown", checkedAt: null });
+});
