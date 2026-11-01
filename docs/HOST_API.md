@@ -300,3 +300,7 @@ Uncertain or accepted deviations. Do not write scripts that depend on any of the
   differs. Only well-formed markup (noscript inside `<body>`) is covered.
 - **Cookies.** Intermediate redirect `Set-Cookie` headers may not be captured; `Path` and `Secure`
   are ignored; cookies are sent in insertion order.
+- **Swift host: `set-cookie` header.** Foundation merges repeated `Set-Cookie` headers, so the Swift
+  host rebuilds the `set-cookie` response header as one `name=value` per line (attributes dropped).
+- **Swift host: top-level evaluation limit.** JavaScriptCore's public API has no execution time limit,
+  so the 5 second top-level limit is not enforced on iOS (per-call timeouts are).
