@@ -50,6 +50,15 @@ test("imageUrl prefers lazy attributes", () => {
   assert.equal(ctx.imageUrl(null), "");
 });
 
+test("imageUrl skips data: URIs and falls through to the next attribute", () => {
+  const doc = parse(
+    "<img id=a data-src='data:image/gif;base64,R0' src='/real.jpg'><img id=b data-src='data:image/gif;base64,R0' src='data:image/png;base64,AA'>",
+    "https://a.com/x/",
+  );
+  assert.equal(ctx.imageUrl(doc.selectFirst("#a")), "https://a.com/real.jpg");
+  assert.equal(ctx.imageUrl(doc.selectFirst("#b")), "");
+});
+
 test("unique removes case-insensitive duplicates", () => {
   assert.deepEqual([...ctx.unique(["Action", "action", "Drama"])], ["Action", "Drama"]);
 });

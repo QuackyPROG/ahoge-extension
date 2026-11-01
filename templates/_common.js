@@ -80,7 +80,7 @@ function imageUrl(element) {
   if (!element) return "";
   for (const name of ["data-src", "data-lazy-src", "data-cfsrc", "src"]) {
     const value = element.absUrl(name);
-    if (value) return value.trim();
+    if (value && !/^\s*data:/i.test(value)) return value.trim();
   }
   return "";
 }
