@@ -1,6 +1,11 @@
 {
   "baseUrl": "https://example.com/manga/one/",
   "cases": [
+    { "name": "contains is case-insensitive", "html": "<div class=h>Status</div>", "select": "div.h:contains(status)", "op": "count", "expected": 1 },
+    { "name": "contains spans children on normalized text", "html": "<p>A<b>B</b> C</p>", "select": "p:contains(b c)", "op": "count", "expected": 1 },
+    { "name": "contains no match", "html": "<p>A<b>B</b></p>", "select": "p:contains(zz)", "op": "count", "expected": 0 },
+    { "name": "containsOwn matches own text case-insensitively", "html": "<p id=x>Hello <b>World</b></p>", "select": "p:containsOwn(HELLO)", "op": "count", "expected": 1 },
+    { "name": "containsOwn ignores descendant text", "html": "<p id=x>Hello <b>World</b></p>", "select": "p:containsOwn(world)", "op": "count", "expected": 0 },
     { "name": "select count", "html": "<ul><li>a</li><li>b</li></ul>", "select": "li", "op": "count", "expected": 2 },
     { "name": "text collapses whitespace", "html": "<div id=x>  Hello \n  <b>World</b>  </div>", "select": "#x", "op": "text", "expected": "Hello World" },
     { "name": "text separates blocks", "html": "<div id=x><p>One</p><p>Two</p></div>", "select": "#x", "op": "text", "expected": "One Two" },

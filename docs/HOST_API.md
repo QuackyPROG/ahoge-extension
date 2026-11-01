@@ -42,7 +42,9 @@ Jsoup semantics:
 | `absUrl(name)` | Attribute resolved against `baseUrl`; `""` if missing or unresolvable. |
 | `tagName()` | Lowercase tag name (`"#root"` for the document). |
 
-CSS supports what Jsoup supports, including `:contains(text)`, `:has()`, `:not()`.
+CSS: standard CSS selectors, `:has()`, `:not()`, `:contains(text)` and `:containsOwn(text)`.
+`:contains` matches the element's normalized `text()` and `:containsOwn` its `ownText()`, both
+case-insensitively (Jsoup semantics). `:matches`/`:matchesOwn` are not supported.
 
 ### Other
 

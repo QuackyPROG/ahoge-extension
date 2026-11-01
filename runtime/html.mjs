@@ -17,6 +17,34 @@ function resolveUrl(value, baseUrl) {
   }
 }
 
+function nodeText(root) {
+  let out = "";
+  const walk = (n) => {
+    if (n.type === "text") {
+      out += n.data;
+      return;
+    }
+    if (n.type !== "tag" && n.type !== "root") return; // skips script, style, comment
+    const block = BLOCK_TAGS.has(n.name);
+    if (block) out += " ";
+    for (const child of n.children ?? []) walk(child);
+    if (block) out += " ";
+  };
+  walk(root);
+  return collapse(out);
+}
+
+function nodeOwnText(node) {
+  return collapse((node.children ?? []).filter((n) => n.type === "text").map((n) => n.data).join(""));
+}
+
+// Jsoup semantics: case-insensitive match against normalized text() / ownText().
+// Custom pseudos take precedence over css-select's built-in :contains.
+const PSEUDOS = {
+  contains: (elem, text) => nodeText(elem).toLowerCase().includes(collapse(String(text)).toLowerCase()),
+  containsown: (elem, text) => nodeOwnText(elem).toLowerCase().includes(collapse(String(text)).toLowerCase()),
+};
+
 export class HtmlElement {
   constructor($, node, baseUrl) {
     this.$ = $;
@@ -40,24 +68,11 @@ export class HtmlElement {
   }
 
   text() {
-    let out = "";
-    const walk = (n) => {
-      if (n.type === "text") {
-        out += n.data;
-        return;
-      }
-      if (n.type !== "tag" && n.type !== "root") return; // skips script, style, comment
-      const block = BLOCK_TAGS.has(n.name);
-      if (block) out += " ";
-      for (const child of n.children ?? []) walk(child);
-      if (block) out += " ";
-    };
-    walk(this.node);
-    return collapse(out);
+    return nodeText(this.node);
   }
 
   ownText() {
-    return collapse((this.node.children ?? []).filter((n) => n.type === "text").map((n) => n.data).join(""));
+    return nodeOwnText(this.node);
   }
 
   data() {
@@ -87,6 +102,6 @@ export class HtmlElement {
 }
 
 export function parse(body, baseUrl) {
-  const $ = cheerio.load(body);
+  const $ = cheerio.load(body, { pseudos: PSEUDOS });
   return new HtmlElement($, $.root().get(0), baseUrl);
 }
