@@ -217,3 +217,22 @@ test("a real failure on chapters stays broken even if another candidate hit Clou
   assert.equal(result.status, "broken");
   assert.equal(result.step, "chapters");
 });
+
+test("checks the filter list and runs a filtered search with default values", async () => {
+  const seen = [];
+  const filtered = {
+    ...working,
+    filters: async () => [{ type: "checkbox", key: "done", name: "Completed", default: true }],
+    search: async (q, page, f) => {
+      seen.push([q, page, f]);
+      return { manga: [], hasNextPage: false };
+    },
+  };
+  assert.deepEqual(await checkSource(filtered, { timeoutMs: 1000 }), { status: "ok", step: null, error: null });
+  assert.deepEqual(seen, [["", 1, { done: true }]]);
+});
+
+test("a malformed filter list is broken", async () => {
+  const bad = { ...working, filters: async () => [{ type: "text", name: "No key" }] };
+  assert.deepEqual(await checkSource(bad, { timeoutMs: 1000 }), { status: "broken", step: "filters", error: "filters[0] needs a key" });
+});

@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { loadSource } from "../runtime/host.mjs";
+import { validateFilters, defaultFilterValues } from "../runtime/filters.mjs";
 
 const read = (f) => readFileSync(new URL(f, import.meta.url), "utf8");
 
@@ -238,4 +239,63 @@ test("single-pager reload does not append a second style= parameter", async () =
   assert.ok(calls.every((c) => (c.url.match(/style=/g) || []).length <= 1));
   assert.equal((await src.pages("/c/1/")).length, 2);
   assert.equal(calls[calls.length - 1].url, `${BASE}/c/1/?style=list`);
+});
+
+const SEARCH_FORM = `
+<div class="checkbox"><input id="action" value="action" name="genre[]" type="checkbox" /><label for="action"> Action </label></div>
+<div class="checkbox"><input id="drama" value="drama" name="genre[]" type="checkbox" /><label for="drama"> Drama </label></div>
+<div class="checkbox-inline"><input id="on-going" type="checkbox" name="status[]" value="on-going" /><label for="on-going">OnGoing</label></div>
+<div class="checkbox-inline"><input id="end" type="checkbox" name="status[]" value="end" /><label for="end">Completed</label></div>`;
+
+test("filters read genres and statuses from the search form", async () => {
+  const calls = [];
+  const src = makeSource({ baseUrl: BASE }, { [`${BASE}/?s=&post_type=wp-manga`]: SEARCH_FORM }, calls);
+  const list = await src.filters();
+  await src.filters();
+  assert.equal(calls.length, 1, "cached after the first load");
+  assert.deepEqual(list.find((f) => f.key === "genres").filters, [
+    { type: "checkbox", key: "action", name: "Action" },
+    { type: "checkbox", key: "drama", name: "Drama" },
+  ]);
+  assert.deepEqual(list.find((f) => f.key === "status").filters.map((f) => f.name), ["OnGoing", "Completed"]);
+  assert.deepEqual(validateFilters(list), []);
+});
+
+test("filters fall back to fixed statuses and no genres when the form fails", async () => {
+  const src = makeSource({ baseUrl: BASE }, {});
+  const list = await src.filters();
+  assert.equal(list.find((f) => f.key === "genres"), undefined);
+  assert.deepEqual(list.find((f) => f.key === "status").filters.map((f) => f.key), ["on-going", "end", "canceled", "on-hold"]);
+  assert.deepEqual(validateFilters(list), []);
+});
+
+test("default filters keep the admin-ajax search", async () => {
+  const calls = [];
+  const routes = { [`${BASE}/?s=&post_type=wp-manga`]: SEARCH_FORM, [`${BASE}/wp-admin/admin-ajax.php`]: ARCHIVE };
+  const src = makeSource({ baseUrl: BASE }, routes, calls);
+  await src.search("one", 1, defaultFilterValues(await src.filters()));
+  assert.equal(calls.at(-1).method, "POST");
+  assert.match(calls.at(-1).body, /vars%5Bs%5D=one/);
+});
+
+test("filtered search uses the advanced search page", async () => {
+  const calls = [];
+  const url =
+    `${BASE}/page/2/?s=&post_type=wp-manga&genre[]=action&genre[]=drama&op=1&author=Kim&release=2020&adult=0` +
+    "&status[]=end&m_orderby=views";
+  const src = makeSource({ baseUrl: BASE }, { [url]: ARCHIVE + `<a class="nextpostslink" href="${BASE}/page/3/">next</a>` }, calls);
+  const result = await src.search("", 2, {
+    genres: { action: true, drama: true },
+    genreMode: "1",
+    author: "Kim",
+    artist: "",
+    year: "2020",
+    adult: "0",
+    status: { "on-going": false, end: true },
+    orderby: "views",
+  });
+  assert.equal(calls[0].url, url);
+  assert.equal(calls[0].method, "GET");
+  assert.deepEqual(result.manga.map((m) => m.title), ["Alpha", "Beta"]);
+  assert.equal(result.hasNextPage, true);
 });

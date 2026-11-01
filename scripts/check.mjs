@@ -3,6 +3,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadSource } from "../runtime/host.mjs";
 import { CloudflareError } from "../runtime/http.mjs";
+import { validateFilters, defaultFilterValues } from "../runtime/filters.mjs";
 
 const MAX_CANDIDATES = 5;
 
@@ -44,6 +45,18 @@ export async function checkSource(source, { timeoutMs = 30000 } = {}) {
   try {
     const list = await withTimeout(Promise.resolve().then(() => source.popular(1)), timeoutMs, "popular");
     if (!list?.manga?.length) return { status: "broken", step, error: "no manga returned" };
+
+    if (typeof source.filters === "function") {
+      step = "filters";
+      const filters = await withTimeout(Promise.resolve().then(() => source.filters()), timeoutMs, "filters");
+      const errors = validateFilters(filters);
+      if (errors.length) return { status: "broken", step, error: errors.join("; ") };
+      if (filters.length) {
+        step = "search";
+        const filtered = await withTimeout(Promise.resolve().then(() => source.search("", 1, defaultFilterValues(filters))), timeoutMs, "search");
+        if (!Array.isArray(filtered?.manga)) return { status: "broken", step, error: "filtered search returned no manga list" };
+      }
+    }
 
     // The most popular titles can be licensed and have no readable chapters, so try a few.
     let chosen = null;

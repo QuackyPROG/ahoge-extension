@@ -239,10 +239,11 @@ filtering in JavaScript.
 
     source.popular(page)          -> { manga: MangaStub[], hasNextPage: boolean }
     source.latest(page)           -> same
-    source.search(query, page)    -> same
+    source.search(query, page, filters?) -> same
     source.details(mangaUrl)      -> { title, cover, author, artist, description, genres: string[], status }
     source.chapters(mangaUrl)     -> Chapter[]  (newest first)
     source.pages(chapterUrl)      -> Page[]
+    source.filters()              -> Filter[]   (optional)
 
     MangaStub = { url, title, cover }
     Chapter   = { url, name, number (-1 if unknown), date (ms epoch or null), scanlator (string or null) }
@@ -252,6 +253,35 @@ filtering in JavaScript.
 `url` values for manga and chapters are site-relative paths (`/manga/foo/`). `page` starts at 1.
 All methods may be `async`. Results are JSON-serialized by the host (`JSON.stringify` then parse;
 an `undefined` result becomes `null`, `undefined` properties are dropped).
+
+## Filters
+
+`filters()` is optional. A source without it has no filters (both hosts treat it as `[]`), and
+`search` is then always called with two arguments. A source with filters always gets a third
+argument: an object with a value for every keyed filter, defaults filled in, even for a plain
+text search. Query may be `""` (the user is browsing with filters only). `filters()` may fetch
+(e.g. a tag list) and should cache its result.
+
+    { type: "header",    name }
+    { type: "separator" }
+    { type: "text",      key, name }                              value: string ("" when empty)
+    { type: "checkbox",  key, name, default?: boolean }           value: boolean
+    { type: "tristate",  key, name }                              value: 0 ignore | 1 include | 2 exclude
+    { type: "select",    key, name, options: Option[], default?: string }        value: option value
+    { type: "sort",      key, name, options: Option[], default?: { value, ascending } }
+                                                                  value: { value, ascending }
+    { type: "group",     key, name, filters: (text | checkbox | tristate)[] }    value: { [childKey]: value }
+
+    Option = { value: string, label: string }
+
+Keys are unique within their list. `select` and `sort` default to the first option (sort:
+descending). The app drops entry types it does not know, so new types can be added without a
+runtime bump. `runtime/filters.mjs` validates a list and builds the default values;
+`check.mjs` runs `search("", 1, defaults)` for every source that has filters.
+
+When the user taps a genre on a manga page, the app turns on the first checkbox or tristate
+whose `name` matches the genre (case-insensitive), so name tag filters exactly as `details`
+names genres.
 
 ## Conformance
 

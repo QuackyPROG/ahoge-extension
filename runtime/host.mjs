@@ -6,7 +6,7 @@ export const RUNTIME_VERSION = 1;
 export const DEFAULT_USER_AGENT =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1";
 
-const METHODS = ["popular", "latest", "search", "details", "chapters", "pages"];
+const METHODS = ["popular", "latest", "search", "details", "chapters", "pages", "filters"];
 
 export function loadSource(script, { fetchImpl = fetch, userAgent = DEFAULT_USER_AGENT, log = () => {}, callTimeoutMs = 30000 } = {}) {
   const context = vm.createContext({
@@ -22,6 +22,8 @@ export function loadSource(script, { fetchImpl = fetch, userAgent = DEFAULT_USER
   if (!source || typeof source !== "object") throw new Error("Script did not assign `source`");
 
   const call = async (name, args) => {
+    // filters() is optional; a source without it has no filters, same as in the app.
+    if (name === "filters" && typeof source.filters !== "function") return [];
     if (typeof source[name] !== "function") throw new Error(`Source does not implement ${name}`);
     let timer;
     const timeout = new Promise((_, reject) => {

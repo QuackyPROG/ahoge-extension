@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { bundleSource } from "../../../scripts/lib/bundle.mjs";
 import { loadSource } from "../../../runtime/host.mjs";
+import { validateFilters, defaultFilterValues } from "../../../runtime/filters.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..", "..", "..");
@@ -158,4 +159,84 @@ test("ids are extracted by uuid regex and invalid ones throw a clear error", asy
   await assert.rejects(src.details("/manga/not-an-id"), /invalid MangaDex id/i);
   await assert.rejects(src.chapters("/manga/"), /invalid MangaDex id/i);
   await assert.rejects(src.pages("/chapter/zzz"), /invalid MangaDex id/i);
+});
+
+const TAGS = {
+  result: "ok",
+  data: [
+    { id: "t-action", attributes: { name: { en: "Action" }, group: "genre" } },
+    { id: "t-isekai", attributes: { name: { en: "Isekai" }, group: "theme" } },
+    { id: "t-gore", attributes: { name: { en: "Gore" }, group: "content" } },
+  ],
+};
+const EMPTY = { result: "ok", data: [], limit: 20, offset: 0, total: 0 };
+
+test("filters list tag groups from /manga/tag and cache them", async () => {
+  const { src, calls } = makeSource((url) => (url.includes("/manga/tag") ? TAGS : null));
+  const list = await src.filters();
+  await src.filters();
+  assert.equal(calls.filter((u) => u.includes("/manga/tag")).length, 1);
+  assert.deepEqual(list.find((f) => f.key === "tags_genre").filters, [{ type: "tristate", key: "t-action", name: "Action" }]);
+  assert.ok(list.find((f) => f.key === "tags_theme"));
+  assert.equal(list.find((f) => f.key === "tags_format"), undefined, "empty groups are left out");
+  assert.deepEqual(validateFilters(list), []);
+});
+
+test("filters still work when the tag list fails", async () => {
+  const { src } = makeSource(() => null);
+  const list = await src.filters();
+  assert.ok(list.find((f) => f.key === "status"));
+  assert.equal(list.find((f) => f.type === "header"), undefined);
+  assert.deepEqual(validateFilters(list), []);
+});
+
+test("filtered search maps every filter to API parameters", async () => {
+  const { src, calls } = makeSource((url) => {
+    if (url.includes("/author?")) return { result: "ok", data: [{ id: "a-1" }, { id: "a-2" }] };
+    return url.includes("/manga/tag") ? TAGS : EMPTY;
+  });
+  const f = defaultFilterValues(await src.filters());
+  Object.assign(f, {
+    sort: { value: "rating", ascending: true },
+    type: { ja: false, ko: true, zh: true },
+    status: { ongoing: true, completed: false, hiatus: true, cancelled: false },
+    demographic: { shounen: false, shoujo: false, seinen: true, josei: false, none: false },
+    rating: { safe: true, suggestive: false, erotica: true, pornographic: false },
+    author: "Oda",
+    year: "2019",
+    hasChapters: false,
+    tags_genre: { "t-action": 1 },
+    tags_content: { "t-gore": 2 },
+  });
+  await src.search("", 2, f);
+  const url = decodeURIComponent(calls.at(-1));
+  assert.match(calls.find((u) => u.includes("/author?")), /name=Oda/);
+  const expected = [
+    "order[rating]=asc", "originalLanguage[]=ko", "originalLanguage[]=zh", "originalLanguage[]=zh-hk", "status[]=ongoing",
+    "status[]=hiatus", "publicationDemographic[]=seinen", "authors[]=a-1", "authors[]=a-2", "year=2019",
+    "includedTags[]=t-action", "excludedTags[]=t-gore", "includedTagsMode=AND", "excludedTagsMode=OR",
+    "contentRating[]=safe", "contentRating[]=erotica", "offset=20",
+  ];
+  for (const part of expected) assert.ok(url.includes(part), `missing ${part} in ${url}`);
+  for (const part of ["status[]=completed", "contentRating[]=suggestive", "hasAvailableChapters", "title=", "originalLanguage[]=ja"]) {
+    assert.ok(!url.includes(part), `unexpected ${part}`);
+  }
+});
+
+test("default filters sort by follows without a query and by relevance with one", async () => {
+  const { src, calls } = makeSource((url) => (url.includes("/manga/tag") ? TAGS : EMPTY));
+  const f = defaultFilterValues(await src.filters());
+  await src.search("", 1, f);
+  assert.match(calls.at(-1), /order\[followedCount\]=desc/);
+  assert.match(calls.at(-1), /hasAvailableChapters=true/);
+  assert.match(calls.at(-1), /contentRating\[\]=safe&contentRating\[\]=suggestive/);
+  await src.search("one piece", 1, f);
+  assert.match(calls.at(-1), /title=one%20piece/);
+  assert.match(calls.at(-1), /order\[relevance\]=desc/);
+});
+
+test("an author with no match returns no results without searching", async () => {
+  const { src, calls } = makeSource((url) => (url.includes("/author?") ? { result: "ok", data: [] } : EMPTY));
+  assert.deepEqual(await src.search("", 1, { author: "Nobody" }), { manga: [], hasNextPage: false });
+  assert.ok(!calls.some((u) => u.includes("/manga?")));
 });
