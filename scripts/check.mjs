@@ -2,8 +2,14 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadSource } from "../runtime/host.mjs";
+import { CloudflareError } from "../runtime/http.mjs";
 
 const MAX_CANDIDATES = 5;
+
+// GitHub's runners are datacenter IPs that Cloudflare challenges even when the site works on a phone,
+// so a challenge means "could not verify from CI", not "broken".
+const failureOf = (step, e) => ({ step, error: String(e?.message ?? e), cloudflare: e instanceof CloudflareError });
+const result = ({ cloudflare, ...failure }) => ({ status: cloudflare ? "unverified" : "broken", ...failure });
 
 function withTimeout(promise, ms, step) {
   let timer;
@@ -29,7 +35,7 @@ async function tryCandidate(source, manga, timeoutMs, tried) {
     }
     return { chapter: chapters[0] };
   } catch (e) {
-    return { failure: { step, error: String(e?.message ?? e) } };
+    return { failure: failureOf(step, e) };
   }
 }
 
@@ -54,14 +60,14 @@ export async function checkSource(source, { timeoutMs = 30000 } = {}) {
       if (failure.step === "chapters") chaptersFailure = failure;
     }
     // Reaching chapters at all means details worked, so chapters is the most telling step.
-    if (!chosen) return { status: "broken", ...(chaptersFailure ?? lastFailure) };
+    if (!chosen) return result(chaptersFailure ?? lastFailure);
 
     step = "pages";
     const pages = await withTimeout(Promise.resolve().then(() => source.pages(chosen.url)), timeoutMs, "pages");
     if (!pages?.length || !pages[0].url) return { status: "broken", step, error: "no pages returned" };
     return { status: "ok", step: null, error: null };
   } catch (e) {
-    return { status: "broken", step, error: String(e?.message ?? e) };
+    return result(failureOf(step, e));
   }
 }
 
@@ -85,7 +91,7 @@ export async function checkEntries(entries, { load, check = checkSource, log = (
     }
     results[entry.id] = { ...result, sha256: entry.sha256, checkedAt };
     const r = results[entry.id];
-    log(`${r.status === "ok" ? "OK    " : "BROKEN"} ${entry.id}${r.step ? `  [${r.step}] ${r.error}` : ""}`);
+    log(`${r.status.toUpperCase().padEnd(10)} ${entry.id}${r.step ? `  [${r.step}] ${r.error}` : ""}`);
   }
   return results;
 }

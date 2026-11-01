@@ -22,3 +22,15 @@ Sources are ported from [keiyoushi/extensions-source](https://github.com/keiyous
 2. Optional icon: `node scripts/fetch-icon.mjs src/<lang>/<name> sources/<lang>/<name>/icon.png`
 3. `npm test && npm run build && node scripts/check.mjs --dir out --only <id>`
 4. Bump `version` in `meta.json` whenever `source.js`, its template, or `templates/_common.js` changes.
+
+## Health status
+
+The daily health check runs every source against the live site from GitHub Actions and records
+`health.status` in `index.json`:
+
+| Status | Meaning | Issue |
+| --- | --- | --- |
+| `ok` | popular → details → chapters → pages all returned data. | Closed if one was open. |
+| `broken` | A step failed or returned nothing. | `[broken] <id>` opened. |
+| `unverified` | The site answered GitHub's servers with a Cloudflare challenge. Datacenter IPs are often challenged while phones are not, so the source may work fine on a device. | Never opened; an open one is closed. |
+| `unknown` | Not checked since this script version was published. | — |

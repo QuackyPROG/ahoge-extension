@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { checkSource, applyHealth, selectEntries, checkEntries } from "./check.mjs";
+import { CloudflareError } from "../runtime/http.mjs";
 
 const working = {
   popular: async () => ({ manga: [{ url: "/m/1", title: "One", cover: "" }], hasNextPage: false }),
@@ -179,4 +180,40 @@ test("applyHealth applies matching or legacy results and prefers result.checkedA
   const out = applyHealth(index, { a: { status: "ok", sha256: "h", checkedAt: "c" }, b: { status: "ok" } }, "t");
   assert.deepEqual(out.sources[0].health, { status: "ok", checkedAt: "c" });
   assert.deepEqual(out.sources[1].health, { status: "ok", checkedAt: "t" });
+});
+
+const blocked = (url) => async () => {
+  throw new CloudflareError(url);
+};
+
+test("Cloudflare on popular is unverified, not broken", async () => {
+  const result = await checkSource({ ...working, popular: blocked("https://s.test/ajax") }, { timeoutMs: 1000 });
+  assert.deepEqual(result, { status: "unverified", step: "popular", error: "Cloudflare challenge at https://s.test/ajax" });
+});
+
+test("Cloudflare on pages is unverified", async () => {
+  const result = await checkSource({ ...working, pages: blocked("https://s.test/c/1") }, { timeoutMs: 1000 });
+  assert.equal(result.status, "unverified");
+  assert.equal(result.step, "pages");
+});
+
+test("Cloudflare on every candidate's details is unverified", async () => {
+  const result = await checkSource({ ...working, details: blocked("https://s.test/m/1") }, { timeoutMs: 1000 });
+  assert.equal(result.status, "unverified");
+  assert.equal(result.step, "details");
+});
+
+test("a real failure on chapters stays broken even if another candidate hit Cloudflare", async () => {
+  const two = { ...working, popular: async () => ({ manga: [{ url: "/m/1" }, { url: "/m/2" }], hasNextPage: false }) };
+  let calls = 0;
+  two.details = async (url) => {
+    calls++;
+    if (url === "/m/1") throw new CloudflareError("https://s.test/m/1");
+    return { title: "Two" };
+  };
+  two.chapters = async () => [];
+  const result = await checkSource(two, { timeoutMs: 1000 });
+  assert.equal(calls, 2);
+  assert.equal(result.status, "broken");
+  assert.equal(result.step, "chapters");
 });

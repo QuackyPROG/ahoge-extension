@@ -29,3 +29,15 @@ test("triple backticks in the error cannot break the fence", () => {
   const [issue] = planIssues(report, []).create;
   assert.equal(issue.body, "Health check failed at `popular`:\n\n```\nbad ʼʼʼhtmlʼʼʼ body\n```");
 });
+
+test("unverified sources never open issues and close an existing broken issue", () => {
+  const report = {
+    "en.a": { status: "unverified", step: "popular", error: "Cloudflare challenge at https://a/ajax" },
+    "en.b": { status: "unverified", step: "popular", error: "Cloudflare challenge at https://b/ajax" },
+  };
+  const open = [{ number: 26, title: "[broken] en.a" }];
+  assert.deepEqual(planIssues(report, open), {
+    create: [],
+    close: [{ number: 26, id: "en.a", unverified: true }],
+  });
+});

@@ -18,6 +18,8 @@ export function planIssues(report, openIssues) {
       create.push({ id, title: PREFIX + id, body: `Health check failed at \`${r.step}\`:\n\n\`\`\`\n${escapeFence(r.error)}\n\`\`\`` });
     } else if (r.status === "ok" && existing) {
       close.push({ number: existing.number, id });
+    } else if (r.status === "unverified" && existing) {
+      close.push({ number: existing.number, id, unverified: true });
     }
   }
   for (const [id, existing] of openById) {
@@ -45,7 +47,11 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     attempt(`create "${issue.title}"`, () => gh(["issue", "create", "--title", issue.title, "--body", issue.body, "--label", "broken-source"]));
   }
   for (const issue of close) {
-    const comment = issue.removed ? `${issue.id} is no longer in the source list, so this issue is closed.` : `${issue.id} passes the health check again.`;
+    const comment = issue.removed
+      ? `${issue.id} is no longer in the source list, so this issue is closed.`
+      : issue.unverified
+        ? `${issue.id} is behind a Cloudflare challenge for GitHub's servers, so it can't be verified from CI. It is marked "unverified", not broken; check it on a device.`
+        : `${issue.id} passes the health check again.`;
     attempt(`close #${issue.number}`, () => gh(["issue", "close", String(issue.number), "--comment", comment]));
   }
   console.log(`planned ${create.length} opened, ${close.length} closed, ${failed} failed`);
