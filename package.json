@@ -1,0 +1,14 @@
+{
+  "name": "ahoge-extension",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test",
+    "build": "node scripts/build.mjs --out out --previous out/index.json",
+    "check": "node scripts/check.mjs --dir out"
+  },
+  "dependencies": {
+    "cheerio": "1.0.0"
+  }
+}
