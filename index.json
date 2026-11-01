@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "name": "Ahoge Extensions",
+  "sources": [
+    {
+      "id": "en.mangadex",
+      "name": "MangaDex",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://mangadex.org",
+      "icon": "icons/en.mangadex.png",
+      "script": "dist/en.mangadex.js",
+      "sha256": "c799c1d9c51095fdd0f9a64e5a4e519671f83f1eab608ce6621931699d405ef2",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
+      "id": "en.manhuaplus",
+      "name": "ManhuaPlus",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://manhuaplus.com",
+      "icon": "icons/en.manhuaplus.png",
+      "script": "dist/en.manhuaplus.js",
+      "sha256": "914272d8f85d76f2656ab2984614782fe91dfcb0deb1a03ff81fc87d47847c09",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    }
+  ]
+}
