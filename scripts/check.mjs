@@ -13,45 +13,77 @@ function withTimeout(promise, ms, step) {
   return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
 }
 
-export async function checkSource(source, { timeoutMs = 30000 } = {}) {
-  let step = "popular";
+// Tries one manga end to end up to chapters. The step is local so candidates never share state.
+async function tryCandidate(source, manga, timeoutMs) {
+  let step = "details";
   const run = (name, fn) => {
     step = name;
     return withTimeout(Promise.resolve().then(fn), timeoutMs, name);
   };
   try {
-    const list = await run("popular", () => source.popular(1));
+    const details = await run("details", () => source.details(manga.url));
+    if (!details?.title) return { failure: { step: "details", error: "details missing title" } };
+    const chapters = await run("chapters", () => source.chapters(manga.url));
+    if (!chapters?.length) {
+      return { failure: { step: "chapters", error: `no chapters returned for first ${MAX_CANDIDATES} manga` } };
+    }
+    return { chapter: chapters[0] };
+  } catch (e) {
+    return { failure: { step, error: String(e?.message ?? e) } };
+  }
+}
+
+export async function checkSource(source, { timeoutMs = 30000 } = {}) {
+  let step = "popular";
+  try {
+    const list = await withTimeout(Promise.resolve().then(() => source.popular(1)), timeoutMs, "popular");
     if (!list?.manga?.length) return { status: "broken", step, error: "no manga returned" };
 
     // The most popular titles can be licensed and have no readable chapters, so try a few.
     let chosen = null;
-    let failure = { step: "chapters", error: `no chapters returned for first ${MAX_CANDIDATES} manga` };
+    let lastFailure = null;
+    let chaptersFailure = null;
     for (const manga of list.manga.slice(0, MAX_CANDIDATES)) {
-      try {
-        const details = await run("details", () => source.details(manga.url));
-        if (!details?.title) {
-          failure = { step: "details", error: "details missing title" };
-          continue;
-        }
-        const chapters = await run("chapters", () => source.chapters(manga.url));
-        if (!chapters?.length) {
-          failure = { step: "chapters", error: `no chapters returned for first ${MAX_CANDIDATES} manga` };
-          continue;
-        }
-        chosen = chapters[0];
+      const { chapter, failure } = await tryCandidate(source, manga, timeoutMs);
+      if (chapter) {
+        chosen = chapter;
         break;
-      } catch (e) {
-        failure = { step, error: String(e?.message ?? e) };
       }
+      lastFailure = failure;
+      if (failure.step === "chapters") chaptersFailure = failure;
     }
-    if (!chosen) return { status: "broken", ...failure };
+    // Reaching chapters at all means details worked, so chapters is the most telling step.
+    if (!chosen) return { status: "broken", ...(chaptersFailure ?? lastFailure) };
 
-    const pages = await run("pages", () => source.pages(chosen.url));
+    step = "pages";
+    const pages = await withTimeout(Promise.resolve().then(() => source.pages(chosen.url)), timeoutMs, "pages");
     if (!pages?.length || !pages[0].url) return { status: "broken", step, error: "no pages returned" };
     return { status: "ok", step: null, error: null };
   } catch (e) {
     return { status: "broken", step, error: String(e?.message ?? e) };
   }
+}
+
+export function selectEntries(index, only) {
+  if (!only) return index.sources;
+  const entries = index.sources.filter((s) => s.id === only);
+  if (!entries.length) throw new Error(`unknown source id: ${only}`);
+  return entries;
+}
+
+// A source that fails to load is recorded as broken instead of aborting the run.
+export async function checkEntries(entries, { load, check = checkSource, log = () => {} }) {
+  const results = {};
+  for (const entry of entries) {
+    try {
+      results[entry.id] = await check(load(entry));
+    } catch (e) {
+      results[entry.id] = { status: "broken", step: "load", error: String(e?.message ?? e) };
+    }
+    const r = results[entry.id];
+    log(`${r.status === "ok" ? "OK    " : "BROKEN"} ${entry.id}${r.step ? `  [${r.step}] ${r.error}` : ""}`);
+  }
+  return results;
 }
 
 export function applyHealth(index, results, checkedAt) {
@@ -68,19 +100,29 @@ function arg(name) {
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const dir = resolve(arg("--dir") ?? "out");
-  const only = arg("--only");
   const reportPath = arg("--report") ?? "health-report.json";
+  const applyPath = arg("--apply-report");
   const indexPath = join(dir, "index.json");
   const index = JSON.parse(readFileSync(indexPath, "utf8"));
-  const results = {};
-  for (const entry of index.sources.filter((s) => !only || s.id === only)) {
-    const source = loadSource(readFileSync(join(dir, entry.script), "utf8"));
-    results[entry.id] = await checkSource(source);
-    const r = results[entry.id];
-    console.log(`${r.status === "ok" ? "OK    " : "BROKEN"} ${entry.id}${r.step ? `  [${r.step}] ${r.error}` : ""}`);
-  }
-  writeFileSync(reportPath, JSON.stringify(results, null, 2) + "\n");
-  if (process.argv.includes("--write")) {
+  if (applyPath) {
+    // Re-apply a saved report to the current index without re-checking.
+    const results = JSON.parse(readFileSync(applyPath, "utf8"));
     writeFileSync(indexPath, JSON.stringify(applyHealth(index, results, new Date().toISOString()), null, 2) + "\n");
+  } else {
+    let entries;
+    try {
+      entries = selectEntries(index, arg("--only"));
+    } catch (e) {
+      console.error(e.message);
+      process.exit(2);
+    }
+    const results = await checkEntries(entries, {
+      load: (entry) => loadSource(readFileSync(join(dir, entry.script), "utf8")),
+      log: console.log,
+    });
+    writeFileSync(reportPath, JSON.stringify(results, null, 2) + "\n");
+    if (process.argv.includes("--write")) {
+      writeFileSync(indexPath, JSON.stringify(applyHealth(index, results, new Date().toISOString()), null, 2) + "\n");
+    }
   }
 }
