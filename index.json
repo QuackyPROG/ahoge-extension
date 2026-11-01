@@ -14,8 +14,8 @@
       "script": "dist/en.mangadex.js",
       "sha256": "c799c1d9c51095fdd0f9a64e5a4e519671f83f1eab608ce6621931699d405ef2",
       "health": {
-        "status": "unknown",
-        "checkedAt": null
+        "status": "ok",
+        "checkedAt": "2026-11-01T07:21:52.207Z"
       }
     },
     {
@@ -30,8 +30,8 @@
       "script": "dist/en.manhuaplus.js",
       "sha256": "914272d8f85d76f2656ab2984614782fe91dfcb0deb1a03ff81fc87d47847c09",
       "health": {
-        "status": "unknown",
-        "checkedAt": null
+        "status": "broken",
+        "checkedAt": "2026-11-01T07:21:54.804Z"
       }
     }
   ]
