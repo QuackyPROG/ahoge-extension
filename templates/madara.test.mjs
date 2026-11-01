@@ -13,7 +13,7 @@ function makeSource(config, routes, calls = []) {
     `source = Madara(${JSON.stringify(config)});`,
   ].join("\n");
   const fetchImpl = async (url, init) => {
-    calls.push({ url, method: init.method, body: init.body ?? "" });
+    calls.push({ url, method: init.method, body: init.body == null ? "" : typeof init.body === "string" ? init.body : new TextDecoder().decode(init.body) });
     const hit = Object.entries(routes).find(([k]) => url === k);
     if (!hit) return new Response("missing " + url, { status: 404 });
     return new Response(hit[1], { status: 200, headers: { "content-type": "text/html" } });
