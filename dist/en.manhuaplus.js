@@ -1,5 +1,5 @@
 var source = null;
-const META = {"id":"en.manhuaplus","name":"ManhuaPlus","lang":"en","version":"1.1.0","nsfw":false,"baseUrl":"https://manhuaplus.com","template":"madara","upstream":"src/en/manhuaplus"};
+const META = {"id":"en.manhuaplus","name":"ManhuaPlus","lang":"en","version":"1.1.1","nsfw":false,"baseUrl":"https://manhuaplus.com","template":"madara","upstream":"src/en/manhuaplus"};
 // Helpers available to every source. Plain functions: no URL/fetch exist in the host.
 
 function pathOf(url) {
@@ -306,17 +306,27 @@ function Madara(config) {
     );
   }
 
+  const hasNextLink = (doc) => Boolean(doc.selectFirst("a.nextpostslink, .nav-previous a, a.next.page-numbers"));
+
   async function search(q, page, f) {
-    if (!hasFilters(f)) return loadMore(page, { "vars[s]": q });
+    if (!c.archivePath && !hasFilters(f)) return loadMore(page, { "vars[s]": q });
     const path = page > 1 ? "/page/" + page + "/" : "/";
-    const doc = await getDocument(base + path + "?" + query(searchPairs(q, f)));
+    const doc = await getDocument(base + path + "?" + query(searchPairs(q, f || {})));
     const manga = parseArchive(doc);
-    return { manga, hasNextPage: manga.length > 0 && Boolean(doc.selectFirst("a.nextpostslink, .nav-previous a, a.next.page-numbers")) };
+    return { manga, hasNextPage: manga.length > 0 && hasNextLink(doc) };
+  }
+
+  // Paged archive (/<archivePath>/page/N/?m_orderby=…), for sites whose admin-ajax is challenged.
+  async function archivePage(page, order) {
+    const path = "/" + c.archivePath + "/" + (page > 1 ? "page/" + page + "/" : "");
+    const doc = await getDocument(base + path + "?m_orderby=" + order);
+    const manga = parseArchive(doc);
+    return { manga, hasNextPage: manga.length > 0 && hasNextLink(doc) };
   }
 
   return {
-    popular: (page) => loadMore(page, sortBy("_wp_manga_views")),
-    latest: (page) => loadMore(page, sortBy("_latest_update")),
+    popular: (page) => (c.archivePath ? archivePage(page, "views") : loadMore(page, sortBy("_wp_manga_views"))),
+    latest: (page) => (c.archivePath ? archivePage(page, "latest") : loadMore(page, sortBy("_latest_update"))),
     search,
     filters,
 
