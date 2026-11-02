@@ -1,0 +1,9 @@
+{
+  "id": "en.asurascans",
+  "name": "Asura Scans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://asurascans.com",
+  "upstream": "src/en/asurascans"
+}
