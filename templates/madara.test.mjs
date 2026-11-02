@@ -299,3 +299,29 @@ test("filtered search uses the advanced search page", async () => {
   assert.deepEqual(result.manga.map((m) => m.title), ["Alpha", "Beta"]);
   assert.equal(result.hasNextPage, true);
 });
+
+test("archivePath lists popular and latest from the paged archive instead of admin-ajax", async () => {
+  const calls = [];
+  const src = makeSource(
+    { baseUrl: BASE, archivePath: "serie" },
+    {
+      [`${BASE}/serie/?m_orderby=views`]: ARCHIVE + `<a class="nextpostslink" href="${BASE}/serie/page/2/">next</a>`,
+      [`${BASE}/serie/page/2/?m_orderby=latest`]: ARCHIVE,
+    },
+    calls,
+  );
+  const popular = await src.popular(1);
+  assert.deepEqual(popular.manga.map((m) => m.url), ["/manga/alpha/", "/manga/beta/"]);
+  assert.equal(popular.hasNextPage, true);
+  const latest = await src.latest(2);
+  assert.equal(latest.hasNextPage, false);
+  assert.deepEqual(calls.map((c) => c.method), ["GET", "GET"]);
+});
+
+test("archivePath sends a plain text search to the search page", async () => {
+  const calls = [];
+  const src = makeSource({ baseUrl: BASE, archivePath: "serie" }, { [`${BASE}/?s=alpha&post_type=wp-manga`]: ARCHIVE }, calls);
+  const result = await src.search("alpha", 1);
+  assert.equal(calls[0].method, "GET");
+  assert.deepEqual(result.manga.map((m) => m.title), ["Alpha", "Beta"]);
+});

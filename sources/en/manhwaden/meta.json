@@ -5,5 +5,6 @@
   "version": "1.0.0",
   "nsfw": true,
   "baseUrl": "https://www.manhwaden.com",
-  "template": "madara"
+  "template": "madara",
+  "upstream": "src/en/manhwaden"
 }
