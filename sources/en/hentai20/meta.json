@@ -1,0 +1,10 @@
+{
+  "id": "en.hentai20",
+  "name": "Hentai20",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://hentai20.lol",
+  "template": "yiimanga",
+  "upstream": "src/en/hentai20lol"
+}

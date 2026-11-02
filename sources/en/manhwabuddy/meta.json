@@ -1,0 +1,10 @@
+{
+  "id": "en.manhwabuddy",
+  "name": "ManhwaBuddy",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://manhwabuddy.com",
+  "template": "yiimanga",
+  "upstream": "src/en/manhwabuddy"
+}
