@@ -74,7 +74,7 @@ source = {
     const id = seriesId(url);
     const chapters = (await nextData("/series/" + id + ".json?id=" + id)).chapters || [];
     return chapters.map((c) => {
-      const n = String(c.chapter).replace(/\.0$/, "");
+      const n = String(Number(c.chapter));
       return {
         url: "/series/" + c.series_id + "/" + c.token,
         name: "Chapter " + n + (c.title ? " - " + c.title : ""),

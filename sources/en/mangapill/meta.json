@@ -1,0 +1,9 @@
+{
+  "id": "en.mangapill",
+  "name": "Mangapill",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://mangapill.com",
+  "upstream": "src/en/mangapill"
+}
