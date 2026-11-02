@@ -1,0 +1,9 @@
+{
+  "id": "en.omegascans",
+  "name": "Omega Scans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://omegascans.org",
+  "upstream": "src/en/omegascans"
+}

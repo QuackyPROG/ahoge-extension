@@ -1,0 +1,8 @@
+{
+  "id": "en.mgeko",
+  "name": "Mgeko (Manga Geko)",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://www.mgeko.cc"
+}
