@@ -1,5 +1,23 @@
 {
-  "src/all/mangadex": "5240ce7bec6e0dfbc871318f19884961bc1032e9",
+  "src/all/mangadex": "fc7a827769f612dfa6dccb51e819f5b4eecaeab5",
   "src/en/manhuaplus": "5240ce7bec6e0dfbc871318f19884961bc1032e9",
-  "lib-multisrc/madara": "5240ce7bec6e0dfbc871318f19884961bc1032e9"
+  "lib-multisrc/madara": "dcf8f3a167c5c6882d221ff7129a2b25f60aa956",
+  "src/en/asurascans": "fc7a827769f612dfa6dccb51e819f5b4eecaeab5",
+  "src/en/atsumaru": "fc7a827769f612dfa6dccb51e819f5b4eecaeab5",
+  "src/en/flamecomics": "fc7a827769f612dfa6dccb51e819f5b4eecaeab5",
+  "src/en/hentai20lol": "404dc25cf03bbf5678670b046f35c1f9f50d1eda",
+  "src/all/mangaball": "fc7a827769f612dfa6dccb51e819f5b4eecaeab5",
+  "src/en/mangakatana": "fc7a827769f612dfa6dccb51e819f5b4eecaeab5",
+  "lib-multisrc/mangabox": "fc7a827769f612dfa6dccb51e819f5b4eecaeab5",
+  "src/en/mangapill": "fc7a827769f612dfa6dccb51e819f5b4eecaeab5",
+  "src/en/mangareadorg": "0ca8b46ec5229955a6a76b736de27642bca0808f",
+  "src/en/mangasushi": "66535bd04bec51a1063532cc72fb5e25de30effd",
+  "src/en/mangatown": "fc7a827769f612dfa6dccb51e819f5b4eecaeab5",
+  "src/en/manhwa18": "fc7a827769f612dfa6dccb51e819f5b4eecaeab5",
+  "src/en/manhwabuddy": "fc7a827769f612dfa6dccb51e819f5b4eecaeab5",
+  "src/en/manhwaden": "66535bd04bec51a1063532cc72fb5e25de30effd",
+  "src/en/omegascans": "5090577e89e28a70359b09cdd5a439282af41f14",
+  "src/en/toonily": "c481bfccc9044c2e733f4c3cd0f193875d1a0524",
+  "src/all/webtoons": "fc7a827769f612dfa6dccb51e819f5b4eecaeab5",
+  "src/en/weebcentral": "fc7a827769f612dfa6dccb51e819f5b4eecaeab5"
 }
