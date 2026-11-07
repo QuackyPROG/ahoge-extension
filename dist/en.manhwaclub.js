@@ -1,5 +1,5 @@
 var source = null;
-const META = {"id":"en.manhwaclub","name":"ManhwaClub","lang":"en","version":"1.0.0","nsfw":true,"baseUrl":"https://manhwaclub.net","template":"madara"};
+const META = {"id":"en.manhwaclub","name":"ManhwaClub","lang":"en","version":"1.0.1","nsfw":true,"baseUrl":"https://manhwaclub.net","template":"madara"};
 // Helpers available to every source. Plain functions: no URL/fetch exist in the host.
 
 function pathOf(url) {
@@ -379,7 +379,9 @@ function Madara(config) {
         .select(c.pageSelector)
         .map((el) => imageUrl(el.selectFirst("img")))
         .filter(Boolean);
-      return dedupeBy(urls, (u) => u).map((u) => ({ url: u, headers: { Referer: base + "/" } }));
+      // Some sites still print http:// image links; iOS blocks plain http, and the https copy is the same file.
+      const secure = /^https:/i.test(base) ? urls.map((u) => u.replace(/^http:\/\//i, "https://")) : urls;
+      return dedupeBy(secure, (u) => u).map((u) => ({ url: u, headers: { Referer: base + "/" } }));
     },
   };
 }
