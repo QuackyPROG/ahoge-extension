@@ -307,6 +307,22 @@
       }
     },
     {
+      "id": "en.nhentai",
+      "name": "nhentai",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://nhentai.net",
+      "icon": null,
+      "script": "dist/en.nhentai.js",
+      "sha256": "5b397d3b9e2495130fcbf16767c470bac9c7812941feab8d854f54a0efe71e82",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.omegascans",
       "name": "Omega Scans",
       "lang": "en",
