@@ -1,0 +1,26 @@
+name: PR check
+on:
+  pull_request:
+    paths: ["sources/**", "templates/**", "runtime/**", "scripts/**", "package.json", "package-lock.json"]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm test
+      - run: node scripts/build.mjs --out out
+      - name: Live check of changed sources
+        env: { BASE: "${{ github.event.pull_request.base.sha }}" }
+        run: |
+          ids=$(git diff --name-only "$BASE"...HEAD | node scripts/changed-ids.mjs)
+          if [ -z "$ids" ]; then echo "no sources changed"; exit 0; fi
+          echo "checking: $ids"
+          # "unverified" (Cloudflare challenged the runner) passes; "broken" fails.
+          node scripts/check.mjs --dir out --only "$ids" --report health-report.json --fail-on-broken

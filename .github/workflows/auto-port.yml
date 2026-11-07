@@ -1,0 +1,143 @@
+name: Auto-port upstream
+# Ports keiyoushi changes reported by "Upstream watch" ([upstream] issues) with Claude, then
+# tests, live-checks and pushes them to main and publishes. Failures are left on a branch and
+# reported on the issue. Needs the ANTHROPIC_API_KEY repository secret; without it, it skips.
+on:
+  schedule: [{ cron: "0 7 * * *" }] # after Upstream watch (06:30)
+  workflow_dispatch:
+    inputs:
+      issue: { description: "Only this issue number (optional)", required: false }
+permissions:
+  contents: write
+  issues: write
+  actions: write
+  id-token: write
+concurrency:
+  group: auto-port
+  cancel-in-progress: false
+jobs:
+  pick:
+    runs-on: ubuntu-latest
+    outputs:
+      issues: ${{ steps.pick.outputs.issues }}
+    env:
+      GH_TOKEN: "${{ github.token }}"
+      HAS_KEY: "${{ secrets.ANTHROPIC_API_KEY != '' }}"
+      ONLY: "${{ inputs.issue }}"
+    steps:
+      - id: pick
+        run: |
+          if [ "$HAS_KEY" != "true" ]; then
+            echo "::notice::ANTHROPIC_API_KEY is not set; skipping auto-port"
+            echo "issues=[]" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          gh label create auto-port-failed --repo "$GITHUB_REPOSITORY" --color d93f0b --force >/dev/null
+          if [ -n "$ONLY" ]; then echo "issues=[$ONLY]" >> "$GITHUB_OUTPUT"; exit 0; fi
+          # Five per run keeps cost and runner time bounded; the rest wait for the next day.
+          issues=$(gh issue list --repo "$GITHUB_REPOSITORY" --label upstream --state open --json number,labels --limit 100 \
+            --jq '[.[] | select([.labels[].name] | index("auto-port-failed") | not) | .number] | .[:5]')
+          echo "issues=$issues" >> "$GITHUB_OUTPUT"
+
+  port:
+    needs: pick
+    if: needs.pick.outputs.issues != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      max-parallel: 1 # each port pushes to main
+      fail-fast: false
+      matrix:
+        issue: ${{ fromJSON(needs.pick.outputs.issues) }}
+    env:
+      GH_TOKEN: "${{ github.token }}"
+      ISSUE: "${{ matrix.issue }}"
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main, fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+
+      - name: Fetch the upstream diff
+        id: diff
+        run: |
+          body=$(gh issue view "$ISSUE" --json body --jq .body)
+          path=$(printf '%s' "$body" | sed -n 's/^keiyoushi changed `\([^`]*\)`.*/\1/p' | head -1)
+          range=$(printf '%s' "$body" | grep -o 'compare/[0-9a-f]*\.\.\.[0-9a-f]*' | head -1 | sed 's#compare/##')
+          if [ -z "$path" ] || [ -z "$range" ]; then echo "::error::cannot read path/range from issue #$ISSUE"; exit 1; fi
+          git clone -q --filter=blob:none --no-checkout https://github.com/keiyoushi/extensions-source "$RUNNER_TEMP/upstream"
+          git -C "$RUNNER_TEMP/upstream" diff "${range%%...*}" "${range##*...}" -- "$path" > "$RUNNER_TEMP/upstream.diff"
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+          echo "lines=$(wc -l < "$RUNNER_TEMP/upstream.diff")" >> "$GITHUB_OUTPUT"
+          printf '%s' "$body" > "$RUNNER_TEMP/issue.md"
+
+      - name: Port with Claude
+        if: steps.diff.outputs.lines != '0'
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ github.token }}
+          claude_args: "--max-turns 60 --allowedTools Bash,Read,Edit,Write,Glob,Grep"
+          prompt: |
+            You maintain this repository: JavaScript manga sources ported from keiyoushi/extensions-source (Kotlin).
+            keiyoushi changed `${{ steps.diff.outputs.path }}`. The issue is in ${{ runner.temp }}/issue.md and
+            the upstream diff is in ${{ runner.temp }}/upstream.diff.
+
+            Port the behavior change into the sources the issue lists (sources/<lang>/<name>/source.js, or
+            templates/<name>.js for a lib-multisrc change). Follow docs/HOST_API.md exactly (ES2019, no ?. or ??,
+            no URL/fetch, helpers from templates/_common.js). Port only what changes behavior on the site:
+            selectors, URLs, API fields, parsing. Ignore Kotlin-only refactors, Android preferences and build files.
+            Bump the patch version in meta.json of every source whose behavior changes (for a template change,
+            every source on that template). Update or add tests next to the code you change and run `npm test`
+            until it passes.
+
+            If nothing needs porting, change no files and write one line explaining why to port-result.txt.
+            Do not commit, push, or open pull requests; the workflow does that after verifying your change.
+
+      - name: Verify
+        id: verify
+        run: |
+          if git diff --quiet && [ -z "$(git ls-files --others --exclude-standard | grep -v '^port-result.txt$')" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          rm -f port-result.txt
+          npm test
+          node scripts/build.mjs --out out
+          ids=$( { git diff --name-only; git ls-files --others --exclude-standard; } | node scripts/changed-ids.mjs)
+          echo "ids=$ids" >> "$GITHUB_OUTPUT"
+          if [ -n "$ids" ]; then node scripts/check.mjs --dir out --only "$ids" --report health-report.json --fail-on-broken; fi
+
+      - name: Nothing to port
+        if: steps.verify.outputs.changed == 'false'
+        run: |
+          reason="The upstream diff was empty."
+          [ -f port-result.txt ] && reason=$(head -c 1000 port-result.txt)
+          gh issue close "$ISSUE" --comment "Auto-port: nothing to port. $reason"
+
+      - name: Push to main and publish
+        if: steps.verify.outputs.changed == 'true' && success()
+        env: { UPATH: "${{ steps.diff.outputs.path }}", IDS: "${{ steps.verify.outputs.ids }}" }
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -- sources templates runtime docs
+          git commit -q -m "Port upstream $UPATH (#$ISSUE)" -m "Ported by the Auto-port workflow; tests and the live check of $IDS passed."
+          for attempt in 1 2 3; do git pull -q --rebase origin main && git push origin HEAD:main && break; sleep 5; done
+          # Pushes made with the workflow token do not start other workflows, so start Publish here.
+          gh workflow run publish.yml --ref main
+          gh issue close "$ISSUE" --comment "Auto-ported in $(git rev-parse --short HEAD), published. Live check passed for: $IDS."
+
+      - name: Report failure
+        if: failure() && steps.diff.outcome == 'success'
+        env: { UPATH: "${{ steps.diff.outputs.path }}" }
+        run: |
+          branch="auto-port/issue-$ISSUE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -q -B "$branch"
+          git add -A -- sources templates runtime docs
+          git commit -q -m "WIP: port upstream $UPATH (#$ISSUE)" || true
+          git push -q -f origin "$branch" || true
+          gh issue edit "$ISSUE" --add-label auto-port-failed
+          gh issue comment "$ISSUE" --body "Auto-port failed (tests or live check). Work so far: \`$branch\`. Run log: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. Remove the \`auto-port-failed\` label to retry."
