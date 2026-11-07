@@ -1,0 +1,10 @@
+{
+  "id": "en.kingofshojo",
+  "name": "King of Shojo",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://kingofshojo.com",
+  "template": "mangathemesia",
+  "upstream": "src/en/kingofshojo"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "en.athreascans",
+  "name": "Athrea Scans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://athreascans.com",
+  "template": "mangathemesia",
+  "upstream": "src/en/athreascans"
+}

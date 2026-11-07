@@ -1,0 +1,10 @@
+{
+  "id": "en.wearehunger",
+  "name": "KokoMangas",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://kokomangas.com",
+  "template": "madara",
+  "upstream": "src/en/wearehunger"
+}

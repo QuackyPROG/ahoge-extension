@@ -1,0 +1,10 @@
+{
+  "id": "en.lilymanga",
+  "name": "Lily Manga",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://lilymanga.net",
+  "template": "madara",
+  "upstream": "src/en/lilymanga"
+}

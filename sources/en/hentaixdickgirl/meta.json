@@ -1,0 +1,10 @@
+{
+  "id": "en.hentaixdickgirl",
+  "name": "HentaiXDickgirl",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://hentaixdickgirl.com",
+  "template": "madara",
+  "upstream": "src/en/hentaixdickgirl"
+}

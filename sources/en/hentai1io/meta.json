@@ -1,0 +1,10 @@
+{
+  "id": "en.hentai1io",
+  "name": "Hentai1.io",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://hentai1.io",
+  "template": "madara",
+  "upstream": "src/en/hentai1io"
+}

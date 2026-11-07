@@ -1,0 +1,10 @@
+{
+  "id": "en.hm2d",
+  "name": "HM2D",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://doujindistrict.com",
+  "template": "madara",
+  "upstream": "src/en/hm2d"
+}

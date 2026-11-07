@@ -124,6 +124,8 @@ test("selectEntries rejects an unknown id", () => {
   assert.deepEqual(selectEntries(index, "b"), [{ id: "b" }]);
   assert.deepEqual(selectEntries(index, null), index.sources);
   assert.throws(() => selectEntries(index, "zzz"), /unknown source id: zzz/);
+  assert.deepEqual(selectEntries(index, "b, a"), index.sources.filter((s) => ["a", "b"].includes(s.id)));
+  assert.throws(() => selectEntries(index, "a,zzz"), /unknown source id: zzz/);
 });
 
 test("a load failure is recorded and the run continues", async () => {

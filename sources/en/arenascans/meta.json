@@ -1,0 +1,10 @@
+{
+  "id": "en.arenascans",
+  "name": "Arena Scans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://arenascan.com",
+  "template": "mangathemesia",
+  "upstream": "src/en/arenascans"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "en.paritehaber",
+  "name": "Paritehaber",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://www.paritehaber.com",
+  "template": "madara",
+  "upstream": "src/en/paritehaber"
+}

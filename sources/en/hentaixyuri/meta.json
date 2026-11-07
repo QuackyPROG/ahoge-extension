@@ -1,0 +1,10 @@
+{
+  "id": "en.hentaixyuri",
+  "name": "HentaiXYuri",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://hentaixyuri.com",
+  "template": "madara",
+  "upstream": "src/en/hentaixyuri"
+}

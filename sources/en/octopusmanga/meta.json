@@ -1,0 +1,10 @@
+{
+  "id": "en.octopusmanga",
+  "name": "OctopusManga",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://octopusmanga.com",
+  "template": "madara",
+  "upstream": "src/en/octopusmanga"
+}

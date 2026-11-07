@@ -1,0 +1,10 @@
+{
+  "id": "en.decadencescans",
+  "name": "Decadence Scans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://reader.decadencescans.com",
+  "template": "madara",
+  "upstream": "src/en/decadencescans"
+}

@@ -2,7 +2,7 @@
   "id": "en.manhwaden",
   "name": "Manhwaden",
   "lang": "en",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nsfw": true,
   "baseUrl": "https://www.manhwaden.com",
   "template": "madara",

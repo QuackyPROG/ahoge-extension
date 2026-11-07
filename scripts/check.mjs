@@ -84,11 +84,13 @@ export async function checkSource(source, { timeoutMs = 30000 } = {}) {
   }
 }
 
+// `only` is one id or a comma-separated list.
 export function selectEntries(index, only) {
   if (!only) return index.sources;
-  const entries = index.sources.filter((s) => s.id === only);
-  if (!entries.length) throw new Error(`unknown source id: ${only}`);
-  return entries;
+  const ids = String(only).split(",").map((s) => s.trim()).filter(Boolean);
+  const unknown = ids.filter((id) => !index.sources.some((s) => s.id === id));
+  if (unknown.length) throw new Error(`unknown source id: ${unknown.join(", ")}`);
+  return index.sources.filter((s) => ids.includes(s.id));
 }
 
 // A source that fails to load is recorded as broken instead of aborting the run.
@@ -149,6 +151,8 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
       log: console.log,
     });
     writeFileSync(reportPath, JSON.stringify(results, null, 2) + "\n");
+    // Cloudflare challenges GitHub's runners, so only "broken" fails a gate; "unverified" passes.
+    if (process.argv.includes("--fail-on-broken") && Object.values(results).some((r) => r.status === "broken")) process.exitCode = 1;
     if (process.argv.includes("--write")) {
       writeFileSync(indexPath, JSON.stringify(applyHealth(index, results, new Date().toISOString()), null, 2) + "\n");
     }

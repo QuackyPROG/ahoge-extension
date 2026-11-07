@@ -325,3 +325,9 @@ test("archivePath sends a plain text search to the search page", async () => {
   assert.equal(calls[0].method, "GET");
   assert.deepEqual(result.manga.map((m) => m.title), ["Alpha", "Beta"]);
 });
+
+test("pages upgrade http image links to https on an https site", async () => {
+  const reader = `<div class="reading-content"><div class="page-break"><img src="http://cdn.madara.test/p1.jpg"></div></div>`;
+  const src = makeSource({ baseUrl: BASE }, { [`${BASE}/manga/alpha/chapter-1/`]: reader });
+  assert.deepEqual((await src.pages("/manga/alpha/chapter-1/")).map((p) => p.url), ["https://cdn.madara.test/p1.jpg"]);
+});

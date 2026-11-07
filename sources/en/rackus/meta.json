@@ -1,0 +1,10 @@
+{
+  "id": "en.rackus",
+  "name": "Rackus",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://rackusreads.com",
+  "template": "mangathemesia",
+  "upstream": "src/en/rackus"
+}

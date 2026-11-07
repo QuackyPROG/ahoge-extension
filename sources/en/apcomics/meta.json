@@ -1,0 +1,10 @@
+{
+  "id": "en.apcomics",
+  "name": "AP Comics",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://apcomics.org",
+  "template": "madara",
+  "upstream": "src/en/apcomics"
+}

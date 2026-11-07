@@ -1,0 +1,10 @@
+{
+  "id": "en.pornhwaz",
+  "name": "Pornhwaz",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://www.pornhwaz.com",
+  "template": "madara",
+  "upstream": "src/en/pornhwaz"
+}

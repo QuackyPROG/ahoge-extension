@@ -1,0 +1,10 @@
+{
+  "id": "en.s2manga",
+  "name": "S2Manga",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://s2read.com",
+  "template": "madara",
+  "upstream": "src/en/s2manga"
+}

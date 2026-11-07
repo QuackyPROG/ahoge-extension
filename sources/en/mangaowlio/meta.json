@@ -1,0 +1,10 @@
+{
+  "id": "en.mangaowlio",
+  "name": "MangaOwl.io (unoriginal)",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://mangaowl.io",
+  "template": "madara",
+  "upstream": "src/en/mangaowlio"
+}

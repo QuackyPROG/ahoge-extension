@@ -1,0 +1,10 @@
+{
+  "id": "en.ksgroupscans",
+  "name": "KSGroupScans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://ksgroupscans.com",
+  "template": "madara",
+  "upstream": "src/en/ksgroupscans"
+}

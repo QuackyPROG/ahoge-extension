@@ -1,0 +1,10 @@
+{
+  "id": "en.mangahot",
+  "name": "MangaHot",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://mangahot.org",
+  "template": "madara",
+  "upstream": "src/en/mangahot"
+}

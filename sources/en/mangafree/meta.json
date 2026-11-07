@@ -1,0 +1,10 @@
+{
+  "id": "en.mangafree",
+  "name": "Mangafree",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://mangafree.info",
+  "template": "madara",
+  "upstream": "src/en/mangafree"
+}
