@@ -310,13 +310,13 @@
       "id": "en.nhentai",
       "name": "nhentai",
       "lang": "en",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://nhentai.net",
       "icon": null,
       "script": "dist/en.nhentai.js",
-      "sha256": "5b397d3b9e2495130fcbf16767c470bac9c7812941feab8d854f54a0efe71e82",
+      "sha256": "0a47f3c2e25f5c2178303a194d156d4acabc76e9730545604499ee1b26fc1b86",
       "health": {
         "status": "unknown",
         "checkedAt": null

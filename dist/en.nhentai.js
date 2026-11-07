@@ -1,5 +1,5 @@
 var source = null;
-const META = {"id":"en.nhentai","name":"nhentai","lang":"en","version":"1.0.0","nsfw":true,"baseUrl":"https://nhentai.net"};
+const META = {"id":"en.nhentai","name":"nhentai","lang":"en","version":"1.1.0","nsfw":true,"baseUrl":"https://nhentai.net"};
 // Helpers available to every source. Plain functions: no URL/fetch exist in the host.
 
 function pathOf(url) {
@@ -103,13 +103,15 @@ function ensureOk(response) {
   return response;
 }
 
-// nhentai.net public JSON API (the endpoints the site's own reader uses). Not in keiyoushi, so
-// there is no upstream to track. Each gallery is one manga with a single chapter.
-const API = META.baseUrl + "/api";
-const IMAGES = "https://i.nhentai.net/galleries/";
-const THUMBS = "https://t.nhentai.net/galleries/";
-const HEADERS = { Accept: "application/json", Referer: META.baseUrl + "/" };
-const EXT = { j: "jpg", p: "png", g: "gif", w: "webp" };
+// nhentai.net REST API v2 (https://nhentai.net/api/v2/docs). The v1 API (/api/galleries/...) now
+// answers 403 "Use new API". Read endpoints work without an API key. Not in keiyoushi, so there is
+// no upstream to track. Each gallery is one manga with a single chapter.
+const API = META.baseUrl + "/api/v2";
+// GET /api/v2/cdn lists i1-i4 and t1-t4; all serve every file, so pick one per gallery.
+const IMAGE_SERVERS = ["https://i1.nhentai.net", "https://i2.nhentai.net", "https://i3.nhentai.net", "https://i4.nhentai.net"];
+const THUMB_SERVERS = ["https://t1.nhentai.net", "https://t2.nhentai.net", "https://t3.nhentai.net", "https://t4.nhentai.net"];
+// The API docs ask for a descriptive User-Agent.
+const HEADERS = { Accept: "application/json", "User-Agent": "Ahoge/1.0 (+https://github.com/QuackyPROG/ahoge-extension)" };
 
 const LANGUAGES = [
   { value: "english", label: "English" },
@@ -136,27 +138,25 @@ function idOf(url) {
   return match[1];
 }
 
-const ext = (image) => EXT[image && image.t] || "jpg";
-
-function titleOf(g) {
-  const t = g.title || {};
-  return t.english || t.pretty || t.japanese || String(g.id);
-}
+const server = (list, id) => list[Number(id) % list.length];
+const file = (list, id, path) => (path ? server(list, id) + "/" + String(path).replace(/^\/+/, "") : "");
 
 function stub(g) {
-  return { url: "/g/" + g.id + "/", title: titleOf(g), cover: THUMBS + g.media_id + "/thumb." + ext(g.images && g.images.thumbnail) };
+  return { url: "/g/" + g.id + "/", title: g.english_title || g.japanese_title || String(g.id), cover: file(THUMB_SERVERS, g.id, g.thumbnail) };
 }
 
 const tagsOf = (g, type) => (g.tags || []).filter((t) => t.type === type).map((t) => t.name);
 
-// The search endpoint needs a non-empty query, so a language term doubles as "everything".
+// Search needs a non-empty query, so "pages:>0" stands in for "everything".
 async function list(q, page, sort, language) {
   const terms = [String(q || "").trim()];
   if (language) terms.push("language:" + language);
   const text = terms.filter(Boolean).join(" ") || "pages:>0";
-  const json = await api("/galleries/search", [["query", text], ["page", page], ["sort", sort]]);
+  const json = await api("/search", [["query", text], ["sort", sort], ["page", page]]);
   return { manga: (json.result || []).map(stub), hasNextPage: page < (json.num_pages || 0) };
 }
+
+const gallery = (url) => api("/galleries/" + idOf(url));
 
 source = {
   popular: (page) => list("", page, "popular", "english"),
@@ -169,12 +169,13 @@ source = {
   ],
 
   async details(url) {
-    const g = await api("/gallery/" + idOf(url));
+    const g = await gallery(url);
+    const t = g.title || {};
+    const title = t.english || t.pretty || t.japanese || String(g.id);
     const artists = tagsOf(g, "artist");
     const groups = tagsOf(g, "group");
     const lines = [];
-    const alt = g.title && g.title.japanese;
-    if (alt && alt !== titleOf(g)) lines.push(alt);
+    if (t.japanese && t.japanese !== title) lines.push(t.japanese);
     for (const [type, label] of [["parody", "Parodies"], ["character", "Characters"], ["language", "Languages"], ["category", "Category"]]) {
       const names = tagsOf(g, type);
       if (names.length) lines.push(label + ": " + names.join(", "));
@@ -183,8 +184,8 @@ source = {
     if (g.num_favorites) lines.push("Favorites: " + g.num_favorites);
     lines.push("#" + g.id);
     return {
-      title: titleOf(g),
-      cover: THUMBS + g.media_id + "/cover." + ext(g.images && g.images.cover),
+      title,
+      cover: file(THUMB_SERVERS, g.id, (g.cover && g.cover.path) || (g.thumbnail && g.thumbnail.path)),
       author: (groups.length ? groups : artists).join(", "),
       artist: artists.join(", "),
       description: lines.join("\n"),
@@ -194,7 +195,7 @@ source = {
   },
 
   async chapters(url) {
-    const g = await api("/gallery/" + idOf(url));
+    const g = await gallery(url);
     return [{
       url: "/g/" + g.id + "/",
       name: "Gallery" + (g.num_pages ? " (" + g.num_pages + " pages)" : ""),
@@ -205,10 +206,10 @@ source = {
   },
 
   async pages(url) {
-    const g = await api("/gallery/" + idOf(url));
-    return ((g.images && g.images.pages) || []).map((p, i) => ({
-      url: IMAGES + g.media_id + "/" + (i + 1) + "." + ext(p),
-      headers: { Referer: META.baseUrl + "/" },
-    }));
+    const g = await gallery(url);
+    return (g.pages || [])
+      .slice()
+      .sort((a, b) => a.number - b.number)
+      .map((p) => ({ url: file(IMAGE_SERVERS, g.id, p.path), headers: { Referer: META.baseUrl + "/" } }));
   },
 };
