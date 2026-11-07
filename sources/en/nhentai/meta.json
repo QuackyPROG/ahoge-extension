@@ -1,0 +1,8 @@
+{
+  "id": "en.nhentai",
+  "name": "nhentai",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://nhentai.net"
+}
