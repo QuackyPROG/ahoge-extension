@@ -20,11 +20,14 @@ function makeSource(handler) {
   return { src: loadSource(script, { fetchImpl }), calls };
 }
 
+const listItem = { id: 227910, media_id: "1200622", english_title: "English Title", japanese_title: "日本語", thumbnail: "galleries/1200622/thumb.png", num_pages: 3 };
+
 const gallery = {
-  id: 177013,
-  media_id: "987560",
+  id: 227910,
+  media_id: "1200622",
   title: { english: "English Title", japanese: "日本語", pretty: "Pretty" },
-  images: { pages: [{ t: "j" }, { t: "p" }, { t: "w" }], cover: { t: "p" }, thumbnail: { t: "j" } },
+  cover: { path: "galleries/1200622/cover.png" },
+  thumbnail: { path: "galleries/1200622/thumb.png" },
   scanlator: "",
   upload_date: 1476793729,
   tags: [
@@ -38,15 +41,20 @@ const gallery = {
   ],
   num_pages: 3,
   num_favorites: 42,
+  pages: [
+    { number: 2, path: "galleries/1200622/2.png" },
+    { number: 1, path: "galleries/1200622/1.jpg" },
+    { number: 3, path: "galleries/1200622/3.webp" },
+  ],
 };
 
 test("popular searches English by popularity and builds thumbnails", async () => {
-  const { src, calls } = makeSource(() => ({ result: [gallery], num_pages: 5, per_page: 25 }));
+  const { src, calls } = makeSource(() => ({ result: [listItem], num_pages: 5, per_page: 25 }));
   assert.deepEqual(await src.popular(1), {
-    manga: [{ url: "/g/177013/", title: "English Title", cover: "https://t.nhentai.net/galleries/987560/thumb.jpg" }],
+    manga: [{ url: "/g/227910/", title: "English Title", cover: "https://t3.nhentai.net/galleries/1200622/thumb.png" }],
     hasNextPage: true,
   });
-  assert.equal(calls[0], "https://nhentai.net/api/galleries/search?query=language%3Aenglish&page=1&sort=popular");
+  assert.equal(calls[0], "https://nhentai.net/api/v2/search?query=language%3Aenglish&sort=popular&page=1");
 });
 
 test("latest sorts by date; last page has no next", async () => {
@@ -69,11 +77,11 @@ test("search passes the query through and applies filters", async () => {
 });
 
 test("details maps tags", async () => {
-  const { src, calls } = makeSource((url) => (url.endsWith("/api/gallery/177013") ? gallery : null));
-  const d = await src.details("/g/177013/");
-  assert.equal(calls[0], "https://nhentai.net/api/gallery/177013");
+  const { src, calls } = makeSource((url) => (url.endsWith("/api/v2/galleries/227910") ? gallery : null));
+  const d = await src.details("/g/227910/");
+  assert.equal(calls[0], "https://nhentai.net/api/v2/galleries/227910");
   assert.equal(d.title, "English Title");
-  assert.equal(d.cover, "https://t.nhentai.net/galleries/987560/cover.png");
+  assert.equal(d.cover, "https://t3.nhentai.net/galleries/1200622/cover.png");
   assert.equal(d.author, "circle b");
   assert.equal(d.artist, "artist a");
   assert.deepEqual(d.genres, ["full color", "sole female"]);
@@ -84,18 +92,18 @@ test("details maps tags", async () => {
 
 test("chapters is the gallery itself", async () => {
   const { src } = makeSource(() => gallery);
-  assert.deepEqual(await src.chapters("https://nhentai.net/g/177013/"), [
-    { url: "/g/177013/", name: "Gallery (3 pages)", number: 1, date: 1476793729000, scanlator: null },
+  assert.deepEqual(await src.chapters("https://nhentai.net/g/227910/"), [
+    { url: "/g/227910/", name: "Gallery (3 pages)", number: 1, date: 1476793729000, scanlator: null },
   ]);
 });
 
-test("pages use the image type of each page", async () => {
+test("pages come from the API in page order", async () => {
   const { src } = makeSource(() => gallery);
-  const pages = await src.pages("/g/177013/");
+  const pages = await src.pages("/g/227910/");
   assert.deepEqual(pages.map((p) => p.url), [
-    "https://i.nhentai.net/galleries/987560/1.jpg",
-    "https://i.nhentai.net/galleries/987560/2.png",
-    "https://i.nhentai.net/galleries/987560/3.webp",
+    "https://i3.nhentai.net/galleries/1200622/1.jpg",
+    "https://i3.nhentai.net/galleries/1200622/2.png",
+    "https://i3.nhentai.net/galleries/1200622/3.webp",
   ]);
   assert.equal(pages[0].headers.Referer, "https://nhentai.net/");
 });
