@@ -1,0 +1,10 @@
+{
+  "id": "en.manhwareads",
+  "name": "Manhwa Reads",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://manhwareads.com",
+  "template": "madara",
+  "upstream": "src/en/manhwareads"
+}

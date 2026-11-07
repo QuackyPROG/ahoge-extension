@@ -1,0 +1,10 @@
+{
+  "id": "en.manhwahubto",
+  "name": "ManhwaHub.to",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://manhwahub.to",
+  "template": "madara",
+  "upstream": "src/en/manhwahubto"
+}

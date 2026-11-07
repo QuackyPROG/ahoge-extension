@@ -1,0 +1,10 @@
+{
+  "id": "en.tritiniascans",
+  "name": "TritiniaScans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://tritinia.org",
+  "template": "madara",
+  "upstream": "src/en/tritiniascans"
+}

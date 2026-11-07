@@ -1,0 +1,10 @@
+{
+  "id": "en.manga18free",
+  "name": "Manga18Free",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://manga18free.com",
+  "template": "madara",
+  "upstream": "src/en/manga18free"
+}

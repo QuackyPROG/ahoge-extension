@@ -1,0 +1,10 @@
+{
+  "id": "en.hentaixcomic",
+  "name": "HentaiXComic",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://hentaixcomic.com",
+  "template": "madara",
+  "upstream": "src/en/hentaixcomic"
+}

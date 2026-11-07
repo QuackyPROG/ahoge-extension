@@ -1,0 +1,10 @@
+{
+  "id": "en.orchisasia",
+  "name": "Orchisasia",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://www.orchisasia.org",
+  "template": "madara",
+  "upstream": "src/en/orchisasia"
+}

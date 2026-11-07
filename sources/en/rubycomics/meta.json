@@ -1,0 +1,10 @@
+{
+  "id": "en.rubycomics",
+  "name": "Ruby Comics",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://rubycomics.net",
+  "template": "madara",
+  "upstream": "src/en/rubycomics"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "en.hunlightcomics",
+  "name": "Hunlight Comics",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://hunlightcomics.com",
+  "template": "madara",
+  "upstream": "src/en/hunlightcomics"
+}

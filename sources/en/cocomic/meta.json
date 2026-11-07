@@ -1,0 +1,10 @@
+{
+  "id": "en.cocomic",
+  "name": "Cocomic",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://cocomic.co",
+  "template": "madara",
+  "upstream": "src/en/cocomic"
+}

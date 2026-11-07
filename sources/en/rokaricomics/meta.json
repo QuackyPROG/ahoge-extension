@@ -1,0 +1,10 @@
+{
+  "id": "en.rokaricomics",
+  "name": "RokariComics",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://rokaricomics.com",
+  "template": "mangathemesia",
+  "upstream": "src/en/rokaricomics"
+}

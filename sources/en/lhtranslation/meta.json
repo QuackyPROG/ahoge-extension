@@ -1,0 +1,10 @@
+{
+  "id": "en.lhtranslation",
+  "name": "LHTranslation",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://lhtranslation.net",
+  "template": "madara",
+  "upstream": "src/en/lhtranslation"
+}

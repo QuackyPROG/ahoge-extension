@@ -1,0 +1,10 @@
+{
+  "id": "en.mangamaniacs",
+  "name": "MangaManiacs",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://mangamaniacs.org",
+  "template": "madara",
+  "upstream": "src/en/mangamaniacs"
+}

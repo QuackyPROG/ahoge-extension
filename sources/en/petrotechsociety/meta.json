@@ -1,0 +1,10 @@
+{
+  "id": "en.petrotechsociety",
+  "name": "Petrotechsociety",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://www.petrotechsociety.org",
+  "template": "madara",
+  "upstream": "src/en/petrotechsociety"
+}

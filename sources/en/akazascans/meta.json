@@ -1,0 +1,10 @@
+{
+  "id": "en.akazascans",
+  "name": "Akaza Scans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://akazascans.org",
+  "template": "mangathemesia",
+  "upstream": "src/en/akazascans"
+}

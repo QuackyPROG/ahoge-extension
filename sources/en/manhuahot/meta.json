@@ -1,0 +1,10 @@
+{
+  "id": "en.manhuahot",
+  "name": "ManhuaHot",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://manhuahot.com",
+  "template": "madara",
+  "upstream": "src/en/manhuahot"
+}

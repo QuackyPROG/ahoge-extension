@@ -274,7 +274,9 @@ function Madara(config) {
         .select(c.pageSelector)
         .map((el) => imageUrl(el.selectFirst("img")))
         .filter(Boolean);
-      return dedupeBy(urls, (u) => u).map((u) => ({ url: u, headers: { Referer: base + "/" } }));
+      // Some sites still print http:// image links; iOS blocks plain http, and the https copy is the same file.
+      const secure = /^https:/i.test(base) ? urls.map((u) => u.replace(/^http:\/\//i, "https://")) : urls;
+      return dedupeBy(secure, (u) => u).map((u) => ({ url: u, headers: { Referer: base + "/" } }));
     },
   };
 }

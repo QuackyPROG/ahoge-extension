@@ -1,0 +1,10 @@
+{
+  "id": "en.hentaidesi",
+  "name": "Hentai Desi",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://hentaidesi.com",
+  "template": "mangathemesia",
+  "upstream": "src/en/hentaidesi"
+}

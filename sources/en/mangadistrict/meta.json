@@ -1,0 +1,10 @@
+{
+  "id": "en.mangadistrict",
+  "name": "Manga District",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://mangadistrict.com",
+  "template": "madara",
+  "upstream": "src/en/mangadistrict"
+}

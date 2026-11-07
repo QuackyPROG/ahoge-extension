@@ -1,0 +1,10 @@
+{
+  "id": "en.allporncomicio",
+  "name": "AllPornComic.io",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://allporncomic.io",
+  "template": "madara",
+  "upstream": "src/en/allporncomicio"
+}

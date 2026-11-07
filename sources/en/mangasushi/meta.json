@@ -2,7 +2,7 @@
   "id": "en.mangasushi",
   "name": "Mangasushi",
   "lang": "en",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "nsfw": false,
   "baseUrl": "https://mangasushi.org",
   "template": "madara",

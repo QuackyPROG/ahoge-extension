@@ -1,0 +1,10 @@
+{
+  "id": "en.thunderscans",
+  "name": "Thunder Scans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://en-thunderscans.com",
+  "template": "mangathemesia",
+  "upstream": "src/en/thunderscans"
+}

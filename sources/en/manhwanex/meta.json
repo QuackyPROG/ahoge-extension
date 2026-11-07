@@ -1,0 +1,10 @@
+{
+  "id": "en.manhwanex",
+  "name": "ManhwaNex",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://manhwanex.com",
+  "template": "madara",
+  "upstream": "src/en/manhwanex"
+}
