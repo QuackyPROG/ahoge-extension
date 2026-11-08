@@ -10,7 +10,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://akazascans.org",
-      "icon": null,
+      "icon": "icons/en.akazascans.png",
       "script": "dist/en.akazascans.js",
       "sha256": "811ed6ef979f4ee8b84e65fd5a7bdbfafd86d2730c6d402139833fb6fc356100",
       "health": {
@@ -26,7 +26,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://allporncomic.io",
-      "icon": null,
+      "icon": "icons/en.allporncomicio.png",
       "script": "dist/en.allporncomicio.js",
       "sha256": "ed2adabf1f8e92e79080b098806b85cdcd4154cb29d30360aee1da1c27360b2b",
       "health": {
@@ -42,7 +42,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://apcomics.org",
-      "icon": null,
+      "icon": "icons/en.apcomics.png",
       "script": "dist/en.apcomics.js",
       "sha256": "c19cf9852347ec3bb9910102eed67dc33529fbd4621a71ec3e6dad81d5c4a2c1",
       "health": {
@@ -58,7 +58,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://arenascan.com",
-      "icon": null,
+      "icon": "icons/en.arenascans.png",
       "script": "dist/en.arenascans.js",
       "sha256": "00254d98d8e7cf7298f1a9a34c6bc768ecd95cde24c410aba4a3eb734a4ffcae",
       "health": {
@@ -74,7 +74,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://asterscans.com",
-      "icon": null,
+      "icon": "icons/en.asterscans.png",
       "script": "dist/en.asterscans.js",
       "sha256": "6dd4c84d265b9ebf5839b698c0ce5f7ac5c70308fc9dec703e793c0b938f3834",
       "health": {
@@ -106,7 +106,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://athreascans.com",
-      "icon": null,
+      "icon": "icons/en.athreascans.png",
       "script": "dist/en.athreascans.js",
       "sha256": "f9f0d06dc99af8cc31d054b120a56e9d9145045fffcc999e6d183442d74653d4",
       "health": {
@@ -138,7 +138,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://cocomic.co",
-      "icon": null,
+      "icon": "icons/en.cocomic.png",
       "script": "dist/en.cocomic.js",
       "sha256": "189de56d39474cebe8c9b200ebe54aaf8bafeba8c9a9b60e331bf05e0bd80244",
       "health": {
@@ -154,7 +154,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://cucumbermanga.com",
-      "icon": null,
+      "icon": "icons/en.cucumbermanga.png",
       "script": "dist/en.cucumbermanga.js",
       "sha256": "c926cc441e5af6ec372587e8645486b1ab87a8817a0ed52933cbe9c02e5867d1",
       "health": {
@@ -170,7 +170,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://reader.decadencescans.com",
-      "icon": null,
+      "icon": "icons/en.decadencescans.png",
       "script": "dist/en.decadencescans.js",
       "sha256": "29317e42bd5459425389c6549e4fde4c744c30cc9d00f798231bb99a0487ad65",
       "health": {
@@ -186,7 +186,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://scythescans.com",
-      "icon": null,
+      "icon": "icons/en.erosscans.png",
       "script": "dist/en.erosscans.js",
       "sha256": "67f69b134c8f379ebeb35cd25cf2c83899fb414871025c5386acc47505f4427c",
       "health": {
@@ -218,7 +218,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://gakamangas.com",
-      "icon": null,
+      "icon": "icons/en.gakamangas.png",
       "script": "dist/en.gakamangas.js",
       "sha256": "5bacd530fb66c2095a558f25e6ea32179843a3eea4b428b7529c0a6367dba16b",
       "health": {
@@ -234,7 +234,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://gedecomix.com",
-      "icon": null,
+      "icon": "icons/en.gedecomix.png",
       "script": "dist/en.gedecomix.js",
       "sha256": "c930296caf68e455e835c8d9d4b569fe77e916d865720139baa2f840385187e8",
       "health": {
@@ -250,7 +250,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://hentai1.io",
-      "icon": null,
+      "icon": "icons/en.hentai1io.png",
       "script": "dist/en.hentai1io.js",
       "sha256": "933ba918d2c532a174faea32c3c9d1dc3bd44612e7c573b549251ba651b2a7a5",
       "health": {
@@ -282,7 +282,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://hentaidesi.com",
-      "icon": null,
+      "icon": "icons/en.hentaidesi.png",
       "script": "dist/en.hentaidesi.js",
       "sha256": "0c02f927f3f0220434e5cad98406f352df6ed05313586a2f3a942adbfa2feb02",
       "health": {
@@ -298,7 +298,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://hentaixcomic.com",
-      "icon": null,
+      "icon": "icons/en.hentaixcomic.png",
       "script": "dist/en.hentaixcomic.js",
       "sha256": "a49c16bef0f5bb157b1e9928b0d4fb4623b39c4975c88f3829489a2f8c8ee9b8",
       "health": {
@@ -314,7 +314,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://hentaixdickgirl.com",
-      "icon": null,
+      "icon": "icons/en.hentaixdickgirl.png",
       "script": "dist/en.hentaixdickgirl.js",
       "sha256": "08cfac906cdc60bdce71d436e4512f44b29bc62c2cb6f8e4f8a8957dad6b4165",
       "health": {
@@ -330,7 +330,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://hentaixyuri.com",
-      "icon": null,
+      "icon": "icons/en.hentaixyuri.png",
       "script": "dist/en.hentaixyuri.js",
       "sha256": "02a7b46979a4c97f3091d5481221151fc892e693286eb630c17087c0df9a523a",
       "health": {
@@ -346,7 +346,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://doujindistrict.com",
-      "icon": null,
+      "icon": "icons/en.hm2d.png",
       "script": "dist/en.hm2d.js",
       "sha256": "8b160367ff8afbe296380143c95673f7bbc6516ae61917d78f9772082d5c1ff6",
       "health": {
@@ -362,7 +362,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://hunlightcomics.com",
-      "icon": null,
+      "icon": "icons/en.hunlightcomics.png",
       "script": "dist/en.hunlightcomics.js",
       "sha256": "873d7e8f58ad7021f12077d4e1f98833981855f92b6285b15a8770c8674ae159",
       "health": {
@@ -378,7 +378,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://kingofshojo.com",
-      "icon": null,
+      "icon": "icons/en.kingofshojo.png",
       "script": "dist/en.kingofshojo.js",
       "sha256": "b4b76633b6c0802b043f18696798a3355a9e28ae98cc9466502d9d980c4ff3d2",
       "health": {
@@ -394,7 +394,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://ksgroupscans.com",
-      "icon": null,
+      "icon": "icons/en.ksgroupscans.png",
       "script": "dist/en.ksgroupscans.js",
       "sha256": "cb8f05fe8262e850ef07dd9d6660f22958b1c4da9432506263c56aa58d1e0b0d",
       "health": {
@@ -410,7 +410,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://lagoonscans.com",
-      "icon": null,
+      "icon": "icons/en.lagoonscans.png",
       "script": "dist/en.lagoonscans.js",
       "sha256": "bbb02cf1f11877e60869b4a75f62345ecc69463e00b72df7b0dae7f77cd89eab",
       "health": {
@@ -426,7 +426,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://lhtranslation.net",
-      "icon": null,
+      "icon": "icons/en.lhtranslation.png",
       "script": "dist/en.lhtranslation.js",
       "sha256": "5b55253be93f865c82bb00901fc8a65aab1c2720f1d93b43f8e17d25b64dffca",
       "health": {
@@ -442,7 +442,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://lilymanga.net",
-      "icon": null,
+      "icon": "icons/en.lilymanga.png",
       "script": "dist/en.lilymanga.js",
       "sha256": "69562fbbbb8c9544d11145dffb0543c1297f28464a173cd72ea4bab5d4fcd90c",
       "health": {
@@ -458,7 +458,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://lovesjane.site",
-      "icon": null,
+      "icon": "icons/en.lovesjanescans.png",
       "script": "dist/en.lovesjanescans.js",
       "sha256": "238c899eb3f07330b62470f4abf8f0d495a7258294e100264c17475f18e3e8ab",
       "health": {
@@ -474,7 +474,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://madarascans.net",
-      "icon": null,
+      "icon": "icons/en.madarascans.png",
       "script": "dist/en.madarascans.js",
       "sha256": "99c53c899d9c646f9b4fc7b202d241c68a8c69ffbead02934c38e15e64ee0c92",
       "health": {
@@ -490,7 +490,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://manga18free.com",
-      "icon": null,
+      "icon": "icons/en.manga18free.png",
       "script": "dist/en.manga18free.js",
       "sha256": "0518e20774ff1676622c374a9b8e5132d8c4e7982c7777befff449f6ae6e99a1",
       "health": {
@@ -538,7 +538,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://mangadistrict.com",
-      "icon": null,
+      "icon": "icons/en.mangadistrict.png",
       "script": "dist/en.mangadistrict.js",
       "sha256": "26260760dc3ce4e43477ddba05f5fd710e42e5d2b30f9bfad69d40cd87dab8b0",
       "health": {
@@ -554,7 +554,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://mangaeclipse.com",
-      "icon": null,
+      "icon": "icons/en.mangaeclipse.png",
       "script": "dist/en.mangaeclipse.js",
       "sha256": "e02e354d1e684733cfc7de74ee8b7dc02b86c33255e12bfa1f951b1367bfeb49",
       "health": {
@@ -570,7 +570,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://mangaforfree.com",
-      "icon": null,
+      "icon": "icons/en.mangaforfreecom.png",
       "script": "dist/en.mangaforfreecom.js",
       "sha256": "86f06712bf39724a0928ea2fbdde3b1cb34b7b689da89ba2ea83951c41d50878",
       "health": {
@@ -586,7 +586,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://mangafree.info",
-      "icon": null,
+      "icon": "icons/en.mangafree.png",
       "script": "dist/en.mangafree.js",
       "sha256": "671736c6a0b822bf265dc4d256d113fe3feb6baa54946feebffc5dfbb20f62be",
       "health": {
@@ -602,7 +602,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://mangahot.org",
-      "icon": null,
+      "icon": "icons/en.mangahot.png",
       "script": "dist/en.mangahot.js",
       "sha256": "41a4b74650eebcac6b172527bcf558129b41de77102e573847ae83e0b826897b",
       "health": {
@@ -634,7 +634,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://mangamaniacs.org",
-      "icon": null,
+      "icon": "icons/en.mangamaniacs.png",
       "script": "dist/en.mangamaniacs.js",
       "sha256": "8f5ab377e8e9af7f46eed0cfeb6a1b037e2497c80a837ce8cd4d1aeeabf47a0b",
       "health": {
@@ -666,7 +666,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://mangaowl.io",
-      "icon": null,
+      "icon": "icons/en.mangaowlio.png",
       "script": "dist/en.mangaowlio.js",
       "sha256": "2fa24194df4c7910564f07160d1b6ee5f6a98f2afdd7d7d8385f347af18fe532",
       "health": {
@@ -682,7 +682,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://mangapark.tv",
-      "icon": null,
+      "icon": "icons/en.mangaparktv.png",
       "script": "dist/en.mangaparktv.js",
       "sha256": "aa0ab4f6f74e9f992426eb02f2731237b9f79bb448abc0ef89acba4b2b5ef65d",
       "health": {
@@ -762,7 +762,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://mangatrend.org",
-      "icon": null,
+      "icon": "icons/en.mangatrend.png",
       "script": "dist/en.mangatrend.js",
       "sha256": "abf145bffb31d9b58b8ad2b551679729182adbb11310eda85859a27c81b0f66e",
       "health": {
@@ -778,7 +778,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://manhuahot.com",
-      "icon": null,
+      "icon": "icons/en.manhuahot.png",
       "script": "dist/en.manhuahot.js",
       "sha256": "5ac99f0d974445b4c89a1a2fdcb9c01f12ba1c80120f54d92cdd3dcb806828dd",
       "health": {
@@ -858,7 +858,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://manhwaclub.net",
-      "icon": null,
+      "icon": "icons/en.manhwaclub.png",
       "script": "dist/en.manhwaclub.js",
       "sha256": "116f651e9c3e1593eb7433d1a9f681170b999c446151696717d6eae41c5822c3",
       "health": {
@@ -890,7 +890,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://manhwahub.to",
-      "icon": null,
+      "icon": "icons/en.manhwahubto.png",
       "script": "dist/en.manhwahubto.js",
       "sha256": "e637d09656fa4603e14fa4001a6bde202d5606c1c24f53166d271a48c96c4077",
       "health": {
@@ -906,7 +906,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://manhwanex.com",
-      "icon": null,
+      "icon": "icons/en.manhwanex.png",
       "script": "dist/en.manhwanex.js",
       "sha256": "dd6d66084bd97a91ff5d80c8764996ce689cf48284413d82b33a838fa67724f5",
       "health": {
@@ -922,7 +922,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://manhwareads.com",
-      "icon": null,
+      "icon": "icons/en.manhwareads.png",
       "script": "dist/en.manhwareads.js",
       "sha256": "7fad4777d3f011586859bccf1550ff0c8be9e1c0f3567be52eac3b9b4419bb6f",
       "health": {
@@ -954,7 +954,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://nhentai.net",
-      "icon": null,
+      "icon": "icons/en.nhentai.png",
       "script": "dist/en.nhentai.js",
       "sha256": "0a47f3c2e25f5c2178303a194d156d4acabc76e9730545604499ee1b26fc1b86",
       "health": {
@@ -970,7 +970,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://octopusmanga.com",
-      "icon": null,
+      "icon": "icons/en.octopusmanga.png",
       "script": "dist/en.octopusmanga.js",
       "sha256": "3d0678dd222fad08d713901d2415029700e288be05e2a4a7e0f8af81885cf22f",
       "health": {
@@ -1002,7 +1002,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://www.orchisasia.org",
-      "icon": null,
+      "icon": "icons/en.orchisasia.png",
       "script": "dist/en.orchisasia.js",
       "sha256": "8b764bd074da4a182e5ebe832f303f7eee160209780e92ffe583d0ce3dce0156",
       "health": {
@@ -1018,7 +1018,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://www.paritehaber.com",
-      "icon": null,
+      "icon": "icons/en.paritehaber.png",
       "script": "dist/en.paritehaber.js",
       "sha256": "9a37437330605d86720ab97c0ebadbde9cfc7365c274c2cf8f4d66064310abeb",
       "health": {
@@ -1034,7 +1034,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://www.petrotechsociety.org",
-      "icon": null,
+      "icon": "icons/en.petrotechsociety.png",
       "script": "dist/en.petrotechsociety.js",
       "sha256": "886b9e46b914b802d692935f050b75d2b2f7ff7b590f72a6829e4c25ddc946a1",
       "health": {
@@ -1050,7 +1050,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://www.pornhwaz.com",
-      "icon": null,
+      "icon": "icons/en.pornhwaz.png",
       "script": "dist/en.pornhwaz.js",
       "sha256": "3c44d47155088349a4dc473a689c9117ca1d6171932ccee72ea9491eaa718941",
       "health": {
@@ -1082,7 +1082,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://rackusreads.com",
-      "icon": null,
+      "icon": "icons/en.rackus.png",
       "script": "dist/en.rackus.js",
       "sha256": "bcf68c62dc39160844ba6beb2a61d97a80cdb53aecf7ce8f62e2b777e76ffa9d",
       "health": {
@@ -1098,7 +1098,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://rizzfables.com",
-      "icon": null,
+      "icon": "icons/en.rizzcomic.png",
       "script": "dist/en.rizzcomic.js",
       "sha256": "226f767abdf0eac0f3d5267a8638383d706091db78b99d8a49a52962c8b4ca4d",
       "health": {
@@ -1114,7 +1114,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://rokaricomics.com",
-      "icon": null,
+      "icon": "icons/en.rokaricomics.png",
       "script": "dist/en.rokaricomics.js",
       "sha256": "a695eb1ba0a9f142dc8a153c2eb49e6bb80b44d524d3a2ad16a1dad06835113c",
       "health": {
@@ -1130,7 +1130,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://rubycomics.net",
-      "icon": null,
+      "icon": "icons/en.rubycomics.png",
       "script": "dist/en.rubycomics.js",
       "sha256": "bc031d12f48aa32d4a2d1cb53aaa9d8a9f61b85027a558ae2b47559d91578134",
       "health": {
@@ -1146,7 +1146,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://s2read.com",
-      "icon": null,
+      "icon": "icons/en.s2manga.png",
       "script": "dist/en.s2manga.js",
       "sha256": "a5326f46fdd75c87087b561b49d17adf0afc6cd47a8dade9e565458aad4ac0b9",
       "health": {
@@ -1162,7 +1162,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://sleepytranslations.com",
-      "icon": null,
+      "icon": "icons/en.sleepytranslations.png",
       "script": "dist/en.sleepytranslations.js",
       "sha256": "de3febd3dfea1c0e42a2dde60ecb5a90d0d998618fb9d7c01cb01d78bc16ea4a",
       "health": {
@@ -1178,7 +1178,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://en-thunderscans.com",
-      "icon": null,
+      "icon": "icons/en.thunderscans.png",
       "script": "dist/en.thunderscans.js",
       "sha256": "2e9b8802ad61fa342772217dbe59eb4feff7fa1f1dfc9c31556f9ee56fa9a842",
       "health": {
@@ -1210,7 +1210,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://tritinia.org",
-      "icon": null,
+      "icon": "icons/en.tritiniascans.png",
       "script": "dist/en.tritiniascans.js",
       "sha256": "5730214f5990dface141f17aeedfb2c12e284887a358dbbccb0b721d1a8120e9",
       "health": {
@@ -1226,7 +1226,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://violetmanga.com",
-      "icon": null,
+      "icon": "icons/en.violetscans.png",
       "script": "dist/en.violetscans.js",
       "sha256": "e76ab2f00a701720f55597bd91e513a0128bebe8b1211b3afcf93c33ba894206",
       "health": {
@@ -1242,7 +1242,7 @@
       "runtime": 1,
       "nsfw": true,
       "baseUrl": "https://kokomangas.com",
-      "icon": null,
+      "icon": "icons/en.wearehunger.png",
       "script": "dist/en.wearehunger.js",
       "sha256": "5f579ae1f47472cb951818281fc266fe12fdc01acd656f40a9a50d37184493b1",
       "health": {
@@ -1290,7 +1290,7 @@
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://yakshacomics.com",
-      "icon": null,
+      "icon": "icons/en.yakshacomics.png",
       "script": "dist/en.yakshacomics.js",
       "sha256": "f2c389a20eba2248d90cc986a30b5f5ba5823646cd965583daa1c788ca78dab6",
       "health": {
