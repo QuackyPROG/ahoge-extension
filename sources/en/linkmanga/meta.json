@@ -1,0 +1,10 @@
+{
+  "id": "en.linkmanga",
+  "name": "LinkManga",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://linkmanga.com",
+  "template": "madara",
+  "upstream": "src/en/linkmanga"
+}

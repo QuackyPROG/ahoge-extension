@@ -1,0 +1,10 @@
+{
+  "id": "en.fourporncomic",
+  "name": "4PornComic",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://4porncomic.com",
+  "template": "yiimanga",
+  "upstream": "src/en/fourporncomic"
+}

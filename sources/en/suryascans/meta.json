@@ -1,0 +1,10 @@
+{
+  "id": "en.suryascans",
+  "name": "Genz Toons",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://genztoons.org",
+  "template": "keyoapp",
+  "upstream": "src/en/suryascans"
+}

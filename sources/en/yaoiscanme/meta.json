@@ -1,0 +1,10 @@
+{
+  "id": "en.yaoiscanme",
+  "name": "YaoiScan (Unoriginal)",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://yaoiscan.me",
+  "template": "yiimanga",
+  "upstream": "src/en/yaoiscanme"
+}

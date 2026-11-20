@@ -5,7 +5,14 @@ import { execFileSync } from "node:child_process";
 import { listSourceDirs } from "./lib/bundle.mjs";
 
 const UPSTREAM_REPO = "keiyoushi/extensions-source";
-const TEMPLATE_PATHS = { madara: "lib-multisrc/madara", mangathemesia: "lib-multisrc/mangathemesia" };
+const TEMPLATE_PATHS = {
+  madara: "lib-multisrc/madara",
+  mangathemesia: "lib-multisrc/mangathemesia",
+  yiimanga: "lib-multisrc/yiimanga",
+  iken: "lib-multisrc/iken",
+  keyoapp: "lib-multisrc/keyoapp",
+  mangahub: "lib-multisrc/mangahub",
+};
 
 export function watchedPaths(metas) {
   const paths = {};

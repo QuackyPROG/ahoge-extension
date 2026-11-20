@@ -1,0 +1,10 @@
+{
+  "id": "en.ritharscans",
+  "name": "RitharScans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://ritharscans.com",
+  "template": "keyoapp",
+  "upstream": "src/en/ritharscans"
+}

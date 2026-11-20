@@ -1,0 +1,10 @@
+{
+  "id": "en.manhwatop",
+  "name": "Manhwatop",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://manhwatop.com",
+  "template": "madara",
+  "upstream": "src/en/manhwatop"
+}

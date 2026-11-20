@@ -1,0 +1,10 @@
+{
+  "id": "en.erisscans",
+  "name": "Eris Scans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://erisscans.com",
+  "template": "keyoapp",
+  "upstream": "src/en/erisscans"
+}

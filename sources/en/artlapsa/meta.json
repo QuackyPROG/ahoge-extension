@@ -1,0 +1,10 @@
+{
+  "id": "en.artlapsa",
+  "name": "Art Lapsa",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://artlapsa.com",
+  "template": "keyoapp",
+  "upstream": "src/en/artlapsa"
+}

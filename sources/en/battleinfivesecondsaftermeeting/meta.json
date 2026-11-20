@@ -1,0 +1,10 @@
+{
+  "id": "en.battleinfivesecondsaftermeeting",
+  "name": "Battle In 5 Seconds After Meeting",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://www.deatte5.com",
+  "template": "madara",
+  "upstream": "src/en/battleinfivesecondsaftermeeting"
+}

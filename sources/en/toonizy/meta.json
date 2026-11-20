@@ -1,0 +1,10 @@
+{
+  "id": "en.toonizy",
+  "name": "Toonizy",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://toonizy.com",
+  "template": "madara",
+  "upstream": "src/en/toonizy"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "en.myreadingcomic",
+  "name": "MyReadingComic",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://myreadingcomic.com",
+  "template": "yiimanga",
+  "upstream": "src/en/myreadingcomic"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "en.lunatoons",
+  "name": "Luna Toons",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://lunatoons.net",
+  "template": "keyoapp",
+  "upstream": "src/en/lunatoons"
+}

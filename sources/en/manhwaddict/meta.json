@@ -1,0 +1,10 @@
+{
+  "id": "en.manhwaddict",
+  "name": "Manhwaddict",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://manhwaddict.com",
+  "template": "yiimanga",
+  "upstream": "src/en/manhwaddict"
+}

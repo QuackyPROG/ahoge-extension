@@ -1,0 +1,10 @@
+{
+  "id": "en.mangagg",
+  "name": "MangaGG",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://mangagg.com",
+  "template": "madara",
+  "upstream": "src/en/mangagg"
+}

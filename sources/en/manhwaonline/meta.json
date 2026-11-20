@@ -1,0 +1,10 @@
+{
+  "id": "en.manhwaonline",
+  "name": "ManhwaOnline",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://manhwaonline.org",
+  "template": "yiimanga",
+  "upstream": "src/en/manhwaonline"
+}

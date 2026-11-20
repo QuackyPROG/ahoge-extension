@@ -1,0 +1,10 @@
+{
+  "id": "en.hentaideck",
+  "name": "HentaiDeck",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://hentaideck.com",
+  "template": "mangathemesia",
+  "upstream": "src/en/hentaideck"
+}

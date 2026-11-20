@@ -1,0 +1,10 @@
+{
+  "id": "en.asmotoon",
+  "name": "Asmodeus Scans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://asmotoon.com",
+  "template": "keyoapp",
+  "upstream": "src/en/asmotoon"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "en.kitsunedawn",
+  "name": "Kitsune Dawn",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": true,
+  "baseUrl": "https://kitsunedawn.com",
+  "template": "keyoapp",
+  "upstream": "src/en/kitsunedawn"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "en.writerscans",
+  "name": "Writer Scans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://writerscans.com",
+  "template": "keyoapp",
+  "upstream": "src/en/writerscans"
+}

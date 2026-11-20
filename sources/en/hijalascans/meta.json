@@ -1,0 +1,10 @@
+{
+  "id": "en.hijalascans",
+  "name": "Hijala Scans",
+  "lang": "en",
+  "version": "1.0.0",
+  "nsfw": false,
+  "baseUrl": "https://en-hijala.com",
+  "template": "iken",
+  "upstream": "src/en/hijalascans"
+}
