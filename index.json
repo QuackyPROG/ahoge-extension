@@ -19,6 +19,22 @@
       }
     },
     {
+      "id": "en.allporncomic",
+      "name": "AllPornComic",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://allporncomic.com",
+      "icon": "icons/en.allporncomic.png",
+      "script": "dist/en.allporncomic.js",
+      "sha256": "8a06b318172fe4d58f3b96abccb1426fd165db48489174f644d7839dc470a832",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.allporncomicio",
       "name": "AllPornComic.io",
       "lang": "en",
@@ -64,6 +80,38 @@
       "health": {
         "status": "ok",
         "checkedAt": "2026-11-19T15:34:14.623Z"
+      }
+    },
+    {
+      "id": "en.artlapsa",
+      "name": "Art Lapsa",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://artlapsa.com",
+      "icon": "icons/en.artlapsa.png",
+      "script": "dist/en.artlapsa.js",
+      "sha256": "de0cbad796bb8a4f1609dd8da852f4ddabc71d55a20e4d09c931a5c12a6f7340",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
+      "id": "en.asmotoon",
+      "name": "Asmodeus Scans",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://asmotoon.com",
+      "icon": "icons/en.asmotoon.png",
+      "script": "dist/en.asmotoon.js",
+      "sha256": "2928e8ad909d5d49b80b261e1c6418d4cc969f4d78276566dc0f529c61c0f060",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -131,6 +179,22 @@
       }
     },
     {
+      "id": "en.battleinfivesecondsaftermeeting",
+      "name": "Battle In 5 Seconds After Meeting",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://www.deatte5.com",
+      "icon": "icons/en.battleinfivesecondsaftermeeting.png",
+      "script": "dist/en.battleinfivesecondsaftermeeting.js",
+      "sha256": "a231c4dadfb2a880f2e24202596a85741141192fc7ead1624d7347663fb06900",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.cocomic",
       "name": "Cocomic",
       "lang": "en",
@@ -179,6 +243,22 @@
       }
     },
     {
+      "id": "en.erisscans",
+      "name": "Eris Scans",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://erisscans.com",
+      "icon": "icons/en.erisscans.png",
+      "script": "dist/en.erisscans.js",
+      "sha256": "4b6100f16ea5c4f8e7a874f804fd4e91b95b291f393ff63140d3da1f3d5fe2db",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.erosscans",
       "name": "Scythe Scans",
       "lang": "en",
@@ -192,6 +272,22 @@
       "health": {
         "status": "unverified",
         "checkedAt": "2026-11-19T15:34:31.413Z"
+      }
+    },
+    {
+      "id": "en.evascans",
+      "name": "Eva Scans",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://evascans.net",
+      "icon": "icons/en.evascans.png",
+      "script": "dist/en.evascans.js",
+      "sha256": "fdf2f746b78c1e055a9ce0140257c0b75fa05f7dc6b0a397179d163b9d587f3f",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -211,6 +307,38 @@
       }
     },
     {
+      "id": "en.fourporncomic",
+      "name": "4PornComic",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://4porncomic.com",
+      "icon": "icons/en.fourporncomic.png",
+      "script": "dist/en.fourporncomic.js",
+      "sha256": "df78a26a082a33bdd4cc5a2acd94062675003485abe0be308a39aae95e5f9b96",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
+      "id": "en.frierenonline",
+      "name": "Frieren Online",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://www.frieren.online",
+      "icon": "icons/en.frierenonline.png",
+      "script": "dist/en.frierenonline.js",
+      "sha256": "e6115b9643dbfe9699f28150f449743e5da730cd6100e2c9bba08b0bc2f64bb7",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.gakamangas",
       "name": "GakaMangas",
       "lang": "en",
@@ -224,6 +352,22 @@
       "health": {
         "status": "ok",
         "checkedAt": "2026-11-19T15:34:31.622Z"
+      }
+    },
+    {
+      "id": "en.galaxydegenscans",
+      "name": "GalaxyDegenScans",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://gdscans.com",
+      "icon": "icons/en.galaxydegenscans.png",
+      "script": "dist/en.galaxydegenscans.js",
+      "sha256": "1b1879fb3260d07ffcf8167a2bde84514efe260ecdd8467fd9508443381c0ffb",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -272,6 +416,22 @@
       "health": {
         "status": "ok",
         "checkedAt": "2026-11-19T15:34:40.612Z"
+      }
+    },
+    {
+      "id": "en.hentaideck",
+      "name": "HentaiDeck",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://hentaideck.com",
+      "icon": "icons/en.hentaideck.png",
+      "script": "dist/en.hentaideck.js",
+      "sha256": "2828563eb9800c5430fc49aa85bca6055926a87c69a1422470a6e9ea39fe38f4",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -339,6 +499,38 @@
       }
     },
     {
+      "id": "en.hijalascans",
+      "name": "Hijala Scans",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://en-hijala.com",
+      "icon": "icons/en.hijalascans.png",
+      "script": "dist/en.hijalascans.js",
+      "sha256": "b0c68d1cc698fc472467cbad6d4aec40512f396b1fb331094d017093c8cadf55",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
+      "id": "en.hivescans",
+      "name": "Hive Scans",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://hivetoons.org",
+      "icon": "icons/en.hivescans.png",
+      "script": "dist/en.hivescans.js",
+      "sha256": "b60cfd323c52275e2d0f3584e46a34038bf23efd62bdb75632bb6588520b90f8",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.hm2d",
       "name": "HM2D",
       "lang": "en",
@@ -371,6 +563,38 @@
       }
     },
     {
+      "id": "en.kenscans",
+      "name": "Ken Scans",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://kencomics.com",
+      "icon": "icons/en.kenscans.png",
+      "script": "dist/en.kenscans.js",
+      "sha256": "346171469e59b8f5a72c139d07156c71b76a87eaca0c70246eb6ebbfcd472e0d",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
+      "id": "en.kewnscans",
+      "name": "Kewn Scans",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://kewnscans.org",
+      "icon": "icons/en.kewnscans.png",
+      "script": "dist/en.kewnscans.js",
+      "sha256": "2383a51d7fc33c4a38e033cc985ef6112e48608ae1326dc2e4ab0aadea078c53",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.kingofshojo",
       "name": "King of Shojo",
       "lang": "en",
@@ -384,6 +608,22 @@
       "health": {
         "status": "ok",
         "checkedAt": "2026-11-19T15:35:08.036Z"
+      }
+    },
+    {
+      "id": "en.kitsunedawn",
+      "name": "Kitsune Dawn",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://kitsunedawn.com",
+      "icon": "icons/en.kitsunedawn.png",
+      "script": "dist/en.kitsunedawn.js",
+      "sha256": "8b110f22b5d7252522be406e16777ee0163441ea782ac4a3077699081eb292aa",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -419,6 +659,22 @@
       }
     },
     {
+      "id": "en.lgbtics",
+      "name": "Lgbtics",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://lgbtics.com",
+      "icon": "icons/en.lgbtics.png",
+      "script": "dist/en.lgbtics.js",
+      "sha256": "958f5f446569ac564ee4bf1d00eb3de87e1ba8f6b8a2856145ccc6201fbc3aee",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.lhtranslation",
       "name": "LHTranslation",
       "lang": "en",
@@ -451,6 +707,22 @@
       }
     },
     {
+      "id": "en.linkmanga",
+      "name": "LinkManga",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://linkmanga.com",
+      "icon": "icons/en.linkmanga.png",
+      "script": "dist/en.linkmanga.js",
+      "sha256": "063b74e656f5ad055375874e3b64cea9df53f099079f7b5dad8072a73e1c2ea9",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.lovesjanescans",
       "name": "Lovesjane Scans",
       "lang": "en",
@@ -467,6 +739,22 @@
       }
     },
     {
+      "id": "en.lunatoons",
+      "name": "Luna Toons",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://lunatoons.net",
+      "icon": "icons/en.lunatoons.png",
+      "script": "dist/en.lunatoons.js",
+      "sha256": "76c8f12a54114edee640e173438202c571fad97daabf89b1b6123b8b3c6814b2",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.madarascans",
       "name": "Madara Scans",
       "lang": "en",
@@ -480,6 +768,22 @@
       "health": {
         "status": "ok",
         "checkedAt": "2026-11-19T15:35:18.161Z"
+      }
+    },
+    {
+      "id": "en.magusmanga",
+      "name": "Magus Manga",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://magustoon.org",
+      "icon": "icons/en.magusmanga.png",
+      "script": "dist/en.magusmanga.js",
+      "sha256": "fe9074f4cb8038bc569c70df987df9d927b50e50a3994340a69d0bc995130ae8",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -579,6 +883,22 @@
       }
     },
     {
+      "id": "en.mangafoxfun",
+      "name": "MangaFox.fun",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://mangafox.fun",
+      "icon": "icons/en.mangafoxfun.png",
+      "script": "dist/en.mangafoxfun.js",
+      "sha256": "7a602a5518cee0c6d7dad2b9ee7e69411c9a0fb10f30dce1740928e76bad2f2c",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.mangafree",
       "name": "Mangafree",
       "lang": "en",
@@ -595,6 +915,38 @@
       }
     },
     {
+      "id": "en.mangagg",
+      "name": "MangaGG",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://mangagg.com",
+      "icon": "icons/en.mangagg.png",
+      "script": "dist/en.mangagg.js",
+      "sha256": "c50dec594af07315f0688fc9517b73e8278861312a3315ced7d7ad6c7b82ecc3",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
+      "id": "en.mangahereonl",
+      "name": "MangaHere.onl",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://mangahere.onl",
+      "icon": "icons/en.mangahereonl.png",
+      "script": "dist/en.mangahereonl.js",
+      "sha256": "3de20f13d5092c178f8ef3f1fce19bf632258e15b44b9b7d8234bc76348942fb",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.mangahot",
       "name": "MangaHot",
       "lang": "en",
@@ -608,6 +960,22 @@
       "health": {
         "status": "ok",
         "checkedAt": "2026-11-19T15:35:42.062Z"
+      }
+    },
+    {
+      "id": "en.mangakakalotfun",
+      "name": "Mangakakalot.fun",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://mangakakalot.fun",
+      "icon": "icons/en.mangakakalotfun.png",
+      "script": "dist/en.mangakakalotfun.js",
+      "sha256": "cb09527eb8f4970300414fd7d7f65e15397a1c3381b785405bd9f1b50aab8d17",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -659,6 +1027,38 @@
       }
     },
     {
+      "id": "en.manganel",
+      "name": "MangaNel",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://manganel.me",
+      "icon": "icons/en.manganel.png",
+      "script": "dist/en.manganel.js",
+      "sha256": "a4c0fd72b25f040253ca3e7bdf0b24234e89be70edf2b812717926049b36c2f8",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
+      "id": "en.mangaonlinefun",
+      "name": "MangaOnline.fun",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://mangaonline.fun",
+      "icon": "icons/en.mangaonlinefun.png",
+      "script": "dist/en.mangaonlinefun.js",
+      "sha256": "515281b337ac0ded27bd9fdafdb8d4952dc9869dedcc38faf5ea35650a1c1fa2",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.mangaowlio",
       "name": "MangaOwl.io (unoriginal)",
       "lang": "en",
@@ -672,6 +1072,22 @@
       "health": {
         "status": "unverified",
         "checkedAt": "2026-11-19T15:35:53.653Z"
+      }
+    },
+    {
+      "id": "en.mangapandaonl",
+      "name": "MangaPanda.onl",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://mangapanda.onl",
+      "icon": "icons/en.mangapandaonl.png",
+      "script": "dist/en.mangapandaonl.js",
+      "sha256": "a7ce35d4bd78989d2fab945e58ab79f118393a943c09734632503af149b03439",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -707,6 +1123,22 @@
       }
     },
     {
+      "id": "en.mangareadersite",
+      "name": "MangaReader.site",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://mangareader.site",
+      "icon": "icons/en.mangareadersite.png",
+      "script": "dist/en.mangareadersite.js",
+      "sha256": "09675bd1f1be4045f4f2009313bfd7d1366d926aca3d76df51c3fa1ee9bc1e9d",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.mangareadorg",
       "name": "MangaRead",
       "lang": "en",
@@ -736,6 +1168,22 @@
       "health": {
         "status": "ok",
         "checkedAt": "2026-11-19T15:35:58.962Z"
+      }
+    },
+    {
+      "id": "en.mangatoday",
+      "name": "MangaToday",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://mangatoday.fun",
+      "icon": "icons/en.mangatoday.png",
+      "script": "dist/en.mangatoday.js",
+      "sha256": "c4ac639491c8a58cbdf77c0e563692c7098b9287b3e47dca9b2d3ece6f71397f",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -835,6 +1283,22 @@
       }
     },
     {
+      "id": "en.manhwa18tx",
+      "name": "Manhwa18TX",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://manhwa18tx.com",
+      "icon": "icons/en.manhwa18tx.png",
+      "script": "dist/en.manhwa18tx.js",
+      "sha256": "45b3bebe7254a5bc45703ee37797ac06ed3fde91a71585ad7afa11626f8b9558",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.manhwabuddy",
       "name": "ManhwaBuddy",
       "lang": "en",
@@ -864,6 +1328,22 @@
       "health": {
         "status": "ok",
         "checkedAt": "2026-11-19T15:36:21.177Z"
+      }
+    },
+    {
+      "id": "en.manhwaddict",
+      "name": "Manhwaddict",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://manhwaddict.com",
+      "icon": "icons/en.manhwaddict.png",
+      "script": "dist/en.manhwaddict.js",
+      "sha256": "831d979fd744a0a15dbefc8968d8d2f949b8cd30b78e31f73ccc04db4abc755f",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -915,6 +1395,22 @@
       }
     },
     {
+      "id": "en.manhwaonline",
+      "name": "ManhwaOnline",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://manhwaonline.org",
+      "icon": "icons/en.manhwaonline.png",
+      "script": "dist/en.manhwaonline.js",
+      "sha256": "979e6d6dc793e809f37401b56c57de1dd4ad31fdf237380507d085acbeb35f21",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.manhwareads",
       "name": "Manhwa Reads",
       "lang": "en",
@@ -928,6 +1424,22 @@
       "health": {
         "status": "unverified",
         "checkedAt": "2026-11-19T15:36:28.598Z"
+      }
+    },
+    {
+      "id": "en.manhwatop",
+      "name": "Manhwatop",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://manhwatop.com",
+      "icon": "icons/en.manhwatop.png",
+      "script": "dist/en.manhwatop.js",
+      "sha256": "3145de0687eff013e7eff0107afc21636c800f390a763f184d0fd29eec43cb6f",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -947,6 +1459,22 @@
       }
     },
     {
+      "id": "en.myreadingcomic",
+      "name": "MyReadingComic",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://myreadingcomic.com",
+      "icon": "icons/en.myreadingcomic.png",
+      "script": "dist/en.myreadingcomic.js",
+      "sha256": "73258d966cfcc35ac971ae524319ab5d809652dc29f840f813ed8569806ff27b",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.nhentai",
       "name": "nhentai",
       "lang": "en",
@@ -960,6 +1488,38 @@
       "health": {
         "status": "ok",
         "checkedAt": "2026-11-19T15:36:32.214Z"
+      }
+    },
+    {
+      "id": "en.nyanukafe",
+      "name": "Nyanu Kafe",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://nyanukafe.com",
+      "icon": "icons/en.nyanukafe.png",
+      "script": "dist/en.nyanukafe.js",
+      "sha256": "73c7ab61a567bf0a7c92ec816e7c520d5f119f0662b93cd5ad7eee1e9082c71e",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
+      "id": "en.nyxscans",
+      "name": "Nyx Scans",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://nyxscans.com",
+      "icon": "icons/en.nyxscans.png",
+      "script": "dist/en.nyxscans.js",
+      "sha256": "cea4d3cc95b98d4b492867998b72925db160c79eefdab1dd9ac59fe68231c319",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -995,6 +1555,38 @@
       }
     },
     {
+      "id": "en.onemangaco",
+      "name": "1Manga.co",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://1manga.co",
+      "icon": "icons/en.onemangaco.png",
+      "script": "dist/en.onemangaco.js",
+      "sha256": "6956ed0d4025d166531471f2f7bce63b34c7f04cadeb2657c36b4ec7c19c7dcf",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
+      "id": "en.onemangainfo",
+      "name": "OneManga.info",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://onemanga.info",
+      "icon": "icons/en.onemangainfo.png",
+      "script": "dist/en.onemangainfo.js",
+      "sha256": "fb994c11be34a74920cad1566816f5591e0cc72df4d7c20983a4d07696c4e0f5",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.orchisasia",
       "name": "Orchisasia",
       "lang": "en",
@@ -1008,6 +1600,22 @@
       "health": {
         "status": "ok",
         "checkedAt": "2026-11-19T15:36:37.798Z"
+      }
+    },
+    {
+      "id": "en.orionscans",
+      "name": "Orion Scans",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://orion-scans.com",
+      "icon": "icons/en.orionscans.png",
+      "script": "dist/en.orionscans.js",
+      "sha256": "a5626346e991662427e1c2e190730de8c9e7bab7fa358c1bf6672a71282c09f1",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -1091,6 +1699,22 @@
       }
     },
     {
+      "id": "en.ritharscans",
+      "name": "RitharScans",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://ritharscans.com",
+      "icon": "icons/en.ritharscans.png",
+      "script": "dist/en.ritharscans.js",
+      "sha256": "053e09caac127f966d380d0463bd80c3c0d266a699a40666b409d5b13712df9d",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.rizzcomic",
       "name": "Rizz Comic",
       "lang": "en",
@@ -1155,6 +1779,38 @@
       }
     },
     {
+      "id": "en.sanascans",
+      "name": "Sana Scans",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://sanascans.com",
+      "icon": "icons/en.sanascans.png",
+      "script": "dist/en.sanascans.js",
+      "sha256": "a181472eb995ee5b6f2ba7921ac3329a66620180be1f05697edf421fb8b78cbf",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
+      "id": "en.sirenscans",
+      "name": "Siren Scans",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://sirenscans.com",
+      "icon": "icons/en.sirenscans.png",
+      "script": "dist/en.sirenscans.js",
+      "sha256": "d89e29e823cd2325987e81866d351c81dbe6f049fa8031ffc64d64a4912ee2e6",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.sleepytranslations",
       "name": "Sleepy Translations",
       "lang": "en",
@@ -1168,6 +1824,22 @@
       "health": {
         "status": "ok",
         "checkedAt": "2026-11-19T15:37:05.028Z"
+      }
+    },
+    {
+      "id": "en.suryascans",
+      "name": "Genz Toons",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://genztoons.org",
+      "icon": "icons/en.suryascans.png",
+      "script": "dist/en.suryascans.js",
+      "sha256": "28a5ce7c968a80d6b84de50e982db97dcf5ce3ea59505a6cf256cd673a771c56",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -1187,6 +1859,38 @@
       }
     },
     {
+      "id": "en.timelesstoons",
+      "name": "TimelessToons",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://timelesstoons.org",
+      "icon": "icons/en.timelesstoons.png",
+      "script": "dist/en.timelesstoons.js",
+      "sha256": "692f37839f897c0d9cda1242f30f28defda770db471ea755ee302a40214e61b5",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
+      "id": "en.toongodcc",
+      "name": "ToonGod (Unoriginal)",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://toongod.cc",
+      "icon": "icons/en.toongodcc.png",
+      "script": "dist/en.toongodcc.js",
+      "sha256": "fe4de0cc55c3c0ee7bf594dcbeb6c7497db300423fa61531be545c994819509f",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.toonily",
       "name": "Toonily",
       "lang": "en",
@@ -1200,6 +1904,22 @@
       "health": {
         "status": "unverified",
         "checkedAt": "2026-11-19T15:37:14.093Z"
+      }
+    },
+    {
+      "id": "en.toonizy",
+      "name": "Toonizy",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://toonizy.com",
+      "icon": "icons/en.toonizy.png",
+      "script": "dist/en.toonizy.js",
+      "sha256": "110fb545112e80929761cbd25d2ee2759d552c11e52149829dbe565c2e59e102",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -1232,6 +1952,22 @@
       "health": {
         "status": "ok",
         "checkedAt": "2026-11-19T15:37:18.185Z"
+      }
+    },
+    {
+      "id": "en.vortexscans",
+      "name": "Vortex Scans",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://vortexscans.org",
+      "icon": "icons/en.vortexscans.png",
+      "script": "dist/en.vortexscans.js",
+      "sha256": "607bea7ecbc18a22d10ece75bcfe7e5941eb80b1cb6f3d141b6c117a4028066a",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     },
     {
@@ -1283,6 +2019,38 @@
       }
     },
     {
+      "id": "en.writerscans",
+      "name": "Writer Scans",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://writerscans.com",
+      "icon": "icons/en.writerscans.png",
+      "script": "dist/en.writerscans.js",
+      "sha256": "375ac6c59fd10f499d482a619554f8ac21ce0f87d3efa8bf109647eb79847777",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
+      "id": "en.wuxiaworld",
+      "name": "WuxiaWorld",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": false,
+      "baseUrl": "https://wuxiaworld.site",
+      "icon": "icons/en.wuxiaworld.png",
+      "script": "dist/en.wuxiaworld.js",
+      "sha256": "984aef2687843f96a040e2d36cb5b8cb88b9d70f313d992a9fc5de5f45a20ad9",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
       "id": "en.yakshacomics",
       "name": "YakshaComics",
       "lang": "en",
@@ -1296,6 +2064,38 @@
       "health": {
         "status": "unverified",
         "checkedAt": "2026-11-19T15:37:28.217Z"
+      }
+    },
+    {
+      "id": "en.yaoihub",
+      "name": "Yaoihub",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://yaoihub.org",
+      "icon": "icons/en.yaoihub.png",
+      "script": "dist/en.yaoihub.js",
+      "sha256": "de9ddcc5c787cd8869db4f6231ef8d3d3abc3bc3894e83f0c47af3f92ca4a2ac",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
+      }
+    },
+    {
+      "id": "en.yaoiscanme",
+      "name": "YaoiScan (Unoriginal)",
+      "lang": "en",
+      "version": "1.0.0",
+      "runtime": 1,
+      "nsfw": true,
+      "baseUrl": "https://yaoiscan.me",
+      "icon": "icons/en.yaoiscanme.png",
+      "script": "dist/en.yaoiscanme.js",
+      "sha256": "f802f7c2e65c3dcc0f6ade2e90a8b2b83b63ac984d32083b2bec2e436daf75c4",
+      "health": {
+        "status": "unknown",
+        "checkedAt": null
       }
     }
   ]
