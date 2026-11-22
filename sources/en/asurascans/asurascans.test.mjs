@@ -104,6 +104,43 @@ test("details maps dropped status to cancelled", async () => {
   assertNoSiteCalls(calls);
 });
 
+test("details reads a series wrapped in data", async () => {
+  const wrapped = {
+    data: {
+      recommended_series: [],
+      series: {
+        slug: "the-roguish-guard-in-a-medieval-fantasy",
+        title: "The Roguish Guard in a Medieval Fantasy",
+        description: "<p>A guard.</p>",
+        cover: "https://cdn.asurascans.com/asura-images/covers/roguish.webp",
+        status: "ongoing",
+        type: "manhwa",
+        author: "A",
+        artist: "B",
+        genres: [{ id: 1, name: "Action", slug: "action" }],
+      },
+    },
+  };
+  const { src, calls } = makeSource((url) => (url === "https://api.asurascans.com/api/series/the-roguish-guard-in-a-medieval-fantasy-7ba78ec7" ? wrapped : null));
+  const result = await src.details("/comics/the-roguish-guard-in-a-medieval-fantasy-7ba78ec7");
+  assert.deepEqual(result, {
+    title: "The Roguish Guard in a Medieval Fantasy",
+    cover: "https://cdn.asurascans.com/asura-images/covers/roguish.webp",
+    author: "A",
+    artist: "B",
+    description: "A guard.",
+    genres: ["Manhwa", "Action"],
+    status: "ongoing",
+  });
+  assertNoSiteCalls(calls);
+});
+
+test("details throws a clear error when the series is missing", async () => {
+  const { src, calls } = makeSource((url) => (url === "https://api.asurascans.com/api/series/the-roguish-guard-in-a-medieval-fantasy-7ba78ec7" ? { data: { recommended_series: [] } } : null));
+  await assert.rejects(src.details("/comics/the-roguish-guard-in-a-medieval-fantasy-7ba78ec7"), /Asura series data not found/);
+  assertNoSiteCalls(calls);
+});
+
 test("chapters reads the list from the JSON API and leaves out premium and early-access chapters", async () => {
   const { src, calls } = makeSource((url) => (url === "https://api.asurascans.com/api/series/overgeared-7ba78ec7/chapters" ? { data: chaptersBody } : null));
   const result = await src.chapters("/comics/overgeared-7ba78ec7");

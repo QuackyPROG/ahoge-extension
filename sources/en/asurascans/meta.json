@@ -2,7 +2,7 @@
   "id": "en.asurascans",
   "name": "Asura Scans",
   "lang": "en",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "nsfw": false,
   "baseUrl": "https://asurascans.com",
   "upstream": "src/en/asurascans"

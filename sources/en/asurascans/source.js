@@ -74,7 +74,9 @@ source = {
   filters,
 
   async details(url) {
-    const d = (await api("/series/" + slugOf(url))).series;
+    const json = await api("/series/" + slugOf(url));
+    const d = json.series || (json.data && json.data.series);
+    if (!d) throw new Error("Asura series data not found");
     const description = d.description ? html.parse("<div>" + d.description + "</div>", BASE).text() : "";
     const genres = (d.genres || []).map((g) => g.name);
     if (d.type) genres.unshift(d.type.charAt(0).toUpperCase() + d.type.slice(1));
