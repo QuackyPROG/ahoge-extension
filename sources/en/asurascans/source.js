@@ -95,6 +95,8 @@ source = {
     const slug = slugOf(url);
     const list = (await api("/series/" + slug + "/chapters")).data || [];
     const now = Date.now();
+    const days = new Set(list.map((c) => String(c.created_at || "").slice(0, 10)));
+    const fakeDates = list.length >= 5 && days.size === 1;
     return list
       .filter((c) => !isLocked(c, now))
       .map((c) => {
@@ -103,7 +105,7 @@ source = {
           url: "/comics/" + slug + "/chapter/" + n,
           name: "Chapter " + n + (c.title ? " - " + c.title : ""),
           number: Number(c.number),
-          date: c.created_at ? parseDate(c.created_at) : null,
+          date: !fakeDates && c.created_at ? parseDate(c.created_at) : null,
           scanlator: null,
         };
       });

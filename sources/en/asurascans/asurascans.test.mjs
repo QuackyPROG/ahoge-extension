@@ -164,6 +164,68 @@ test("chapters reads the list from the JSON API and leaves out premium and early
   assertNoSiteCalls(calls);
 });
 
+function sameDayChapters(firstCreatedAt = "2026-11-22T02:01:17.206751Z") {
+  const created = [
+    firstCreatedAt,
+    "2026-11-22T02:01:30Z",
+    "2026-11-22T02:02:06.707586Z",
+    "2026-11-22T02:02:40Z",
+    "2026-11-22T02:03:07.808277Z",
+  ];
+  return created.map((createdAt, i) => ({
+    id: 100 + i,
+    number: i + 1,
+    is_premium: false,
+    early_access_until: null,
+    created_at: createdAt,
+  }));
+}
+
+test("chapters gives no dates when every chapter is dated the same day", async () => {
+  const { src, calls } = makeSource((url) => (url === "https://api.asurascans.com/api/series/overgeared-7ba78ec7/chapters" ? { data: sameDayChapters() } : null));
+  const result = await src.chapters("/comics/overgeared-7ba78ec7");
+  assert.equal(result.length, 5);
+  assert.deepEqual(
+    result.map((c) => c.date),
+    [null, null, null, null, null],
+  );
+  assert.deepEqual(
+    result.map((c) => c.url),
+    [1, 2, 3, 4, 5].map((n) => "/comics/overgeared-7ba78ec7/chapter/" + n),
+  );
+  assert.deepEqual(
+    result.map((c) => c.name),
+    ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5"],
+  );
+  assertNoSiteCalls(calls);
+});
+
+test("chapters keeps dates when they span more than one day", async () => {
+  const { src, calls } = makeSource((url) =>
+    url === "https://api.asurascans.com/api/series/overgeared-7ba78ec7/chapters"
+      ? { data: sameDayChapters("2022-08-21T16:47:06Z") }
+      : null,
+  );
+  const result = await src.chapters("/comics/overgeared-7ba78ec7");
+  assert.equal(result.length, 5);
+  assert.equal(result[0].date, Date.parse("2022-08-21T16:47:06Z"));
+  assert.equal(result[4].date, Date.parse("2026-11-22T02:03:07.808277Z"));
+  assertNoSiteCalls(calls);
+});
+
+test("chapters keeps dates for a series with fewer than 5 chapters", async () => {
+  const fourChapters = sameDayChapters().slice(0, 4);
+  const { src, calls } = makeSource((url) => (url === "https://api.asurascans.com/api/series/overgeared-7ba78ec7/chapters" ? { data: fourChapters } : null));
+  const result = await src.chapters("/comics/overgeared-7ba78ec7");
+  assert.equal(result.length, 4);
+  assert.deepEqual(
+    result.map((c) => c.date),
+    fourChapters.map((c) => Date.parse(c.created_at)),
+  );
+  for (const c of result) assert.notEqual(c.date, null);
+  assertNoSiteCalls(calls);
+});
+
 test("pages reads the chapter from the JSON API and returns its images", async () => {
   const { src, calls } = makeSource((url) => (url === "https://api.asurascans.com/api/series/overgeared-7ba78ec7/chapters/1" ? { data: pageBody } : null));
   const result = await src.pages("/comics/overgeared-7ba78ec7/chapter/1");
