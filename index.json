@@ -134,13 +134,13 @@
       "id": "en.asurascans",
       "name": "Asura Scans",
       "lang": "en",
-      "version": "1.1.1",
+      "version": "1.1.2",
       "runtime": 1,
       "nsfw": false,
       "baseUrl": "https://asurascans.com",
       "icon": "icons/en.asurascans.png",
       "script": "dist/en.asurascans.js",
-      "sha256": "b9dd734555d427da87047799f84da571cd8e241686af1d74cfdf99b108c02c42",
+      "sha256": "d9d0db9b33a30e8ba0203ca4122ea6b32f351b5997691edf46124c459f2c0988",
       "health": {
         "status": "unknown",
         "checkedAt": null
